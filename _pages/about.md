@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-description: <a href="#">Affiliations</a>. Address. Contacts. Moto. Etc.
+description: Il programma di sala con risorse interattive della tesi di laurea di Matteo Spanio
 
 profile:
   align: right
@@ -12,13 +12,17 @@ profile:
     <p>123 your address street</p>
     <p>Your City, State 12345</p>
 
-news: true  # includes a list of news items
+news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true  # includes social icons at the bottom of the page
+social: false # includes social icons at the bottom of the page
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+> «Io stesso non amo follemente come Beethoven ha reso l'_Inno alla gioia_ di Schiller, ma anche se lo detestassi - cosa che non è - vorrei comunque denunciare quella brutta persona che ha degradato se stesso e il brano suonando la famosa melodia di Beethoven in un pezzo jazz chiamato _I'm so happy today_ in un programma radiofonico della BBC.
+> Perché questi demoni [...] della musica non possono tenere le mani lontane dai brani che, alcuni membri di questa infelice generazione musicale ritengono sacri?
+> Il de-compositore in questione vede che la piena flagranza del suo atto consiste nell'approfittare dell'enorme pubblicità del jazz per impedire a migliaia di potenziali amanti della musica -ancora per lo più bambini- di ascoltare per la prima volta una grande e famosa melodia nell'unico luogo dove dovrebbe essere così sentita: in una sala da concerto?
+>
+> Quando avevo quattordici anni scrissi la mia prima lettera alla stampa per protestare contro l'introduzione di un tema della sinfonia _Pathetique_ in una pantomima di Drury Lane. Avendo io stesso, da bambino, avuto modo di conoscere il trio della Marcia funebre di Chopin sotto forma di una canzone comica su Li-Hung-Chang, sapevo di cosa stavo parlando e che queste associazioni, una volta formate, non sarebbero mai state del tutto rimosse. Mi sento così fortemente irrequieto come allora.
+> Che tributo sarà al mondo della radio quando, ascoltando la nona di Beethoven per la prima volta, mio figlio esclamerà: ``Perché, papà, stanno suonando _I'm so happy today_?''»
 
-Put your address / P.O. box / other info right below your picture. You can also disable any these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
-
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+Questa tesi è un incentivo a rendere più tolleranti le persone come il sopracitato Robert Lorenz nei confronti di un genere serio tanto quanto quello classico: il jazz.
+Ripercorrendo le tappe fondamentali dell'evoluzione del jazz attraverso i brani proposti si vedrà quali elementi sono serviti alla musica classica per rinnovarsi nel secolo scorso, capendo quanto la classica sia debitrice al jazz per spunti musicali che l'hanno fatta rifiorire (la _third stream_ tra tutti è un esempio di questo connubio tra i generi), ma anche quanto il jazz continui a guardare alla classica nel corso degli anni.
