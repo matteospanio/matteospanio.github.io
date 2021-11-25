@@ -3,7 +3,7 @@ layout: page
 permalink: /downloads/
 title: Downloads
 description: Materiali scaricabili.
-years: [2021, 1982, 1957, 1943, 1942]
+years: [2021, 1982, 1957, 1943, 1942, 1920]
 nav: true
 ---
 
