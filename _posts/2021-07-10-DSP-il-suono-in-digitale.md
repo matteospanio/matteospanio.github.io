@@ -41,7 +41,9 @@ Quando il segnale di partenza è in formato digitale si può applicare la *Trasf
 ![ft2]({{ site.url }}/assets/images/ft2.gif)
 
 Matematicamente parlando, la relazione tra $$N$$ campioni nel dominio del tempo $$ x_0, x_1, ..., x_{N-1} $$ e $$ N $$ numeri complessi della trasformata discreta di Fourier $$ X_0, X_1, ..., X_{N-1} $$ è descritta dalla formula:
-$$ X_k = \sum_{n = 0}^{N-1} x_ne^{-ik\frac{2\pi}{N}n}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,k=0,..., N-1 $$
+
+$ X_k = \sum_{n = 0}^{N-1} x_ne^{-ik\frac{2\pi}{N}n}\quad k=0,..., N-1 $
+
 dove $$ i $$ è l'unità immaginaria e $$ e^\frac{2\pi}{N} $$ è una radice dell'unità primitiva $$ N $$-esima.
 
 ## Pulse Code Modulation
