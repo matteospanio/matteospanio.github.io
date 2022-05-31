@@ -3,7 +3,7 @@ layout: post
 title:  "DSP: il suono in digitale"
 author: Matteo Spanio
 banner:  
-  image: "/assets/images/background.jpg"
+  image: "/assets/images/banners/background.jpg"
 categories: DSP
 tags: [music, DSP]
 
