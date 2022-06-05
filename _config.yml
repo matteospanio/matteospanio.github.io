@@ -13,10 +13,10 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Matteo Spanio Blog
+title: Matteo Spanio
 email: matteo.spanio97@gmail.com
 author: matteospanio
-copyright: Copyright © 2008-2020
+copyright: Copyright (cleft) 2021-{currentYear}
 description: >- # this means to ignore newlines until "baseurl:"
   This is a very personal blog. I don't write blogs for anyone, but
   just record what I do or what I think. So there are many things
@@ -31,9 +31,15 @@ favicon: "" # the favicon for your site
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
 yat:
   date_format: "%d %b %Y"
-  
+
+# Google analytics
+google_analytics: G-KQR2D9ZZXQ
+
 # If you want to generate website sitemap, you can set true
 sitemap: true
+
+# If you want to change the content width, you can set to another value
+content_width: "1000px"
 
 # If you want to change site language, you can set lang option
 # lang: "en"  # default lang is en

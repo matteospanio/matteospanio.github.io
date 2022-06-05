@@ -1,12 +1,11 @@
 ---
 layout: post
-title:  "DSP: il suono in digitale"
+title: "DSP: il suono in digitale"
 author: Matteo Spanio
-banner:  
+banner:
   image: "/assets/images/banners/background.jpg"
 categories: DSP
 tags: [music, DSP]
-
 ---
 
 > Dall'analogico al digitale: il digital signal processing spiegato in maniera semplice.
@@ -20,7 +19,7 @@ Ciò ha permesso che il trattamento e il processo numerico dei segnali digitali[
 
 ![47.png]({{ site.url }}/assets/images/47.png)
 
-*a) segnale analogico, b) quantizzato, c) campionato, d) quantizzato e campionato*
+_a) segnale analogico, b) quantizzato, c) campionato, d) quantizzato e campionato_
 
 ## Campionamento
 
@@ -34,15 +33,15 @@ La quantizzazione è il processo di sostituzione di ogni numero reale della sequ
 
 ![ft]({{ site.url }}/assets/images/ft.gif)
 
-Oltre alla rappresentazione del suono nel dominio del tempo, esiste la possibilità di rappresentarne le stesse proprietà anche nel dominio della frequenza. Questo sistema venne studiato da Charles Fourier, che definì anche come passare dalla rappresentazione nel dominio del tempo a quello nel dominio della frequenza, questo processo è detto *trasformata di Fourier* o *Fourier Transform* (FT).
+Oltre alla rappresentazione del suono nel dominio del tempo, esiste la possibilità di rappresentarne le stesse proprietà anche nel dominio della frequenza. Questo sistema venne studiato da Charles Fourier, che definì anche come passare dalla rappresentazione nel dominio del tempo a quello nel dominio della frequenza, questo processo è detto _trasformata di Fourier_ o _Fourier Transform_ (FT).
 
-Quando il segnale di partenza è in formato digitale si può applicare la *Trasformata Discreta di Fourier* (DFT). L'idea sottostante alla DFT è che lo spettro sia campionato in frequenza così come la forma d'onda digitale viene campionata nel tempo.
+Quando il segnale di partenza è in formato digitale si può applicare la _Trasformata Discreta di Fourier_ (DFT). L'idea sottostante alla DFT è che lo spettro sia campionato in frequenza così come la forma d'onda digitale viene campionata nel tempo.
 
 ![ft2]({{ site.url }}/assets/images/ft2.gif)
 
-Matematicamente parlando, la relazione tra $$N$$ campioni nel dominio del tempo $ x_0, x_1, ..., x_{N-1} $ e $ N $ numeri complessi della trasformata discreta di Fourier $$ X_0, X_1, ..., X_{N-1} $$ è descritta dalla formula:
+Matematicamente parlando, la relazione tra $$N$$ campioni nel dominio del tempo $ x*0, x_1, ..., x*{N-1} $ e $ N $ numeri complessi della trasformata discreta di Fourier $$ X*0, X_1, ..., X*{N-1} $$ è descritta dalla formula:
 
-$ X_k = \sum_{n = 0}^{N-1} x_ne^{-ik\frac{2\pi}{N}n}\quad k=0,..., N-1 $
+$$ X*k = \sum*{n = 0}^{N-1} x_ne^{-ik\frac{2\pi}{N}n}\quad k=0,..., N-1 $$
 
 dove $ i $ è l'unità immaginaria e $ e^\frac{2\pi}{N} $ è una radice dell'unità primitiva $$ N $$-esima.
 
@@ -50,13 +49,11 @@ dove $ i $ è l'unità immaginaria e $ e^\frac{2\pi}{N} $ è una radice dell'uni
 
 Il passo finale della digitalizzazione, che ingloba i processi di quantizzazione e campionamento, è la generazione del codice associato al campione.
 
-Esistono molti modi di codificare un segnale. Il modo di cui ci siamo concettualmente serviti senza saperlo è il *Pulse Amplitude Modulation* (PAM), per il quale un impulso occorre a ogni intervallo di campionamento, e l'ampiezza della forma d'onda è un valore digitale che corrisponde all'ampiezza analogica.
-Ma il modello considerato standard per la codifica digitale è il cosiddetto *Pulse Code Modulation* (PCM): l'informarmazione viene racchiusa in gruppi di bit che rappresentano il variare dell'ampiezza nel tempo, l'uno corrsiponde a presenza di segnale, mentro lo 0 ne descrive l'assenza.
+Esistono molti modi di codificare un segnale. Il modo di cui ci siamo concettualmente serviti senza saperlo è il _Pulse Amplitude Modulation_ (PAM), per il quale un impulso occorre a ogni intervallo di campionamento, e l'ampiezza della forma d'onda è un valore digitale che corrisponde all'ampiezza analogica.
+Ma il modello considerato standard per la codifica digitale è il cosiddetto _Pulse Code Modulation_ (PCM): l'informarmazione viene racchiusa in gruppi di bit che rappresentano il variare dell'ampiezza nel tempo, l'uno corrsiponde a presenza di segnale, mentro lo 0 ne descrive l'assenza.
 
 La codifica PCM è usata in tutti i settori dell'archiviazione e della trasmissione digitale dei dati. La comodità di questa rappresentazione è che si possono facilmente operare controlli o modifiche sui bit senza perdere il segnale originale, inoltre è molto meno sensibile al rumore delle altre codificazioni.
 
 ![62.png]({{ site.url }}/assets/images/62.png)
 
-### Footnotes
-
-[^1]: DSP sta per *Digital Signal Processing* ed e' un termine usato per indicare l'elaborazione elettrica dei segnali, permettendo al computer di analizzarli. Questo tipo di operazioni sta alla base di molti campi di applicazione: dal sound engineering alle telecomunicazioni, passando per la computer vision.
+[^1]: DSP sta per _Digital Signal Processing_ ed e' un termine usato per indicare l'elaborazione elettrica dei segnali, permettendo al computer di analizzarli. Questo tipo di operazioni sta alla base di molti campi di applicazione: dal sound engineering alle telecomunicazioni, passando per la computer vision.
