@@ -16,6 +16,32 @@ $brand-colors: (
   "greenblue": #389092,
 );
 
+.neonText {
+  animation: flicker 1.5s infinite alternate;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff,
+      0 0 40px rgb(212, 0, 255), 0 0 80px rgb(212, 0, 255),
+      0 0 90px rgb(212, 0, 255), 0 0 100px rgb(212, 0, 255),
+      0 0 150px rgb(212, 0, 255);
+  }
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
 $theme-name: "{{ site.theme_color }}";
 $brand-name: "{{ site.brand_color }}";
 $theme-color: map-get($theme-colors, "snowwhite");
