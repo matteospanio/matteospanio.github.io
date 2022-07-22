@@ -33,7 +33,7 @@ yat:
   date_format: "%d %b %Y"
 
 # Google analytics
-google_analytics: G-KQR2D9ZZXQ
+# google_analytics: G-KQR2D9ZZXQ
 
 # If you want to generate website sitemap, you can set true
 sitemap: true
