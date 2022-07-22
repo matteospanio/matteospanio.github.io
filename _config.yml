@@ -32,6 +32,10 @@ favicon: "" # the favicon for your site
 yat:
   date_format: "%d %b %Y"
 
+# Disqus comments
+disqus:
+  shortname: "Your Disqus username"
+
 # Google analytics
 # google_analytics: G-KQR2D9ZZXQ
 
