@@ -6,6 +6,7 @@ banner:
   image: "/assets/images/banners/background.jpg"
 categories: DSP
 tags: [music, DSP]
+comments: true
 ---
 
 > Dall'analogico al digitale: il digital signal processing spiegato in maniera semplice.
