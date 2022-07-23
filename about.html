@@ -1,16 +1,29 @@
 ---
-layout: about
+layout: post
+hidden:
+  - header
+  - navigator
+  - related_posts
 title: About
 ---
 
-<div>
-    <div>
+<style>
+    .col {
+        padding: 1rem;
+    }
+    .row {
+        display: flex;
+    }
+</style>
+
+<div class="row">
+    <div class="col">
         <img
           src="{{ site.url }}/assets/images/matteo.jpg"
           alt="not found"
         />
     </div>
-    <div>
+    <div class="col">
         <h1>who<span style="color: red">am</span>i</h1>
         <p>
           I'm Matteo, a Data Science student at Ca' Foscari University. I'm
