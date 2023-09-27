@@ -3,5 +3,6 @@ github_users:
 
 github_repos:
   - matteospanio/spam-analyzer
+  - matteospanio/sniper-go
   - matteospanio/zillow-prize
   - matteospanio/dotfiles
