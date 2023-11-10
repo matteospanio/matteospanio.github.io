@@ -1,6 +1,6 @@
 FROM bitnami/minideb:latest
 
-Label MAINTAINER Amir Pourmand
+LABEL MAINTAINER Amir Pourmand
 
 RUN apt-get update -y
 
@@ -33,7 +33,7 @@ WORKDIR /srv/jekyll
 RUN bundle install
 
 # Set Jekyll environment
-ENV JEKYLL_ENV=production 
+ENV JEKYLL_ENV=production
 
 EXPOSE 8080
 
