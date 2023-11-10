@@ -10,7 +10,7 @@ profile:
   align: right
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
-  address: >
+  more_info: >
     <p>CSC lab, building DEI/S</p>
     <p>Via Gardenigo 6/A</p>
     <p>Padua, Italy</p>
