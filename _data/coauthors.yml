@@ -10,7 +10,7 @@
   - firstname: ["Nathan", "N."]
     url: https://en.wikipedia.org/wiki/Nathan_Rosen
 
-"Bach": 
+"Bach":
   - firstname: ["Johann Sebastian", "J. S."]
     url: https://en.wikipedia.org/wiki/Johann_Sebastian_Bach
 
@@ -39,7 +39,7 @@
 
 "Russo":
   - firstname: ["Alessandro"]
-    url: ""
+    url: "http://hit.psy.unipd.it/alessandro-russo"
 
 "Spohr":
   - firstname: ["Louis"]
