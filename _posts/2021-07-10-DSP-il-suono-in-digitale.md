@@ -29,7 +29,7 @@ Il campionamento corrisponde all'individuazione periodica della presenza di segn
 
 ## Quantizzazione
 
-La quantizzazione è il processo di sostituzione di ogni numero reale della sequenza di campioni con un'approssimazione da un insieme finito di valori (solitamente $ 2^{16} $)
+La quantizzazione è il processo di sostituzione di ogni numero reale della sequenza di campioni con un'approssimazione da un insieme finito di valori (solitamente $$ 2^{16} $$)
 
 ## La trasformata di Fourier
 
@@ -45,11 +45,11 @@ Quando il segnale di partenza è in formato digitale si può applicare la _Trasf
     {% include figure.html path="assets/img/ft2.gif" class="img-fluid rounded z-depth-1" zoomable=false %}
 </div>
 
-Matematicamente parlando, la relazione tra $$N$$ campioni nel dominio del tempo $ x_0, x_1, ..., x_{N-1} $ e $ N $ numeri complessi della trasformata discreta di Fourier $ X_0, X_1, ..., X_{N-1} $ è descritta dalla formula:
+Matematicamente parlando, la relazione tra $$N$$ campioni nel dominio del tempo $$ x_0, x_1, ..., x_{N-1} $$ e $$ N $$ numeri complessi della trasformata discreta di Fourier $$ X_0, X_1, ..., X_{N-1} $$ è descritta dalla formula:
 
 $$ X_k = \sum_{n = 0}^{N-1} x_ne^{-ik\frac{2\pi}{N}n}\quad k=0,..., N-1 $$
 
-dove $ i $ è l'unità immaginaria e $ e^\frac{2\pi}{N} $ è una radice dell'unità primitiva $ N $-esima.
+dove $ i $ è l'unità immaginaria e $$ e^\frac{2\pi}{N} $$ è una radice dell'unità primitiva $$ N $$-esima.
 
 ## Pulse Code Modulation
 
