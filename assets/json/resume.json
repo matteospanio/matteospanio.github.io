@@ -29,6 +29,17 @@
   },
   "work": [
     {
+      "company": "Università degli Studi di Padova",
+      "position": "Teaching Assistant",
+      "url": "https://www.unipd.it/",
+      "startDate": "2024-02",
+      "endDate": "2024-06",
+      "summary": "Teaching assistant for the course of Algorithms and Data Structures for the Bachelor in Electronic Engineering.",
+      "highlights": [
+        "Frontal lessons about C programming language and data structures"
+      ]
+    },
+    {
       "name": "Audio Innova S.r.l.",
       "position": "Software Engineer",
       "url": "https://www.audioinnova.com/en/",

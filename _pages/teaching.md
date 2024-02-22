@@ -1,12 +1,10 @@
 ---
 layout: page
-title: projects
-permalink: /projects/
-description: A collection of my cool projects.
+title: teaching
+permalink: /teaching/
+description: Here are the materials used to support my teaching activity
 nav: true
-nav_order: 2
-# display_categories: [work, fun]
-horizontal: false
+nav_order: 1
 ---
 
 <!-- pages/projects.md -->
@@ -37,7 +35,7 @@ horizontal: false
 
 {%- else -%}
 <!-- Display projects without categories -->
-  {%- assign sorted_projects = site.projects | sort: "importance" -%}
+  {%- assign sorted_projects = site.teaching | sort: "importance" -%}
   <!-- Generate cards for each project -->
   {% if page.horizontal -%}
   <div class="container">
