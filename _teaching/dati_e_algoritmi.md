@@ -12,6 +12,6 @@ authors:
       name: University of Padua
 ---
 
-Le lezioni del corso, insieme ad approfondimenti non affrontati a lezione, sono consultabili in formato HTML a [questa pagina](#).
+Le lezioni del corso, insieme ad approfondimenti non affrontati a lezione, sono consultabili in formato HTML a [questa pagina](https://matteospanio.github.io/corso-c).
 
 Il codice sorgente delle diapositive proiettate durante la lezione può essere consultato tramite il [repository github](https://github.com/matteospanio/corso-c).
