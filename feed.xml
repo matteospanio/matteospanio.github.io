@@ -1,777 +1,115 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://alshedivat.github.io/al-folio/feed.xml" rel="self" type="application/atom+xml"/><link href="https://alshedivat.github.io/al-folio/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-10-06T21:17:13+00:00</updated><id>https://alshedivat.github.io/al-folio/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</title><link href="https://alshedivat.github.io/al-folio/blog/2024/google-gemini-updates-flash-15-gemma-2-and-project-astra/" rel="alternate" type="text/html" title="Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra"/><published>2024-05-14T00:00:00+00:00</published><updated>2024-05-14T00:00:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/google-gemini-updates-flash-15-gemma-2-and-project-astra</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/google-gemini-updates-flash-15-gemma-2-and-project-astra/"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[We’re sharing updates across our Gemini family of models and a glimpse of Project Astra, our vision for the future of AI assistants.]]></summary></entry><entry><title type="html">a post with tabs</title><link href="https://alshedivat.github.io/al-folio/blog/2024/tabs/" rel="alternate" type="text/html" title="a post with tabs"/><published>2024-05-01T00:32:13+00:00</published><updated>2024-05-01T00:32:13+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/tabs</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/tabs/"><![CDATA[<p>This is how a post with <a href="https://github.com/Ovski4/jekyll-tabs">tabs</a> looks like. Note that the tabs could be used for different purposes, not only for code.</p> <h2 id="first-tabs">First tabs</h2> <p>To add tabs, use the following syntax:</p> <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">{%</span><span class="w"> </span><span class="nt">tabs</span><span class="w"> </span><span class="nv">group-name</span><span class="w"> </span><span class="cp">%}</span>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://matteospanio.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://matteospanio.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2024-10-13T21:34:34+00:00</updated><id>https://matteospanio.github.io/feed.xml</id><title type="html">blank</title><subtitle>This is a very personal blog. I don&apos;t write blogs for anyone, but just record what I do or what I think. So there are many things wrong and you may have different thoughts. It would be nice if I share knowledge and thoughts rather than criticism. It will be great help if you give and teach your knowledge and thoughts to me. </subtitle><entry><title type="html">Python’s virtual environments</title><link href="https://matteospanio.github.io/blog/2024/python-environments/" rel="alternate" type="text/html" title="Python’s virtual environments"/><published>2024-06-21T00:00:00+00:00</published><updated>2024-06-21T00:00:00+00:00</updated><id>https://matteospanio.github.io/blog/2024/python-environments</id><content type="html" xml:base="https://matteospanio.github.io/blog/2024/python-environments/"><![CDATA[<h1 id="managing-environments">Managing environments</h1> <p>In embarking on projects, I’ve learned the hard way that starting without the right tools can lead to wasted time and frustration. This has been evident in my tendency to recklessly install packages, turning my system’s Python environment into a chaotic mess. Despite the availability of better alternatives, I’ve also stuck with the default Python shell. Investing upfront time and effort to avoid these pitfalls can greatly benefit your journey as a Python enthusiast.</p> <p>While most programming languages provide a standard library with diverse functionalities, managing additional libraries can be challenging. It’s crucial to effectively utilize the standard library, which includes features like file handling, string manipulation, and date/time management. However, to fully leverage Python’s capabilities, additional libraries are often required. Python’s vibrant developer community produces a plethora of third-party packages, allowing for quick and easy installation. Yet, it’s essential to exercise caution and avoid the temptation to install every intriguing package, as it can lead to a chaotic environment where nothing functions properly.</p> <p>With this understanding, let’s delve into pip, the default package manager tool that accompanies Python installation.</p> <h2 id="pip-and-virtual-environments">pip and virtual environments</h2> <p><code class="language-plaintext highlighter-rouge">pip</code> is Python’s package manager. Its name is a recursive acronym that stands for <em>Pip Installs Packages</em>. <code class="language-plaintext highlighter-rouge">pip</code> is a powerful tool that allows you to install, upgrade, and remove additional libraries, and it is included in Python installation starting from version 3.4.</p> <blockquote class="block-tip"> <h5 id="legacy-python">Legacy Python</h5> <p>If you are using an older version of Python, you can install pip manually. To do so, simply download the <code class="language-plaintext highlighter-rouge">get-pip.py</code> file from the official Python website at <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a> and run it with Python.</p> </blockquote> <h3 id="installing-packages">Installing packages</h3> <p>To install a Python package using pip, simply use the install command followed by the name of the package. For example, to install the requests package, which is commonly used for making HTTP requests, you would type:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>requests
+</code></pre></div></div> <p>pip will then download and install the <a href="https://docs.python-requests.org/en/latest/index.html">requests package </a> and any dependencies it requires.</p> <p>Now that you have installed requests, you can use it in your Python code by importing it as usual:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
 
-<span class="cp">{%</span><span class="w"> </span><span class="nt">tab</span><span class="w"> </span><span class="nv">group-name</span><span class="w"> </span><span class="nv">tab-name-1</span><span class="w"> </span><span class="cp">%}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">https://www.example.com</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div></div> <p>To uninstall a package that you no longer need, you can use the uninstall command followed by the name of the package. For example, to uninstall the requests package, you would type:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip uninstall requests
+</code></pre></div></div> <p>As you can see, pip is a simple and straightforward tool for managing Python packages. However, it has one major limitation: it installs packages <strong>globally</strong>, which can lead to conflicts between different projects that require different versions of the same package.</p> <p>To avoid these conflicts, it is best to use <strong>virtual environments</strong>. A virtual environment is an isolated environment that contains its own Python interpreter and its own set of installed packages. This allows you to work on multiple projects with different dependencies without worrying about conflicts. Python provides a built-in module called <a href="https://docs.python.org/3/library/venv.html">venv</a> that allows you to create and manage virtual environments. To create a new virtual environment, you can use the following command:</p> <pre><code class="language-{bash}">python -m venv myenv
+</code></pre> <p>This will create a new directory called <code class="language-plaintext highlighter-rouge">myenv</code> that contains a copy of the Python interpreter and a copy of the <code class="language-plaintext highlighter-rouge">pip</code> package manager. Let’s look in detail at the folder structure of the virtual environment with the shell utility <code class="language-plaintext highlighter-rouge">tree</code>:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>tree <span class="nt">-L</span> 4 myenv
 
-Content 1
+myenv
+├── bin
+│   ├── activate
+│   ├── activate.csh
+│   ├── activate.fish
+│   ├── Activate.ps1
+│   ├── pip
+│   ├── pip3
+│   ├── pip3.10
+│   ├── python -&gt; python3
+│   ├── python3 -&gt; /usr/bin/python3
+│   └── python3.10 -&gt; python3
+├── include
+├── lib
+│   └── python3.10
+│       └── site-packages
+│           ├── _distutils_hack
+│           ├── distutils-precedence.pth
+│           ├── pip
+│           ├── pip-22.0.2.dist-info
+│           ├── pkg_resources
+│           ├── setuptools
+│           └── setuptools-59.6.0.dist-info
+├── lib64 -&gt; lib
+└── pyvenv.cfg
+</code></pre></div></div> <p>As you can see the <code class="language-plaintext highlighter-rouge">bin</code> directory contains the <code class="language-plaintext highlighter-rouge">activate</code> script that allows you to activate the virtual environment. The <code class="language-plaintext highlighter-rouge">lib</code> directory contains the installed packages, and the <code class="language-plaintext highlighter-rouge">include</code> directory contains the header files needed to compile C extensions. The <code class="language-plaintext highlighter-rouge">pyvenv.cfg</code> file contains the configuration of the virtual environment.</p> <p>To activate the virtual environment, you can use the following command:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source </span>myenv/bin/activate
+</code></pre></div></div> <p>This will activate the virtual environment, and you will see the name of the virtual environment in your shell prompt.</p> <blockquote class="block-tip"> <h5 id="tip">TIP</h5> <p>On Windows, the command to activate the virtual environment is slightly different:</p> <pre><code class="language-{bash}">myenv\Scripts\activate
+</code></pre> </blockquote> <p>Once the virtual environment is activated, any packages you install using <code class="language-plaintext highlighter-rouge">pip</code> will be installed in the virtual environment rather than globally. This allows you to work on your project without worrying about conflicts with other projects.</p> <p>For example, to install the requests package in the virtual environment, you would type:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>requests
+</code></pre></div></div> <p>but this time the package will be installed in the <code class="language-plaintext highlighter-rouge">myenv</code> directory rather than globally. In fact if you look at the <code class="language-plaintext highlighter-rouge">lib</code> directory of the virtual environment you will see the installed packages:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>tree <span class="nt">-L</span> 1 myenv/lib/python3.10/site-packages
 
-<span class="cp">{%</span><span class="w"> </span><span class="nt">endtab</span><span class="w"> </span><span class="cp">%}</span>
+myenv/lib/python3.10/site-packages
+├── certifi
+├── certifi-2024.6.2.dist-info
+├── charset_normalizer
+├── charset_normalizer-3.3.2.dist-info
+├── _distutils_hack
+├── distutils-precedence.pth
+├── idna
+├── idna-3.7.dist-info
+├── pip
+├── pip-22.0.2.dist-info
+├── pkg_resources
+├── requests
+├── requests-2.32.3.dist-info
+├── setuptools
+├── setuptools-59.6.0.dist-info
+├── urllib3
+└── urllib3-2.2.2.dist-info
+</code></pre></div></div> <p>When you are finished working on your project, you can deactivate the virtual environment using the following command:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deactivate
+</code></pre></div></div> <p>This will return you to the global Python environment.</p> <h3 id="managing-requirements">Managing requirements</h3> <p>When working on a project, it is common to have a list of required packages that need to be installed. This list is often stored in a file called <code class="language-plaintext highlighter-rouge">requirements.txt</code>, which can be used to install all the required packages at once. To create a <code class="language-plaintext highlighter-rouge">requirements.txt</code> file, you can use the following command:</p> <pre><code class="language-{bash}">pip freeze &gt; requirements.txt
+</code></pre> <p>This will create a <code class="language-plaintext highlighter-rouge">requirements.txt</code> file that contains a list of all the packages installed in the current environment. To install the packages listed in a <code class="language-plaintext highlighter-rouge">requirements.txt</code> file, you can use the following command:</p> <pre><code class="language-{bash}">pip install -r requirements.txt
+</code></pre> <p>This will install all the packages listed in the <code class="language-plaintext highlighter-rouge">requirements.txt</code> file.</p> <h2 id="pipx">pipx</h2> <p>Sometimes, you may want to install a Python application that is not a library, but a standalone program. In this case, you can use <code class="language-plaintext highlighter-rouge">pipx</code>. <code class="language-plaintext highlighter-rouge">pipx</code> is a tool that allows you to install and manage Python applications in an isolated environment. This means that when you install an application with <code class="language-plaintext highlighter-rouge">pipx</code>, it is not installed in the system, but in a dedicated virtual environment. This allows you to avoid conflicts between different versions of libraries and keep your system clean.</p> <pre><code class="language-{bash}">pipx install &lt;package_name&gt;
+</code></pre> <p>To uninstall a package installed with <code class="language-plaintext highlighter-rouge">pipx</code>, you can use the following command:</p> <pre><code class="language-{bash}">pipx uninstall &lt;package_name&gt;
+</code></pre> <p>It is important to note that <code class="language-plaintext highlighter-rouge">pipx</code> is not a replacement for <code class="language-plaintext highlighter-rouge">pip</code>. It is a complementary tool that is used specifically for installing and managing Python applications. If you want to install a library, you should use <code class="language-plaintext highlighter-rouge">pip</code> instead. <code class="language-plaintext highlighter-rouge">pipx</code> is particularly useful for installing command-line tools that are written in Python, such as <code class="language-plaintext highlighter-rouge">black</code>, <code class="language-plaintext highlighter-rouge">flake8</code>, <code class="language-plaintext highlighter-rouge">isort</code>, and many others that you will likely to use transversally in your projects.</p> <h2 id="conda">conda</h2> <p><code class="language-plaintext highlighter-rouge">conda</code> is an open-source package management system and environment management system that runs on Windows, macOS, and Linux. It is a powerful tool that allows you to create and manage virtual environments, install and update packages, and manage dependencies. <code class="language-plaintext highlighter-rouge">conda</code> is particularly popular in the scientific computing community, as it provides access to a wide range of scientific computing libraries and tools. I suggest to have a look at the official documentation at <a href="https://docs.conda.io/en/latest/">https://docs.conda.io/en/latest/</a> to get started with <code class="language-plaintext highlighter-rouge">conda</code>. An important thing to note is that <code class="language-plaintext highlighter-rouge">conda</code> has its own way to install packages through the <code class="language-plaintext highlighter-rouge">conda install</code> command, which is different from <code class="language-plaintext highlighter-rouge">pip</code>. This is because <code class="language-plaintext highlighter-rouge">conda</code> manages its own package repositories, which are separate from the Python Package Index (PyPI). This means that some packages may be available on <code class="language-plaintext highlighter-rouge">conda</code> but not on PyPI, and vice versa, anyway <code class="language-plaintext highlighter-rouge">conda</code> can install packages from PyPI as well using the <code class="language-plaintext highlighter-rouge">pip</code> package manager.</p> <p><code class="language-plaintext highlighter-rouge">conda</code> solves the virtual environment problem its own way, it lets you create and activate virtual environments creating them for you. When you install <code class="language-plaintext highlighter-rouge">conda</code> for the first time it comes with a default virtual environment called <code class="language-plaintext highlighter-rouge">base</code>. As stated before a good practice is to create a virtual environment for each project, anyway the <code class="language-plaintext highlighter-rouge">conda</code> design encourages you to reuse a virtual environment. For example, you can create a virtual environment called <code class="language-plaintext highlighter-rouge">torch</code> and install the <code class="language-plaintext highlighter-rouge">torch</code> package in it, then you can create another virtual environment called <code class="language-plaintext highlighter-rouge">tensorflow</code> and install the <code class="language-plaintext highlighter-rouge">tensorflow</code> package in it. This way you can switch between the two environments when you need to work on a project that requires <code class="language-plaintext highlighter-rouge">torch</code> or <code class="language-plaintext highlighter-rouge">tensorflow</code>. This is a different approach from <code class="language-plaintext highlighter-rouge">venv</code> where you create a new virtual environment for each project. If you find yourself working on multiple projects that require the same set of packages, <code class="language-plaintext highlighter-rouge">conda</code> can be a good choice for you.</p> <h2 id="poetry--friends">poetry &amp; friends</h2> <p><code class="language-plaintext highlighter-rouge">poetry</code> is a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. It also allows you to specify the Python version and the Python interpreter to use. <code class="language-plaintext highlighter-rouge">poetry</code> is particularly popular in the data science community, as it provides a simple and powerful way to manage dependencies and package your projects. This tool is really similar to <code class="language-plaintext highlighter-rouge">npm</code> in the JavaScript world, or <code class="language-plaintext highlighter-rouge">cargo</code> in the Rust world, and it is a great way to manage your Python projects. You can find more information about <code class="language-plaintext highlighter-rouge">poetry</code> at <a href="https://python-poetry.org/">https://python-poetry.org/</a>.</p> <p>One of the most interesting features of <code class="language-plaintext highlighter-rouge">poetry</code>, in my opinion, is the fact that you are <em>enforced</em> to organize your project in a specific way. This is because <code class="language-plaintext highlighter-rouge">poetry</code> expects your project to have a specific structure, with a <code class="language-plaintext highlighter-rouge">pyproject.toml</code> file that contains the project’s metadata and dependencies. This makes it easier to manage your project and share it with others, as they will know exactly where to find the project’s dependencies and how to install them.</p> <p><code class="language-plaintext highlighter-rouge">poetry</code> is not the only tool in this category. Other popular tools include <code class="language-plaintext highlighter-rouge">pipenv</code> and <code class="language-plaintext highlighter-rouge">pip-tools</code>. Each of these tools has its own strengths and weaknesses, and the best tool for you will depend on your specific needs and preferences.</p>]]></content><author><name>Matteo Spanio</name></author><category term="Python,"/><category term="Programming"/><category term="python"/><category term="programming"/><category term="code"/><summary type="html"><![CDATA[A brief introduction to Python's virtual environments.]]></summary></entry><entry><title type="html">Python’s Static Typing Safari: In Search of Code Clarity</title><link href="https://matteospanio.github.io/blog/2023/python-static-typing/" rel="alternate" type="text/html" title="Python’s Static Typing Safari: In Search of Code Clarity"/><published>2023-11-10T00:00:00+00:00</published><updated>2023-11-10T00:00:00+00:00</updated><id>https://matteospanio.github.io/blog/2023/python-static-typing</id><content type="html" xml:base="https://matteospanio.github.io/blog/2023/python-static-typing/"><![CDATA[<h2 id="introduction">Introduction</h2> <p>In the vast landscape of programming languages, Python stands out as a dynamically typed language, celebrated for its readability and simplicity. Its syntax, clear and concise, makes it an ideal choice for scripting and automating processes with just a few lines of code. However, as projects grow in complexity and involve multiple contributors, the need for a more robust syntax becomes evident.</p> <p>In this exploration, we dive into the realm of Python’s static typing, unraveling its nuances and unveiling the tools at our disposal. Beyond the simplicity of dynamically typed languages, Python provides features like type annotations, function overloading, and generics, offering developers a sophisticated toolkit for crafting elegant and maintainable code.</p> <p>Let’s embark on a journey through the evolution of a simple addition function, uncovering the power of type annotations, the resurgence of overloading, and the elegance introduced by generics in Python. Join us as we navigate the intricacies of Python’s static typing, discovering how it transforms code clarity and enhances the development experience.</p> <h2 id="bug-alert">Bug alert!</h2> <p>Consider the following lines of code:</p> <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">mysum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span></code></pre></figure> <p>This function sums two elements. In this case, it might seem reasonable to leave it as it is, as you get function overloading for free on types:</p> <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nf">mysum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>      <span class="c1"># a: int,   b: int   -&gt; int
+</span><span class="nf">mysum</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>  <span class="c1"># a: float, b: float -&gt; float
+</span><span class="nf">mysum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>    <span class="c1"># a: int,   b: float -&gt; float
+</span><span class="nf">mysum</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="o">+</span><span class="mf">2.3j</span><span class="p">)</span> <span class="c1"># a: int, b: complex -&gt; complex</span></code></pre></figure> <p>All the calls to the <code class="language-plaintext highlighter-rouge">mysum</code> function are correct, and each time Python is able to infer the correct return type. Similarly, these function calls are valid and correct:</p> <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nf">mysum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="nf">mysum</span><span class="p">(</span><span class="sh">"</span><span class="s">foo</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">bar</span><span class="sh">"</span><span class="p">)</span></code></pre></figure> <p>However, what happens when you start calling the function with mixed arguments?</p> <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nf">mysum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="sh">"</span><span class="s">foo</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">mysum</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="nf">mysum</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span></code></pre></figure> <p>These lines are legitimate Python, yet most text editors won’t complain. However, once the script executes, the Python interpreter crashes against these type mismatches:</p> <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Traceback (most recent call last):
+</span><span class="gp">  File "&lt;stdin&gt;</span><span class="s2">", line 1, in &lt;module&gt;
+</span><span class="gp">  File "&lt;stdin&gt;</span><span class="s2">"</span>, line 2, <span class="k">in </span>mysum
+<span class="go">TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'
+</span></code></pre></div></div> <h2 id="type-annotations">Type annotations</h2> <p><code class="language-plaintext highlighter-rouge">TypeError</code>! How is this possible?! Who dared to tell the interpreter to check types? Even though the use of types in Python is mostly transparent, it doesn’t mean they don’t exist. Therefore, annotating types in Python can be a good idea to save hours of debugging. Consider the following:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">mysum_number</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span><span class="p">,</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 
-<span class="cp">{%</span><span class="w"> </span><span class="nt">tab</span><span class="w"> </span><span class="nv">group-name</span><span class="w"> </span><span class="nv">tab-name-2</span><span class="w"> </span><span class="cp">%}</span>
+<span class="k">def</span> <span class="nf">mysum_list</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 
-Content 2
+<span class="k">def</span> <span class="nf">mysum_str</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</code></pre></div></div> <p>Let’s break down the code above. The first function, <code class="language-plaintext highlighter-rouge">mysum_number</code>, accepts two arguments of type <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">float</code>, or <code class="language-plaintext highlighter-rouge">complex</code> and returns a value of the same type. The second function, <code class="language-plaintext highlighter-rouge">mysum_list</code>, accepts two arguments of type <code class="language-plaintext highlighter-rouge">list</code> and returns a value of the same type. The third function, <code class="language-plaintext highlighter-rouge">mysum_str</code>, accepts two arguments of type <code class="language-plaintext highlighter-rouge">str</code> and returns a value of the same type.</p> <p>Now, every time you want to add two elements, knowing their type is enough to decide which function to call. However, this precision sacrifices overloading. To call all functions in the same way, indicating the desire for an overload, the standard library <code class="language-plaintext highlighter-rouge">typing</code> contains the <code class="language-plaintext highlighter-rouge">overload</code> decorator. The refactored code looks like this:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">overload</span>
 
-<span class="cp">{%</span><span class="w"> </span><span class="nt">endtab</span><span class="w"> </span><span class="cp">%}</span>
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">mysum</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span><span class="p">,</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">complex</span><span class="p">:</span>
+    <span class="bp">...</span>
 
-<span class="cp">{%</span><span class="w"> </span><span class="nt">endtabs</span><span class="w"> </span><span class="cp">%}</span>
-</code></pre></div></div> <p>With this you can generate visualizations like:</p> <ul id="log" class="tab" data-tab="8d515f86-023b-45a9-96a7-8d0ce389a2a7" data-name="log"> <li class="active" id="log-php"> <a href="#">php </a> </li> <li id="log-js"> <a href="#">js </a> </li> <li id="log-ruby"> <a href="#">ruby </a> </li> </ul> <ul class="tab-content" id="8d515f86-023b-45a9-96a7-8d0ce389a2a7" data-name="log"> <li class="active"> <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">var_dump</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">);</span>
-</code></pre></div></div> </li> <li> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">);</span>
-</code></pre></div></div> </li> <li> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">pputs</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span>
-</code></pre></div></div> </li> </ul> <h2 id="another-example">Another example</h2> <ul id="data-struct" class="tab" data-tab="9f1c3f8b-a1ff-4ce3-b21c-153de28a25d1" data-name="data-struct"> <li class="active" id="data-struct-yaml"> <a href="#">yaml </a> </li> <li id="data-struct-json"> <a href="#">json </a> </li> </ul> <ul class="tab-content" id="9f1c3f8b-a1ff-4ce3-b21c-153de28a25d1" data-name="data-struct"> <li class="active"> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">hello</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">whatsup"</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">hi"</span>
-</code></pre></div></div> </li> <li> <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"hello"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"whatsup"</span><span class="p">,</span><span class="w"> </span><span class="s2">"hi"</span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div> </li> </ul> <h2 id="tabs-for-something-else">Tabs for something else</h2> <ul id="something-else" class="tab" data-tab="ffbad2c0-5d46-4f19-beda-f34241cc4a86" data-name="something-else"> <li class="active" id="something-else-text"> <a href="#">text </a> </li> <li id="something-else-quote"> <a href="#">quote </a> </li> <li id="something-else-list"> <a href="#">list </a> </li> </ul> <ul class="tab-content" id="ffbad2c0-5d46-4f19-beda-f34241cc4a86" data-name="something-else"> <li class="active"> <p>Regular text</p> </li> <li> <blockquote> <p>A quote</p> </blockquote> </li> <li> <p>Hipster list</p> <ul> <li>brunch</li> <li>fixie</li> <li>raybans</li> <li>messenger bag</li> </ul> </li> </ul>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="code"/><summary type="html"><![CDATA[this is what included tabs in a post could look like]]></summary></entry><entry><title type="html">a post with typograms</title><link href="https://alshedivat.github.io/al-folio/blog/2024/typograms/" rel="alternate" type="text/html" title="a post with typograms"/><published>2024-04-29T23:36:10+00:00</published><updated>2024-04-29T23:36:10+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/typograms</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/typograms/"><![CDATA[<p>This is an example post with some <a href="https://github.com/google/typograms/">typograms</a> code.</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">typograms
-</span><span class="sb">+----+
-|    |---&gt; My first diagram!
-+----+</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>Which generates:</p> <pre><code class="language-typograms">+----+
-|    |---&gt; My first diagram!
-+----+
-</code></pre> <p>Another example:</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">typograms
-</span><span class="sb">.------------------------.
-|.----------------------.|
-||"https://example.com" ||
-|'----------------------'|
-| ______________________ |
-||                      ||
-||   Welcome!           ||
-||                      ||
-||                      ||
-||  .----------------.  ||
-||  | username       |  ||
-||  '----------------'  ||
-||  .----------------.  ||
-||  |"*******"       |  ||
-||  '----------------'  ||
-||                      ||
-||  .----------------.  ||
-||  |   "Sign-up"    |  ||
-||  '----------------'  ||
-||                      ||
-|+----------------------+|
-.------------------------.</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>which generates:</p> <pre><code class="language-typograms">.------------------------.
-|.----------------------.|
-||"https://example.com" ||
-|'----------------------'|
-| ______________________ |
-||                      ||
-||   Welcome!           ||
-||                      ||
-||                      ||
-||  .----------------.  ||
-||  | username       |  ||
-||  '----------------'  ||
-||  .----------------.  ||
-||  |"*******"       |  ||
-||  '----------------'  ||
-||                      ||
-||  .----------------.  ||
-||  |   "Sign-up"    |  ||
-||  '----------------'  ||
-||                      ||
-|+----------------------+|
-.------------------------.
-</code></pre> <p>For more examples, check out the <a href="https://google.github.io/typograms/#examples">typograms documentation</a>.</p>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="diagrams"/><summary type="html"><![CDATA[this is what included typograms code could look like]]></summary></entry><entry><title type="html">a post that can be cited</title><link href="https://alshedivat.github.io/al-folio/blog/2024/post-citation/" rel="alternate" type="text/html" title="a post that can be cited"/><published>2024-04-28T15:06:00+00:00</published><updated>2024-04-28T15:06:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/post-citation</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/post-citation/"><![CDATA[<p>This is an example post that can be cited. The content of the post ends here, while the citation information is automatically provided below. The only thing needed is for you to set the <code class="language-plaintext highlighter-rouge">citation</code> key in the front matter to <code class="language-plaintext highlighter-rouge">true</code>.</p>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="citation"/><summary type="html"><![CDATA[this is what a post that can be cited looks like]]></summary></entry><entry><title type="html">a post with pseudo code</title><link href="https://alshedivat.github.io/al-folio/blog/2024/pseudocode/" rel="alternate" type="text/html" title="a post with pseudo code"/><published>2024-04-15T00:01:00+00:00</published><updated>2024-04-15T00:01:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/pseudocode</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/pseudocode/"><![CDATA[<p>This is an example post with some pseudo code rendered by <a href="https://github.com/SaswatPadhi/pseudocode.js">pseudocode</a>. The example presented here is the same as the one in the <a href="https://saswat.padhi.me/pseudocode.js/">pseudocode.js</a> documentation, with only one simple but important change: everytime you would use <code class="language-plaintext highlighter-rouge">$</code>, you should use <code class="language-plaintext highlighter-rouge">$$</code> instead. Also, note that the <code class="language-plaintext highlighter-rouge">pseudocode</code> key in the front matter is set to <code class="language-plaintext highlighter-rouge">true</code> to enable the rendering of pseudo code. As an example, using this code:</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">pseudocode
-</span><span class="sb">% This quicksort algorithm is extracted from Chapter 7, Introduction to Algorithms (3rd edition)
-\begin{algorithm}
-\caption{Quicksort}
-\begin{algorithmic}
-\PROCEDURE{Quicksort}{$$A, p, r$$}
-    \IF{$$p &lt; r$$}
-        \STATE $$q = $$ \CALL{Partition}{$$A, p, r$$}
-        \STATE \CALL{Quicksort}{$$A, p, q - 1$$}
-        \STATE \CALL{Quicksort}{$$A, q + 1, r$$}
-    \ENDIF
-\ENDPROCEDURE
-\PROCEDURE{Partition}{$$A, p, r$$}
-    \STATE $$x = A[r]$$
-    \STATE $$i = p - 1$$
-    \FOR{$$j = p$$ \TO $$r - 1$$}
-        \IF{$$A[j] &lt; x$$}
-            \STATE $$i = i + 1$$
-            \STATE exchange
-            $$A[i]$$ with $$A[j]$$
-        \ENDIF
-        \STATE exchange $$A[i]$$ with $$A[r]$$
-    \ENDFOR
-\ENDPROCEDURE
-\end{algorithmic}
-\end{algorithm}</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>Generates:</p> <pre><code class="language-pseudocode">% This quicksort algorithm is extracted from Chapter 7, Introduction to Algorithms (3rd edition)
-\begin{algorithm}
-\caption{Quicksort}
-\begin{algorithmic}
-\PROCEDURE{Quicksort}{$$A, p, r$$}
-    \IF{$$p &lt; r$$}
-        \STATE $$q = $$ \CALL{Partition}{$$A, p, r$$}
-        \STATE \CALL{Quicksort}{$$A, p, q - 1$$}
-        \STATE \CALL{Quicksort}{$$A, q + 1, r$$}
-    \ENDIF
-\ENDPROCEDURE
-\PROCEDURE{Partition}{$$A, p, r$$}
-    \STATE $$x = A[r]$$
-    \STATE $$i = p - 1$$
-    \FOR{$$j = p$$ \TO $$r - 1$$}
-        \IF{$$A[j] &lt; x$$}
-            \STATE $$i = i + 1$$
-            \STATE exchange
-            $$A[i]$$ with $$A[j]$$
-        \ENDIF
-        \STATE exchange $$A[i]$$ with $$A[r]$$
-    \ENDFOR
-\ENDPROCEDURE
-\end{algorithmic}
-\end{algorithm}
-</code></pre>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="code"/><summary type="html"><![CDATA[this is what included pseudo code could look like]]></summary></entry><entry><title type="html">a post with code diff</title><link href="https://alshedivat.github.io/al-folio/blog/2024/code-diff/" rel="alternate" type="text/html" title="a post with code diff"/><published>2024-01-27T19:22:00+00:00</published><updated>2024-01-27T19:22:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/code-diff</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/code-diff/"><![CDATA[<p>You can display diff code by using the regular markdown syntax:</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">diff
-</span><span class="gh">diff --git a/sample.js b/sample.js
-index 0000001..0ddf2ba
-</span><span class="gd">--- a/sample.js
-</span><span class="gi">+++ b/sample.js
-</span><span class="p">@@ -1 +1 @@</span>
-<span class="gd">-console.log("Hello World!")
-</span><span class="gi">+console.log("Hello from Diff2Html!")</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>Which generates:</p> <div class="language-diff highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh">diff --git a/sample.js b/sample.js
-index 0000001..0ddf2ba
-</span><span class="gd">--- a/sample.js
-</span><span class="gi">+++ b/sample.js
-</span><span class="p">@@ -1 +1 @@</span>
-<span class="gd">-console.log("Hello World!")
-</span><span class="gi">+console.log("Hello from Diff2Html!")
-</span></code></pre></div></div> <p>But this is difficult to read, specially if you have a large diff. You can use <a href="https://diff2html.xyz/">diff2html</a> to display a more readable version of the diff. For this, just use <code class="language-plaintext highlighter-rouge">diff2html</code> instead of <code class="language-plaintext highlighter-rouge">diff</code> for the code block language:</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">diff2html
-</span><span class="sb">diff --git a/sample.js b/sample.js
-index 0000001..0ddf2ba
---- a/sample.js
-+++ b/sample.js
-@@ -1 +1 @@
--console.log("Hello World!")
-+console.log("Hello from Diff2Html!")</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>If we use a longer example, for example <a href="https://github.com/rtfpessoa/diff2html/commit/c2c253d3e3f8b8b267f551e659f72b44ca2ac927">this commit from diff2html</a>, it will generate the following output:</p> <pre><code class="language-diff2html">From 2aaae31cc2a37bfff83430c2c914b140bee59b6a Mon Sep 17 00:00:00 2001
-From: Rodrigo Fernandes &lt;rtfrodrigo@gmail.com&gt;
-Date: Sun, 9 Oct 2016 16:41:54 +0100
-Subject: [PATCH 1/2] Initial template override support
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">mysum</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="bp">...</span>
 
----
- scripts/hulk.js                    |  4 ++--
- src/diff2html.js                   |  3 +--
- src/file-list-printer.js           | 11 ++++++++---
- src/hoganjs-utils.js               | 29 +++++++++++++++++------------
- src/html-printer.js                |  6 ++++++
- src/line-by-line-printer.js        |  6 +++++-
- src/side-by-side-printer.js        |  6 +++++-
- test/file-list-printer-tests.js    |  2 +-
- test/hogan-cache-tests.js          | 18 +++++++++++++++---
- test/line-by-line-tests.js         |  3 +--
- test/side-by-side-printer-tests.js |  3 +--
- 11 files changed, 62 insertions(+), 29 deletions(-)
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">mysum</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="bp">...</span>
 
-diff --git a/scripts/hulk.js b/scripts/hulk.js
-index 5a793c18..a4b1a4d5 100755
---- a/scripts/hulk.js
-+++ b/scripts/hulk.js
-@@ -173,11 +173,11 @@ function namespace(name) {
- // write a template foreach file that matches template extension
- templates = extractFiles(options.argv.remain)
-   .map(function(file) {
--    var openedFile = fs.readFileSync(file, 'utf-8');
-+    var openedFile = fs.readFileSync(file, 'utf-8').trim();
-     var name;
-     if (!openedFile) return;
-     name = namespace(path.basename(file).replace(/\..*$/, ''));
--    openedFile = removeByteOrderMark(openedFile.trim());
-+    openedFile = removeByteOrderMark(openedFile);
-     openedFile = wrap(file, name, openedFile);
-     if (!options.outputdir) return openedFile;
-     fs.writeFileSync(path.join(options.outputdir, name + '.js')
-diff --git a/src/diff2html.js b/src/diff2html.js
-index 21b0119e..64e138f5 100644
---- a/src/diff2html.js
-+++ b/src/diff2html.js
-@@ -7,7 +7,6 @@
+<span class="k">def</span> <span class="nf">mysum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</code></pre></div></div> <p>Overloading is back. Now, the function calls seen earlier all work, and those that used to generate a <code class="language-plaintext highlighter-rouge">TypeError</code> at runtime are now highlighted in red by our IDE.</p> <blockquote> <h4 id="note">Note</h4> <p>The three dots <code class="language-plaintext highlighter-rouge">...</code> have a special meaning in Python; it is the symbol known as an <em>ellipsis</em>. This symbol is usually used as a placeholder, but its meaning can vary slightly depending on the context. I recommend checking the documentation if you are curious and want to understand more about it.</p> </blockquote> <h2 id="generics">Generics</h2> <p>We could consider ourselves satisfied like this, but the <code class="language-plaintext highlighter-rouge">typing</code> module offers many other features. Among these, the use of Generics stands out, which in this case can be exploited to create a more elegant solution:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
 
- (function() {
-   var diffParser = require('./diff-parser.js').DiffParser;
--  var fileLister = require('./file-list-printer.js').FileListPrinter;
-   var htmlPrinter = require('./html-printer.js').HtmlPrinter;
+<span class="n">T</span> <span class="o">=</span> <span class="nc">TypeVar</span><span class="p">(</span><span class="sh">"</span><span class="s">T</span><span class="sh">"</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
 
-   function Diff2Html() {
-@@ -43,7 +42,7 @@
-
-     var fileList = '';
-     if (configOrEmpty.showFiles === true) {
--      fileList = fileLister.generateFileList(diffJson, configOrEmpty);
-+      fileList = htmlPrinter.generateFileListSummary(diffJson, configOrEmpty);
-     }
-
-     var diffOutput = '';
-diff --git a/src/file-list-printer.js b/src/file-list-printer.js
-index e408d9b2..1e0a2c61 100644
---- a/src/file-list-printer.js
-+++ b/src/file-list-printer.js
-@@ -8,11 +8,16 @@
- (function() {
-   var printerUtils = require('./printer-utils.js').PrinterUtils;
-
--  var hoganUtils = require('./hoganjs-utils.js').HoganJsUtils;
-+  var hoganUtils;
-+
-   var baseTemplatesPath = 'file-summary';
-   var iconsBaseTemplatesPath = 'icon';
-
--  function FileListPrinter() {
-+  function FileListPrinter(config) {
-+    this.config = config;
-+
-+    var HoganJsUtils = require('./hoganjs-utils.js').HoganJsUtils;
-+    hoganUtils = new HoganJsUtils(config);
-   }
-
-   FileListPrinter.prototype.generateFileList = function(diffFiles) {
-@@ -38,5 +43,5 @@
-     });
-   };
-
--  module.exports.FileListPrinter = new FileListPrinter();
-+  module.exports.FileListPrinter = FileListPrinter;
- })();
-diff --git a/src/hoganjs-utils.js b/src/hoganjs-utils.js
-index 9949e5fa..0dda08d7 100644
---- a/src/hoganjs-utils.js
-+++ b/src/hoganjs-utils.js
-@@ -8,18 +8,19 @@
- (function() {
-   var fs = require('fs');
-   var path = require('path');
--
-   var hogan = require('hogan.js');
-
-   var hoganTemplates = require('./templates/diff2html-templates.js');
-
--  var templatesPath = path.resolve(__dirname, 'templates');
-+  var extraTemplates;
-
--  function HoganJsUtils() {
-+  function HoganJsUtils(configuration) {
-+    this.config = configuration || {};
-+    extraTemplates = this.config.templates || {};
-   }
-
--  HoganJsUtils.prototype.render = function(namespace, view, params, configuration) {
--    var template = this.template(namespace, view, configuration);
-+  HoganJsUtils.prototype.render = function(namespace, view, params) {
-+    var template = this.template(namespace, view);
-     if (template) {
-       return template.render(params);
-     }
-@@ -27,17 +28,16 @@
-     return null;
-   };
-
--  HoganJsUtils.prototype.template = function(namespace, view, configuration) {
--    var config = configuration || {};
-+  HoganJsUtils.prototype.template = function(namespace, view) {
-     var templateKey = this._templateKey(namespace, view);
-
--    return this._getTemplate(templateKey, config);
-+    return this._getTemplate(templateKey);
-   };
-
--  HoganJsUtils.prototype._getTemplate = function(templateKey, config) {
-+  HoganJsUtils.prototype._getTemplate = function(templateKey) {
-     var template;
-
--    if (!config.noCache) {
-+    if (!this.config.noCache) {
-       template = this._readFromCache(templateKey);
-     }
-
-@@ -53,6 +53,7 @@
-
-     try {
-       if (fs.readFileSync) {
-+        var templatesPath = path.resolve(__dirname, 'templates');
-         var templatePath = path.join(templatesPath, templateKey);
-         var templateContent = fs.readFileSync(templatePath + '.mustache', 'utf8');
-         template = hogan.compile(templateContent);
-@@ -66,12 +67,16 @@
-   };
-
-   HoganJsUtils.prototype._readFromCache = function(templateKey) {
--    return hoganTemplates[templateKey];
-+    return extraTemplates[templateKey] || hoganTemplates[templateKey];
-   };
-
-   HoganJsUtils.prototype._templateKey = function(namespace, view) {
-     return namespace + '-' + view;
-   };
-
--  module.exports.HoganJsUtils = new HoganJsUtils();
-+  HoganJsUtils.prototype.compile = function(templateStr) {
-+    return hogan.compile(templateStr);
-+  };
-+
-+  module.exports.HoganJsUtils = HoganJsUtils;
- })();
-diff --git a/src/html-printer.js b/src/html-printer.js
-index 585d5b66..13f83047 100644
---- a/src/html-printer.js
-+++ b/src/html-printer.js
-@@ -8,6 +8,7 @@
- (function() {
-   var LineByLinePrinter = require('./line-by-line-printer.js').LineByLinePrinter;
-   var SideBySidePrinter = require('./side-by-side-printer.js').SideBySidePrinter;
-+  var FileListPrinter = require('./file-list-printer.js').FileListPrinter;
-
-   function HtmlPrinter() {
-   }
-@@ -22,5 +23,10 @@
-     return sideBySidePrinter.generateSideBySideJsonHtml(diffFiles);
-   };
-
-+  HtmlPrinter.prototype.generateFileListSummary = function(diffJson, config) {
-+    var fileListPrinter = new FileListPrinter(config);
-+    return fileListPrinter.generateFileList(diffJson);
-+  };
-+
-   module.exports.HtmlPrinter = new HtmlPrinter();
- })();
-diff --git a/src/line-by-line-printer.js b/src/line-by-line-printer.js
-index b07eb53c..d230bedd 100644
---- a/src/line-by-line-printer.js
-+++ b/src/line-by-line-printer.js
-@@ -11,7 +11,8 @@
-   var utils = require('./utils.js').Utils;
-   var Rematch = require('./rematch.js').Rematch;
-
--  var hoganUtils = require('./hoganjs-utils.js').HoganJsUtils;
-+  var hoganUtils;
-+
-   var genericTemplatesPath = 'generic';
-   var baseTemplatesPath = 'line-by-line';
-   var iconsBaseTemplatesPath = 'icon';
-@@ -19,6 +20,9 @@
-
-   function LineByLinePrinter(config) {
-     this.config = config;
-+
-+    var HoganJsUtils = require('./hoganjs-utils.js').HoganJsUtils;
-+    hoganUtils = new HoganJsUtils(config);
-   }
-
-   LineByLinePrinter.prototype.makeFileDiffHtml = function(file, diffs) {
-diff --git a/src/side-by-side-printer.js b/src/side-by-side-printer.js
-index bbf1dc8d..5e3033b3 100644
---- a/src/side-by-side-printer.js
-+++ b/src/side-by-side-printer.js
-@@ -11,7 +11,8 @@
-   var utils = require('./utils.js').Utils;
-   var Rematch = require('./rematch.js').Rematch;
-
--  var hoganUtils = require('./hoganjs-utils.js').HoganJsUtils;
-+  var hoganUtils;
-+
-   var genericTemplatesPath = 'generic';
-   var baseTemplatesPath = 'side-by-side';
-   var iconsBaseTemplatesPath = 'icon';
-@@ -26,6 +27,9 @@
-
-   function SideBySidePrinter(config) {
-     this.config = config;
-+
-+    var HoganJsUtils = require('./hoganjs-utils.js').HoganJsUtils;
-+    hoganUtils = new HoganJsUtils(config);
-   }
-
-   SideBySidePrinter.prototype.makeDiffHtml = function(file, diffs) {
-diff --git a/test/file-list-printer-tests.js b/test/file-list-printer-tests.js
-index a502a46f..60ea3208 100644
---- a/test/file-list-printer-tests.js
-+++ b/test/file-list-printer-tests.js
-@@ -1,6 +1,6 @@
- var assert = require('assert');
-
--var fileListPrinter = require('../src/file-list-printer.js').FileListPrinter;
-+var fileListPrinter = new (require('../src/file-list-printer.js').FileListPrinter)();
-
- describe('FileListPrinter', function() {
-   describe('generateFileList', function() {
-diff --git a/test/hogan-cache-tests.js b/test/hogan-cache-tests.js
-index 190bf6f8..3bb754ac 100644
---- a/test/hogan-cache-tests.js
-+++ b/test/hogan-cache-tests.js
-@@ -1,6 +1,6 @@
- var assert = require('assert');
-
--var HoganJsUtils = require('../src/hoganjs-utils.js').HoganJsUtils;
-+var HoganJsUtils = new (require('../src/hoganjs-utils.js').HoganJsUtils)();
- var diffParser = require('../src/diff-parser.js').DiffParser;
-
- describe('HoganJsUtils', function() {
-@@ -21,16 +21,28 @@ describe('HoganJsUtils', function() {
-       });
-       assert.equal(emptyDiffHtml, result);
-     });
-+
-     it('should render view without cache', function() {
-       var result = HoganJsUtils.render('generic', 'empty-diff', {
-         contentClass: 'd2h-code-line',
-         diffParser: diffParser
-       }, {noCache: true});
--      assert.equal(emptyDiffHtml + '\n', result);
-+      assert.equal(emptyDiffHtml, result);
-     });
-+
-     it('should return null if template is missing', function() {
--      var result = HoganJsUtils.render('generic', 'missing-template', {}, {noCache: true});
-+      var hoganUtils = new (require('../src/hoganjs-utils.js').HoganJsUtils)({noCache: true});
-+      var result = hoganUtils.render('generic', 'missing-template', {});
-       assert.equal(null, result);
-     });
-+
-+    it('should allow templates to be overridden', function() {
-+      var emptyDiffTemplate = HoganJsUtils.compile('&lt;p&gt;&lt;/p&gt;');
-+
-+      var config = {templates: {'generic-empty-diff': emptyDiffTemplate}};
-+      var hoganUtils = new (require('../src/hoganjs-utils.js').HoganJsUtils)(config);
-+      var result = hoganUtils.render('generic', 'empty-diff', {myName: 'Rodrigo Fernandes'});
-+      assert.equal('&lt;p&gt;Rodrigo Fernandes&lt;/p&gt;', result);
-+    });
-   });
- });
-diff --git a/test/line-by-line-tests.js b/test/line-by-line-tests.js
-index 1cd92073..8869b3df 100644
---- a/test/line-by-line-tests.js
-+++ b/test/line-by-line-tests.js
-@@ -14,7 +14,7 @@ describe('LineByLinePrinter', function() {
-         '            File without changes\n' +
-         '        &lt;/div&gt;\n' +
-         '    &lt;/td&gt;\n' +
--        '&lt;/tr&gt;\n';
-+        '&lt;/tr&gt;';
-
-       assert.equal(expected, fileHtml);
-     });
-@@ -422,7 +422,6 @@ describe('LineByLinePrinter', function() {
-         '        &lt;/div&gt;\n' +
-         '    &lt;/td&gt;\n' +
-         '&lt;/tr&gt;\n' +
--        '\n' +
-         '                &lt;/tbody&gt;\n' +
-         '            &lt;/table&gt;\n' +
-         '        &lt;/div&gt;\n' +
-diff --git a/test/side-by-side-printer-tests.js b/test/side-by-side-printer-tests.js
-index 76625f8e..771daaa5 100644
---- a/test/side-by-side-printer-tests.js
-+++ b/test/side-by-side-printer-tests.js
-@@ -14,7 +14,7 @@ describe('SideBySidePrinter', function() {
-         '            File without changes\n' +
-         '        &lt;/div&gt;\n' +
-         '    &lt;/td&gt;\n' +
--        '&lt;/tr&gt;\n';
-+        '&lt;/tr&gt;';
-
-       assert.equal(expectedRight, fileHtml.right);
-       assert.equal(expectedLeft, fileHtml.left);
-@@ -324,7 +324,6 @@ describe('SideBySidePrinter', function() {
-         '        &lt;/div&gt;\n' +
-         '    &lt;/td&gt;\n' +
-         '&lt;/tr&gt;\n' +
--        '\n' +
-         '                    &lt;/tbody&gt;\n' +
-         '                &lt;/table&gt;\n' +
-         '            &lt;/div&gt;\n' +
-
-From f3cadb96677d0eb82fc2752dc3ffbf35ca9b5bdb Mon Sep 17 00:00:00 2001
-From: Rodrigo Fernandes &lt;rtfrodrigo@gmail.com&gt;
-Date: Sat, 15 Oct 2016 13:21:22 +0100
-Subject: [PATCH 2/2] Allow uncompiled templates
-
----
- README.md                 |  3 +++
- src/hoganjs-utils.js      |  7 +++++++
- test/hogan-cache-tests.js | 24 +++++++++++++++++++++++-
- 3 files changed, 33 insertions(+), 1 deletion(-)
-
-diff --git a/README.md b/README.md
-index 132c8a28..46909f25 100644
---- a/README.md
-+++ b/README.md
-@@ -98,6 +98,9 @@ The HTML output accepts a Javascript object with configuration. Possible options
-   - `synchronisedScroll`: scroll both panes in side-by-side mode: `true` or `false`, default is `false`
-   - `matchWordsThreshold`: similarity threshold for word matching, default is 0.25
-   - `matchingMaxComparisons`: perform at most this much comparisons for line matching a block of changes, default is `2500`
-+  - `templates`: object with previously compiled templates to replace parts of the html
-+  - `rawTemplates`: object with raw not compiled templates to replace parts of the html
-+  &gt; For more information regarding the possible templates look into [src/templates](https://github.com/rtfpessoa/diff2html/tree/master/src/templates)
-
- ## Diff2HtmlUI Helper
-
-diff --git a/src/hoganjs-utils.js b/src/hoganjs-utils.js
-index 0dda08d7..b2e9c275 100644
---- a/src/hoganjs-utils.js
-+++ b/src/hoganjs-utils.js
-@@ -17,6 +17,13 @@
-   function HoganJsUtils(configuration) {
-     this.config = configuration || {};
-     extraTemplates = this.config.templates || {};
-+
-+    var rawTemplates = this.config.rawTemplates || {};
-+    for (var templateName in rawTemplates) {
-+      if (rawTemplates.hasOwnProperty(templateName)) {
-+        if (!extraTemplates[templateName]) extraTemplates[templateName] = this.compile(rawTemplates[templateName]);
-+      }
-+    }
-   }
-
-   HoganJsUtils.prototype.render = function(namespace, view, params) {
-diff --git a/test/hogan-cache-tests.js b/test/hogan-cache-tests.js
-index 3bb754ac..a34839c0 100644
---- a/test/hogan-cache-tests.js
-+++ b/test/hogan-cache-tests.js
-@@ -36,7 +36,7 @@ describe('HoganJsUtils', function() {
-       assert.equal(null, result);
-     });
-
--    it('should allow templates to be overridden', function() {
-+    it('should allow templates to be overridden with compiled templates', function() {
-       var emptyDiffTemplate = HoganJsUtils.compile('&lt;p&gt;&lt;/p&gt;');
-
-       var config = {templates: {'generic-empty-diff': emptyDiffTemplate}};
-@@ -44,5 +44,27 @@ describe('HoganJsUtils', function() {
-       var result = hoganUtils.render('generic', 'empty-diff', {myName: 'Rodrigo Fernandes'});
-       assert.equal('&lt;p&gt;Rodrigo Fernandes&lt;/p&gt;', result);
-     });
-+
-+    it('should allow templates to be overridden with uncompiled templates', function() {
-+      var emptyDiffTemplate = '&lt;p&gt;&lt;/p&gt;';
-+
-+      var config = {rawTemplates: {'generic-empty-diff': emptyDiffTemplate}};
-+      var hoganUtils = new (require('../src/hoganjs-utils.js').HoganJsUtils)(config);
-+      var result = hoganUtils.render('generic', 'empty-diff', {myName: 'Rodrigo Fernandes'});
-+      assert.equal('&lt;p&gt;Rodrigo Fernandes&lt;/p&gt;', result);
-+    });
-+
-+    it('should allow templates to be overridden giving priority to compiled templates', function() {
-+      var emptyDiffTemplate = HoganJsUtils.compile('&lt;p&gt;&lt;/p&gt;');
-+      var emptyDiffTemplateUncompiled = '&lt;p&gt;Not used!&lt;/p&gt;';
-+
-+      var config = {
-+        templates: {'generic-empty-diff': emptyDiffTemplate},
-+        rawTemplates: {'generic-empty-diff': emptyDiffTemplateUncompiled}
-+      };
-+      var hoganUtils = new (require('../src/hoganjs-utils.js').HoganJsUtils)(config);
-+      var result = hoganUtils.render('generic', 'empty-diff', {myName: 'Rodrigo Fernandes'});
-+      assert.equal('&lt;p&gt;Rodrigo Fernandes&lt;/p&gt;', result);
-+    });
-   });
- });
-</code></pre>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="code"/><summary type="html"><![CDATA[this is how you can display code diffs]]></summary></entry><entry><title type="html">a post with advanced image components</title><link href="https://alshedivat.github.io/al-folio/blog/2024/advanced-images/" rel="alternate" type="text/html" title="a post with advanced image components"/><published>2024-01-27T11:46:00+00:00</published><updated>2024-01-27T11:46:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/advanced-images</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/advanced-images/"><![CDATA[<p>This is an example post with advanced image components.</p> <h2 id="image-slider">Image Slider</h2> <p>This is a simple image slider. It uses the <a href="https://swiperjs.com/">Swiper</a> library. Check the <a href="https://swiperjs.com/demos">examples page</a> for more information of what you can achieve with it.</p> <swiper-container keyboard="true" navigation="true" pagination="true" pagination-clickable="true" pagination-dynamic-bullets="true" rewind="true"> <swiper-slide> <figure> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/9.jpg" sizes="95vw"/> <img src="/al-folio/assets/img/9.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> </swiper-slide> <swiper-slide> <figure> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/7.jpg" sizes="95vw"/> <img src="/al-folio/assets/img/7.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> </swiper-slide> <swiper-slide> <figure> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/8.jpg" sizes="95vw"/> <img src="/al-folio/assets/img/8.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> </swiper-slide> <swiper-slide> <figure> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/10.jpg" sizes="95vw"/> <img src="/al-folio/assets/img/10.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> </swiper-slide> <swiper-slide> <figure> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/12.jpg" sizes="95vw"/> <img src="/al-folio/assets/img/12.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> </swiper-slide> </swiper-container> <h2 id="image-comparison-slider">Image Comparison Slider</h2> <p>This is a simple image comparison slider. It uses the <a href="https://img-comparison-slider.sneas.io/">img-comparison-slider</a> library. Check the <a href="https://img-comparison-slider.sneas.io/examples.html">examples page</a> for more information of what you can achieve with it.</p> <img-comparison-slider> <figure slot="first"> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/prof_pic.jpg" sizes="95vw"/> <img src="/al-folio/assets/img/prof_pic.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="lazy" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> <figure slot="second"> <picture> <source class="responsive-img-srcset" srcset="/al-folio/assets/img/prof_pic_color.png" sizes="95vw"/> <img src="/al-folio/assets/img/prof_pic_color.png" class="img-fluid rounded z-depth-1" width="100%" height="auto" loading="lazy" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"/> </picture> </figure> </img-comparison-slider>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="images"/><summary type="html"><![CDATA[this is what advanced image components could look like]]></summary></entry><entry><title type="html">a post with vega lite</title><link href="https://alshedivat.github.io/al-folio/blog/2024/vega-lite/" rel="alternate" type="text/html" title="a post with vega lite"/><published>2024-01-27T00:20:00+00:00</published><updated>2024-01-27T00:20:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/vega-lite</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/vega-lite/"><![CDATA[<p>This is an example post with some <a href="https://vega.github.io/vega-lite/">vega lite</a> code.</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">vega_lite
-</span><span class="sb">{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
-  "data": {
-    "url": "https://raw.githubusercontent.com/vega/vega/main/docs/data/movies.json"
-  },
-  "transform": [
-    {"filter": "datum['IMDB Rating'] != null"},
-    {"filter": {"timeUnit": "year", "field": "Release Date", "range": [null, 2019]}},
-    {
-      "joinaggregate": [{
-        "op": "mean",
-        "field": "IMDB Rating",
-        "as": "AverageRating"
-      }]
-    },
-    {
-      "calculate": "datum['IMDB Rating'] - datum.AverageRating",
-      "as": "RatingDelta"
-    }
-  ],
-  "mark": "point",
-  "encoding": {
-    "x": {
-      "field": "Release Date",
-      "type": "temporal"
-    },
-    "y": {
-      "field": "RatingDelta",
-      "type": "quantitative",
-      "title": "Rating Delta"
-    },
-    "color": {
-      "field": "RatingDelta",
-      "type": "quantitative",
-      "scale": {"domainMid": 0},
-      "title": "Rating Delta"
-    }
-  }
-}</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>Which generates:</p> <pre><code class="language-vega_lite">{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
-  "data": {
-    "url": "https://raw.githubusercontent.com/vega/vega/main/docs/data/movies.json"
-  },
-  "transform": [
-    {"filter": "datum['IMDB Rating'] != null"},
-    {"filter": {"timeUnit": "year", "field": "Release Date", "range": [null, 2019]}},
-    {
-      "joinaggregate": [{
-        "op": "mean",
-        "field": "IMDB Rating",
-        "as": "AverageRating"
-      }]
-    },
-    {
-      "calculate": "datum['IMDB Rating'] - datum.AverageRating",
-      "as": "RatingDelta"
-    }
-  ],
-  "mark": "point",
-  "encoding": {
-    "x": {
-      "field": "Release Date",
-      "type": "temporal"
-    },
-    "y": {
-      "field": "RatingDelta",
-      "type": "quantitative",
-      "title": "Rating Delta"
-    },
-    "color": {
-      "field": "RatingDelta",
-      "type": "quantitative",
-      "scale": {"domainMid": 0},
-      "title": "Rating Delta"
-    }
-  }
-}
-</code></pre> <p>This plot supports both light and dark themes.</p>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="charts"/><summary type="html"><![CDATA[this is what included vega lite code could look like]]></summary></entry><entry><title type="html">a post with geojson</title><link href="https://alshedivat.github.io/al-folio/blog/2024/geojson-map/" rel="alternate" type="text/html" title="a post with geojson"/><published>2024-01-26T17:57:00+00:00</published><updated>2024-01-26T17:57:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/geojson-map</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/geojson-map/"><![CDATA[<p>This is an example post with some <a href="https://geojson.org/">geojson</a> code. The support is provided thanks to <a href="https://leafletjs.com/">Leaflet</a>. To create your own visualization, go to <a href="https://geojson.io/">geojson.io</a>.</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">geojson
-</span><span class="sb">{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "coordinates": [
-          [
-            [
-              -60.11363029935569,
-              -2.904625022183211
-            ],
-            [
-              -60.11363029935569,
-              -3.162613728707967
-            ],
-            [
-              -59.820894493858034,
-              -3.162613728707967
-            ],
-            [
-              -59.820894493858034,
-              -2.904625022183211
-            ],
-            [
-              -60.11363029935569,
-              -2.904625022183211
-            ]
-          ]
-        ],
-        "type": "Polygon"
-      }
-    }
-  ]
-}</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>Which generates:</p> <pre><code class="language-geojson">{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "coordinates": [
-          [
-            [
-              -60.11363029935569,
-              -2.904625022183211
-            ],
-            [
-              -60.11363029935569,
-              -3.162613728707967
-            ],
-            [
-              -59.820894493858034,
-              -3.162613728707967
-            ],
-            [
-              -59.820894493858034,
-              -2.904625022183211
-            ],
-            [
-              -60.11363029935569,
-              -2.904625022183211
-            ]
-          ]
-        ],
-        "type": "Polygon"
-      }
-    }
-  ]
-}
-</code></pre>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="charts"/><category term="maps"/><summary type="html"><![CDATA[this is what included geojson code could look like]]></summary></entry><entry><title type="html">a post with echarts</title><link href="https://alshedivat.github.io/al-folio/blog/2024/echarts/" rel="alternate" type="text/html" title="a post with echarts"/><published>2024-01-26T16:03:00+00:00</published><updated>2024-01-26T16:03:00+00:00</updated><id>https://alshedivat.github.io/al-folio/blog/2024/echarts</id><content type="html" xml:base="https://alshedivat.github.io/al-folio/blog/2024/echarts/"><![CDATA[<p>This is an example post with some <a href="https://echarts.apache.org/">echarts</a> code.</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">echarts
-</span><span class="sb">{
-  "title": {
-    "text": "ECharts Getting Started Example"
-  },
-  "responsive": true,
-  "tooltip": {},
-  "legend": {
-    "top": "30px",
-    "data": ["sales"]
-  },
-  "xAxis": {
-    "data": ["Shirts", "Cardigans", "Chiffons", "Pants", "Heels", "Socks"]
-  },
-  "yAxis": {},
-  "series": [
-    {
-      "name": "sales",
-      "type": "bar",
-      "data": [5, 20, 36, 10, 10, 20]
-    }
-  ]
-}</span>
-<span class="p">```</span>
-</code></pre></div></div> <p>Which generates:</p> <pre><code class="language-echarts">{
-  "title": {
-    "text": "ECharts Getting Started Example"
-  },
-  "responsive": true,
-  "tooltip": {},
-  "legend": {
-    "top": "30px",
-    "data": ["sales"]
-  },
-  "xAxis": {
-    "data": ["Shirts", "Cardigans", "Chiffons", "Pants", "Heels", "Socks"]
-  },
-  "yAxis": {},
-  "series": [
-    {
-      "name": "sales",
-      "type": "bar",
-      "data": [5, 20, 36, 10, 10, 20]
-    }
-  ]
-}
-</code></pre> <p>Note that this library offer support for both light and dark themes. You can switch between them using the theme switcher in the top right corner of the page.</p>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="charts"/><summary type="html"><![CDATA[this is what included echarts code could look like]]></summary></entry></feed>
+<span class="k">def</span> <span class="nf">mysum</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">TypeVar</code> allows you to define a type that varies depending on the context, but once it is determined, it cannot change:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">mysum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>     <span class="c1"># T = int
+</span><span class="nf">mysum</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>   <span class="c1"># T = float
+</span><span class="nf">mysum</span><span class="p">(</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># T = str
+</span></code></pre></div></div> <p>Since Python 3.12 the <code class="language-plaintext highlighter-rouge">T</code> typevar declaration can be omitted<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>, and the type can be directly specified in the function definition:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">mysum</span><span class="p">[</span><span class="n">T</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">)](</span><span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</code></pre></div></div> <blockquote> <h4 id="note-1">Note</h4> <p>Along with <code class="language-plaintext highlighter-rouge">T</code> some constraints have been added, which are the types that <code class="language-plaintext highlighter-rouge">T</code> can assume. In this case, <code class="language-plaintext highlighter-rouge">T</code> can be <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">float</code>, <code class="language-plaintext highlighter-rouge">complex</code>, <code class="language-plaintext highlighter-rouge">str</code>, or <code class="language-plaintext highlighter-rouge">list</code>. That’s because the <code class="language-plaintext highlighter-rouge">+</code> operator is defined for these types and not for others.</p> </blockquote> <h2 id="sum-up">Sum up</h2> <p>In this exploration of Python’s static typing, we delved into crucial concepts that enhance code clarity and maintainability. Let’s recap the key takeaways:</p> <ol> <li> <p><strong>Clear Syntax for All Sizes:</strong> Python’s dynamic typing shines in small scripts, offering a clear and concise syntax. However, as projects grow, the need for a more expressive syntax becomes apparent.</p> </li> <li> <p><strong>Navigating Overloading:</strong> The journey from a dynamically typed function to an overloaded one, thanks to the <code class="language-plaintext highlighter-rouge">typing</code> module’s <code class="language-plaintext highlighter-rouge">overload</code> decorator, showcases Python’s adaptability to diverse project requirements.</p> </li> <li> <p><strong>Type Annotations as Guides:</strong> Embracing type annotations is akin to providing a map for your code. Explicitly specifying types not only aids in debugging but also serves as documentation, making your code more understandable and maintainable.</p> </li> <li> <p><strong>Generics: The Elegance Factor:</strong> The introduction of generics via <code class="language-plaintext highlighter-rouge">TypeVar</code> elevates Python’s static typing to new heights. With constraints on acceptable types, developers can craft more elegant and type-safe solutions.</p> </li> <li> <p><strong>Evolution of Python’s Typing Tools:</strong> From annotations to overloading and generics, Python’s typing tools evolve to cater to various development scenarios, offering a versatile toolkit for developers.</p> </li> </ol> <p>As you navigate your coding endeavors, remember that Python’s static typing is not about rigid constraints but about providing developers with powerful tools to enhance their code’s expressiveness and robustness. Embrace these tools judiciously, and may your coding journey be both clear and elegant.</p> <hr/> <div class="footnotes" role="doc-endnotes"> <ol> <li id="fn:1" role="doc-endnote"> <p><a href="https://www.python.org/dev/peps/pep-0695/">PEP 695 – Type Parameter Syntax</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p> </li> </ol> </div>]]></content><author><name>Matteo Spanio</name></author><category term="Python,"/><category term="Programming"/><category term="python"/><category term="programming"/><category term="code"/><summary type="html"><![CDATA[A brief introduction to Python's static typing and its benefits.]]></summary></entry><entry><title type="html">Principles of statistic</title><link href="https://matteospanio.github.io/blog/2022/Principles-of-statistic/" rel="alternate" type="text/html" title="Principles of statistic"/><published>2022-08-30T00:00:00+00:00</published><updated>2022-08-30T00:00:00+00:00</updated><id>https://matteospanio.github.io/blog/2022/Principles-of-statistic</id><content type="html" xml:base="https://matteospanio.github.io/blog/2022/Principles-of-statistic/"><![CDATA[<h2 id="introduction">Introduction</h2> <p>Statistic is that field of math which studies collections of empirical data. How are data distributed? Can we infer something from our data?</p> <p>With statistic we can answer to these and other questions.</p> <p>In this article we will discuss about the fundamentals that we need to know before starting an analysis of the data.</p> <hr/> <h2 id="population-samples-parameters-and-statistics">Population samples, parameters and statistics</h2> <p>Data collection is a crucial fact in Statistics. The <em>samples</em> collected and analyzed are used to make scale assertions about the <em>population</em>.</p> <p>It is therefore necessary to divide the types of data we are dealing with in different ways: if a <em>parameter</em> (which is usually a number) concerns a fact of the entire object that is taken into consideration (e.g. the number of women living on earth at a given moment), this is a number that observes the reality of the facts and does not change depending on the observation, it is usually the parameter sought through the statistics, as it is often very difficult or impossible to know these numbers. Statistic takes into account smaller samples of the problem by sampling a part of the population, the quantities are studied on this smaller scale and then they are brought back to a larger scale.</p> <p>Let’s define a glossary with the multiple terms used in statistics that help us to define whether they are absolute numbers related to a certain situation or whether they are related to a studied sample.</p> <h3 id="glossary">Glossary</h3> <ul> <li> <p><strong>Population</strong>: the reality of the facts of which we usually want to know some aspects, if we talk about population we mean to refer to all the units that are part of a certain group;</p> </li> <li> <p><strong>Parameter \(\theta\)</strong>: a characteristic that describes the population (for example the actual mean or median);</p> </li> <li> <p><strong>Census</strong>: observation of <strong>all</strong> population units to quantify a parameter;</p> </li> <li> <p><strong>Sample</strong>: subset of the population used to estimate \(\theta\);</p> </li> <li> <p><strong>Statistics</strong>: any function (or observation) of census or sample data;</p> </li> <li> <p><strong>Estimator</strong>: \(\hat{\theta}\) statistic that is used to reconstruct \(\theta\);</p> </li> <li> <p><strong>Estimate</strong>: value of the estimator on a particular sample.</p> </li> </ul> <h2 id="sampling-and-non-sampling-errors">Sampling and non-sampling errors</h2> <p>The discrepancy between the estimate and the parameter is due to two sources of error:</p> <ol> <li> <p><strong>Sampling errors</strong> unavoidable, they are errors due to the fact that we are observing only a part of the population and they decrease as the sample size increases if the estimator \(\hat{\theta}\) is well constructed;</p> </li> <li> <p><strong>Avoidable non-sampling errors</strong>, they are errors due to a wrong construction of the sample or an incorrect estimator, it is not certain that these errors decrease as the sample size increases.</p> </li> </ol> <hr/> <h2 id="sample-statistics">Sample statistics</h2> <p>Once we have established which entities we are going to focus on, let’s define which statistics are of main interest.</p> <p>Consider a random sample of size \(n\):</p> \[(X_1, ..., X_n)\] <p>the goal is to use the data obtained to reconstruct some parameters of the population. Simple descriptive statistics that measure the location, variability, and other parameters of a given population do not necessarily have to be in the sample already, but estimators and parameter estimates can be derived easily from this sample.</p> <p>The main statistics we use to derive location information are:</p> <ul> <li> <p><strong>sample mean</strong>, to measure the sample mean value;</p> </li> <li> <p><strong>sample median</strong>, to find the central value;</p> </li> <li> <p><strong>quantiles, percentiles, quartiles</strong>, through which the portions of the sample are identified</p> </li> </ul> <p>While the statistics that measure the variability of the data (i.e. how wide the curve is on the graph) are:</p> <ul> <li> <p><strong>sample variance</strong> and <strong>standard deviation</strong></p> </li> <li> <p><strong>interquartile range</strong></p> </li> </ul> <p>Each statistic is a random variable because it is calculated from a sample, which is why they are said to describe the <em>sample distribution</em>.</p> <p>Statistics are used to estimate population parameters, e. g. the ‘sample’ mean is used to estimate the population mean.</p> <p>As for the following sections, always remember that we are considering observations on independent and identically distributed random variables (i.i.d.) with expected value \(E(X) = \mu\) and variance \(Var(X) = \sigma^2\).</p> <h3 id="sample-mean">Sample Mean</h3> <p>The sample mean is a stylist of the population mean \(\mu = E(X)\) and is written:</p> \[\bar {X} = \frac {1}{n} \sum_{i = 1}^{n} X_i\] <p>therefore \(\bar{x}\) is an estimate of the population value \(\mu\), in fact \(\bar {X}\) is the random variable of the sample mean (i.e. the estimator), while with \(\bar {x}\) we refer to the estimate, that is the number observed with the estimator with a given sample.</p> <blockquote> <p>Summarizing, \(\bar{X}\) is an estimate of \(\mu\), while \(\bar{x}\) is an estimate of \(\mu\).</p> </blockquote> <blockquote> <p>The sample mean has many interesting properties: it is <em>undistorted</em>, <em>consistent</em> and <em>asymptotically Normal</em>.</p> </blockquote>]]></content><author><name>Matteo Spanio</name></author><category term="Statistic"/><category term="statistic"/><category term="math"/><summary type="html"><![CDATA[An introduction to statistic]]></summary></entry><entry><title type="html">DSP: il suono in digitale</title><link href="https://matteospanio.github.io/blog/2021/DSP-il-suono-in-digitale/" rel="alternate" type="text/html" title="DSP: il suono in digitale"/><published>2021-07-10T00:00:00+00:00</published><updated>2021-07-10T00:00:00+00:00</updated><id>https://matteospanio.github.io/blog/2021/DSP-il-suono-in-digitale</id><content type="html" xml:base="https://matteospanio.github.io/blog/2021/DSP-il-suono-in-digitale/"><![CDATA[<blockquote> <p>Dall’analogico al digitale: il digital signal processing spiegato in maniera semplice.</p> </blockquote> <p>Secondo la fisica, il suono è una vibrazione itinerante, cioè un’onda che si muove attraverso un mezzo come l’aria. L’onda sonora trasferisce energia da particella a particella fino a quando non viene finalmente “ricevuta” dalle nostre orecchie e percepita dal nostro cervello. I due parametri fondamentali per descrivere un suono sono l’ampiezza (ciò che chiamiamo anche volume) e l’altezza (o frequenza, la misura delle oscillazioni dell’onda per unità di tempo).</p> <p>La recente crescita tecnologica ha comportato un deciso miglioramento delle performance di velocità e di densità di circuiti e memorie, rendendo possibile la rappresentazione digitale di grandi quantità di dati, compresi i segnali acustici. Nello specifico la digitalizzazione del suono ha comportato una serie di trasformazioni a partire dagli anni ’80, che hanno interessato sia i professionisti che i fruitori di musica. Dall’introduzione sul mercato del primo CD per uso commerciale nel 1982 ad oggi si è assistito alla nascita (e fine) di numerosi supporti digitali (Digital Audio Tape, MiniDisc, USB, DVD, HDD, SSD, Cloud).</p> <p>Ciò ha permesso che il trattamento e il processo numerico dei segnali digitali<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> assumesse una netta preponderanza rispetto a quello analogico: una successione di numeri che rappresentano l’ampiezza del segnale in precisi e ravvicinati istanti di tempo 4 è molto più precisa e affidabile di un’approssimazione non discreta acquisita su un nastro magnetico. Quindi si è dovuto progettare dei sistemi in grado di convertire il suono analogico in una successione di valori che vadano a descrivere i vari parametri del suono (altezza, intensità, timbro). Osservando la rappresentazione cartesiana di un’onda sonora nel dominio del tempo si nota come l’asse delle ordinate descriva l’ampiezza e l’asse delle ascisse metta in evidenza la frequenza a cui si muove l’onda. La conversione del suono da analogico a digitale avviene quindi sui due livelli suddetti: si parlerà di campionamento per la frequenza e quantizzazione per l’ampiezza.</p> <div class="mt-3 mt-md-0"> <img src="assets/img/47.png" class="img-fluid rounded z-depth-1" data-zoomable="true"/> </div> <div class="caption"> a) segnale analogico, b) quantizzato, c) campionato, d) quantizzato e campionato </div> <h2 id="campionamento">Campionamento</h2> <p>Il campionamento corrisponde all’individuazione periodica della presenza di segnale da parte della macchina e consente di analizzare e ricostruire le frequenze in ingresso.</p> <h2 id="quantizzazione">Quantizzazione</h2> <p>La quantizzazione è il processo di sostituzione di ogni numero reale della sequenza di campioni con un’approssimazione da un insieme finito di valori (solitamente \(2^{16}\))</p> <h2 id="la-trasformata-di-fourier">La trasformata di Fourier</h2> <div class="mt-3 mt-md-0"> <img src="assets/img/ft.gif" class="img-fluid rounded z-depth-1" data-zoomable="false"/> </div> <p>Oltre alla rappresentazione del suono nel dominio del tempo, esiste la possibilità di rappresentarne le stesse proprietà anche nel dominio della frequenza. Questo sistema venne studiato da Charles Fourier, che definì anche come passare dalla rappresentazione nel dominio del tempo a quello nel dominio della frequenza, questo processo è detto <em>trasformata di Fourier</em> o <em>Fourier Transform</em> (FT).</p> <p>Quando il segnale di partenza è in formato digitale si può applicare la <em>Trasformata Discreta di Fourier</em> (DFT). L’idea sottostante alla DFT è che lo spettro sia campionato in frequenza così come la forma d’onda digitale viene campionata nel tempo.</p> <div class="mt-3 mt-md-0"> <img src="assets/img/ft2.gif" class="img-fluid rounded z-depth-1" data-zoomable="false"/> </div> <p>Matematicamente parlando, la relazione tra \(N\) campioni nel dominio del tempo \(x_0, x_1, ..., x_{N-1}\) e \(N\) numeri complessi della trasformata discreta di Fourier \(X_0, X_1, ..., X_{N-1}\) è descritta dalla formula:</p> \[X_k = \sum_{n = 0}^{N-1} x_ne^{-ik\frac{2\pi}{N}n}\quad k=0,..., N-1\] <p>dove $ i $ è l’unità immaginaria e \(e^\frac{2\pi}{N}\) è una radice dell’unità primitiva \(N\)-esima.</p> <h2 id="pulse-code-modulation">Pulse Code Modulation</h2> <p>Il passo finale della digitalizzazione, che ingloba i processi di quantizzazione e campionamento, è la generazione del codice associato al campione.</p> <p>Esistono molti modi di codificare un segnale. Il modo di cui ci siamo concettualmente serviti senza saperlo è il <em>Pulse Amplitude Modulation</em> (PAM), per il quale un impulso occorre a ogni intervallo di campionamento, e l’ampiezza della forma d’onda è un valore digitale che corrisponde all’ampiezza analogica. Ma il modello considerato standard per la codifica digitale è il cosiddetto <em>Pulse Code Modulation</em> (PCM): l’informarmazione viene racchiusa in gruppi di bit che rappresentano il variare dell’ampiezza nel tempo, l’uno corrsiponde a presenza di segnale, mentro lo 0 ne descrive l’assenza.</p> <p>La codifica PCM è usata in tutti i settori dell’archiviazione e della trasmissione digitale dei dati. La comodità di questa rappresentazione è che si possono facilmente operare controlli o modifiche sui bit senza perdere il segnale originale, inoltre è molto meno sensibile al rumore delle altre codificazioni.</p> <div class="mt-3 mt-md-0"> <img src="assets/img/62.png" class="img-fluid rounded z-depth-1" data-zoomable="true"/> </div> <div class="footnotes" role="doc-endnotes"> <ol> <li id="fn:1" role="doc-endnote"> <p>DSP sta per <em>Digital Signal Processing</em> ed e’ un termine usato per indicare l’elaborazione elettrica dei segnali, permettendo al computer di analizzarli. Questo tipo di operazioni sta alla base di molti campi di applicazione: dal sound engineering alle telecomunicazioni, passando per la computer vision. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p> </li> </ol> </div>]]></content><author><name>Matteo Spanio</name></author><category term="DSP"/><category term="music"/><category term="DSP"/><summary type="html"><![CDATA[Dall’analogico al digitale: il digital signal processing spiegato in maniera semplice.]]></summary></entry></feed>
