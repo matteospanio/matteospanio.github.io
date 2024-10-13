@@ -3,7 +3,7 @@ layout: page
 title: spam-analyzer
 description: an AI enhanced companion to find spam emails
 img: assets/img/spam-analyzer.png
-redirect: http://docs.spamanalyzer.tech
+redirect: https://pypi.org/project/spam-analyzer/
 importance: 1
 category: fun
 ---
