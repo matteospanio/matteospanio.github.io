@@ -9,14 +9,15 @@ description: A brief introduction to Python's virtual environments.
 date: 2024-06-21
 
 toc:
-    - name: Managing environments
-    - name: pip and virtual environments
-    - name: Installing packages
-    - name: Managing requirements
-    - name: pipx
-    - name: conda
-    - name: poetry & friends
+  - name: Managing environments
+  - name: pip and virtual environments
+  - name: Installing packages
+  - name: Managing requirements
+  - name: pipx
+  - name: conda
+  - name: poetry & friends
 ---
+
 # Managing environments
 
 In embarking on projects, I've learned the hard way that starting without the right tools can lead to wasted time and frustration. This has been evident in my tendency to recklessly install packages, turning my system's Python environment into a chaotic mess. Despite the availability of better alternatives, I've also stuck with the default Python shell. Investing upfront time and effort to avoid these pitfalls can greatly benefit your journey as a Python enthusiast.
@@ -27,11 +28,12 @@ With this understanding, let's delve into pip, the default package manager tool 
 
 ## pip and virtual environments
 
-`pip` is Python's package manager. Its name is a recursive acronym that stands for *Pip Installs Packages*. `pip` is a powerful tool that allows you to install, upgrade, and remove additional libraries, and it is included in Python installation starting from version 3.4.
+`pip` is Python's package manager. Its name is a recursive acronym that stands for _Pip Installs Packages_. `pip` is a powerful tool that allows you to install, upgrade, and remove additional libraries, and it is included in Python installation starting from version 3.4.
 
 > ##### Legacy Python
+>
 > If you are using an older version of Python, you can install pip manually. To do so, simply download the `get-pip.py` file from the official Python website at [https://bootstrap.pypa.io/get-pip.py](https://bootstrap.pypa.io/get-pip.py) and run it with Python.
-{: .block-tip }
+> {: .block-tip }
 
 ### Installing packages
 
@@ -68,6 +70,7 @@ python -m venv myenv
 
 This will create a new directory called `myenv` that contains a copy of the Python interpreter and a copy of the `pip` package manager.
 Let's look in detail at the folder structure of the virtual environment with the shell utility `tree`:
+
 ```bash
 $ tree -L 4 myenv
 
@@ -97,6 +100,7 @@ myenv
 ├── lib64 -> lib
 └── pyvenv.cfg
 ```
+
 As you can see the `bin` directory contains the `activate` script that allows you to activate the virtual environment. The `lib` directory contains the installed packages, and the `include` directory contains the header files needed to compile C extensions. The `pyvenv.cfg` file contains the configuration of the virtual environment.
 
 To activate the virtual environment, you can use the following command:
@@ -104,14 +108,18 @@ To activate the virtual environment, you can use the following command:
 ```bash
 source myenv/bin/activate
 ```
+
 This will activate the virtual environment, and you will see the name of the virtual environment in your shell prompt.
 
 > ##### TIP
+>
 > On Windows, the command to activate the virtual environment is slightly different:
+>
 > ```{bash}
 > myenv\Scripts\activate
 > ```
-{: .block-tip }
+>
+> {: .block-tip }
 
 Once the virtual environment is activated, any packages you install using `pip` will be installed in the virtual environment rather than globally. This allows you to work on your project without worrying about conflicts with other projects.
 
@@ -196,6 +204,6 @@ It is important to note that `pipx` is not a replacement for `pip`. It is a comp
 
 `poetry` is a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. It also allows you to specify the Python version and the Python interpreter to use. `poetry` is particularly popular in the data science community, as it provides a simple and powerful way to manage dependencies and package your projects. This tool is really similar to `npm` in the JavaScript world, or `cargo` in the Rust world, and it is a great way to manage your Python projects. You can find more information about `poetry` at [https://python-poetry.org/](https://python-poetry.org/).
 
-One of the most interesting features of `poetry`, in my opinion, is the fact that you are *enforced* to organize your project in a specific way. This is because `poetry` expects your project to have a specific structure, with a `pyproject.toml` file that contains the project's metadata and dependencies. This makes it easier to manage your project and share it with others, as they will know exactly where to find the project's dependencies and how to install them.
+One of the most interesting features of `poetry`, in my opinion, is the fact that you are _enforced_ to organize your project in a specific way. This is because `poetry` expects your project to have a specific structure, with a `pyproject.toml` file that contains the project's metadata and dependencies. This makes it easier to manage your project and share it with others, as they will know exactly where to find the project's dependencies and how to install them.
 
 `poetry` is not the only tool in this category. Other popular tools include `pipenv` and `pip-tools`. Each of these tools has its own strengths and weaknesses, and the best tool for you will depend on your specific needs and preferences.

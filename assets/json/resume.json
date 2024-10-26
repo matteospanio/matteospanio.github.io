@@ -35,9 +35,7 @@
       "startDate": "2024-02",
       "endDate": "2024-09",
       "summary": "Teaching assistant for the course of Algorithms and Data Structures for the Bachelor in Electronic Engineering.",
-      "highlights": [
-        "Frontal lessons about C programming language and data structures"
-      ]
+      "highlights": ["Frontal lessons about C programming language and data structures"]
     },
     {
       "name": "SoundFood S.r.l.",
@@ -55,9 +53,7 @@
       "startDate": "2023-03-06",
       "endDate": "",
       "summary": "Audio Innova is a company that develops and manufactures innovative audio products for the professional and consumer markets.",
-      "highlights": [
-        "Developed a new algorithm for the automatic detection of damaged parts of audio tapes recorded on magnetic media"
-      ]
+      "highlights": ["Developed a new algorithm for the automatic detection of damaged parts of audio tapes recorded on magnetic media"]
     },
     {
       "name": "Orchestra di Padova e del Veneto",
@@ -71,8 +67,7 @@
       ]
     }
   ],
-  "volunteer": [
-  ],
+  "volunteer": [],
   "education": [
     {
       "institution": "Università degli Studi di Padova, Italy",
@@ -109,15 +104,7 @@
       "startDate": "2019-11-01",
       "endDate": "2021-11-26",
       "score": "110/110 cum laude",
-      "courses": [
-        "Clarinet",
-        "Chamber Music",
-        "Orchestra",
-        "Harmony",
-        "Music History",
-        "Music Theory",
-        "Ear Training"
-      ]
+      "courses": ["Clarinet", "Chamber Music", "Orchestra", "Harmony", "Music History", "Music Theory", "Ear Training"]
     },
     {
       "institution": "Conservatorio di Musica \"Cesare Pollini\", Padua, Italy",
@@ -176,10 +163,7 @@
       "name": "Music",
       "level": "Master",
       "icon": "fa-solid fa-hashtag",
-      "keywords": [
-        "Arranger",
-        "Clarinet"
-      ]
+      "keywords": ["Arranger", "Clarinet"]
     }
   ],
   "languages": [
@@ -196,27 +180,14 @@
     {
       "name": "Computer Science",
       "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Artificial Intelligence",
-        "Cybersecurity",
-        "Digital Signal Processing",
-        "Formal languages",
-        "Functional languages"
-      ]
+      "keywords": ["Artificial Intelligence", "Cybersecurity", "Digital Signal Processing", "Formal languages", "Functional languages"]
     },
     {
       "name": "Music",
       "icon": "fa-solid fa-tag",
-      "keywords": [
-        "Clarinet",
-        "18th Century Music",
-        "19th Centuty Music",
-        "Jazz"
-      ]
+      "keywords": ["Clarinet", "18th Century Music", "19th Centuty Music", "Jazz"]
     }
   ],
-  "references": [
-  ],
-  "projects": [
-  ]
+  "references": [],
+  "projects": []
 }

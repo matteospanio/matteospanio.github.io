@@ -9,11 +9,11 @@ description: A brief introduction to Python's static typing and its benefits.
 date: 2023-11-10
 
 toc:
-    - name: Introduction
-    - name: Bug alert!
-    - name: Type annotations
-    - name: Generics
-    - name: Sum up
+  - name: Introduction
+  - name: Bug alert!
+  - name: Type annotations
+  - name: Generics
+  - name: Sum up
 ---
 
 ## Introduction
@@ -30,15 +30,15 @@ Consider the following lines of code:
 
 {% highlight python %}
 def mysum(a, b):
-    return a + b
+return a + b
 {% endhighlight %}
 
 This function sums two elements. In this case, it might seem reasonable to leave it as it is, as you get function overloading for free on types:
 
 {% highlight python %}
-mysum(1, 2)      # a: int,   b: int   -> int
-mysum(0.5, 1.2)  # a: float, b: float -> float
-mysum(1, 0.6)    # a: int,   b: float -> float
+mysum(1, 2) # a: int, b: int -> int
+mysum(0.5, 1.2) # a: float, b: float -> float
+mysum(1, 0.6) # a: int, b: float -> float
 mysum(7, 4+2.3j) # a: int, b: complex -> complex
 {% endhighlight %}
 
@@ -113,7 +113,8 @@ def mysum(a, b):
 Overloading is back. Now, the function calls seen earlier all work, and those that used to generate a `TypeError` at runtime are now highlighted in red by our IDE.
 
 > #### Note
-> The three dots `...` have a special meaning in Python; it is the symbol known as an *ellipsis*. This symbol is usually used as a placeholder, but its meaning can vary slightly depending on the context. I recommend checking the documentation if you are curious and want to understand more about it.
+>
+> The three dots `...` have a special meaning in Python; it is the symbol known as an _ellipsis_. This symbol is usually used as a placeholder, but its meaning can vary slightly depending on the context. I recommend checking the documentation if you are curious and want to understand more about it.
 
 ## Generics
 
@@ -144,6 +145,7 @@ def mysum[T: (int, float, complex, str, list)](a: T, b: T) -> T:
 ```
 
 > #### Note
+>
 > Along with `T` some constraints have been added, which are the types that `T` can assume. In this case, `T` can be `int`, `float`, `complex`, `str`, or `list`. That's because the `+` operator is defined for these types and not for others.
 
 ## Sum up
@@ -162,6 +164,6 @@ In this exploration of Python's static typing, we delved into crucial concepts t
 
 As you navigate your coding endeavors, remember that Python's static typing is not about rigid constraints but about providing developers with powerful tools to enhance their code's expressiveness and robustness. Embrace these tools judiciously, and may your coding journey be both clear and elegant.
 
-***
+---
 
 [^1]: [PEP 695 -- Type Parameter Syntax](https://www.python.org/dev/peps/pep-0695/)

@@ -28,13 +28,13 @@ With statistic we can answer to these and other questions.
 
 In this article we will discuss about the fundamentals that we need to know before starting an analysis of the data.
 
-***
+---
 
 ## Population samples, parameters and statistics
 
-Data collection is a crucial fact in Statistics. The *samples* collected and analyzed are used to make scale assertions about the *population*.
+Data collection is a crucial fact in Statistics. The _samples_ collected and analyzed are used to make scale assertions about the _population_.
 
-It is therefore necessary to divide the types of data we are dealing with in different ways: if a *parameter* (which is usually a number) concerns a fact of the entire object that is taken into consideration (e.g. the number of women living on earth at a given moment), this is a number that observes the reality of the facts and does not change depending on the observation, it is usually the parameter sought through the statistics, as it is often very difficult or impossible to know these numbers. Statistic takes into account smaller samples of the problem by sampling a part of the population, the quantities are studied on this smaller scale and then they are brought back to a larger scale.
+It is therefore necessary to divide the types of data we are dealing with in different ways: if a _parameter_ (which is usually a number) concerns a fact of the entire object that is taken into consideration (e.g. the number of women living on earth at a given moment), this is a number that observes the reality of the facts and does not change depending on the observation, it is usually the parameter sought through the statistics, as it is often very difficult or impossible to know these numbers. Statistic takes into account smaller samples of the problem by sampling a part of the population, the quantities are studied on this smaller scale and then they are brought back to a larger scale.
 
 Let's define a glossary with the multiple terms used in statistics that help us to define whether they are absolute numbers related to a certain situation or whether they are related to a studied sample.
 
@@ -44,7 +44,7 @@ Let's define a glossary with the multiple terms used in statistics that help us 
 
 - **Parameter $$\theta$$**: a characteristic that describes the population (for example the actual mean or median);
 
-- **Census**: observation of __all__ population units to quantify a parameter;
+- **Census**: observation of **all** population units to quantify a parameter;
 
 - **Sample**: subset of the population used to estimate $$ \theta $$;
 
@@ -62,7 +62,7 @@ The discrepancy between the estimate and the parameter is due to two sources of 
 
 2. **Avoidable non-sampling errors**, they are errors due to a wrong construction of the sample or an incorrect estimator, it is not certain that these errors decrease as the sample size increases.
 
-***
+---
 
 ## Sample statistics
 
@@ -88,7 +88,7 @@ While the statistics that measure the variability of the data (i.e. how wide the
 
 - **interquartile range**
 
-Each statistic is a random variable because it is calculated from a sample, which is why they are said to describe the *sample distribution*.
+Each statistic is a random variable because it is calculated from a sample, which is why they are said to describe the _sample distribution_.
 
 Statistics are used to estimate population parameters, e. g. the 'sample' mean is used to estimate the population mean.
 
@@ -98,10 +98,10 @@ As for the following sections, always remember that we are considering observati
 
 The sample mean is a stylist of the population mean $$ \mu = E(X) $$ and is written:
 
-$$ \bar {X} = \frac {1}{n} \sum_{i = 1}^{n} X_i $$
+$$ \bar {X} = \frac {1}{n} \sum\_{i = 1}^{n} X_i $$
 
 therefore $$ \bar{x} $$ is an estimate of the population value $$ \mu $$, in fact $$ \bar {X} $$ is the random variable of the sample mean (i.e. the estimator), while with $$ \bar {x} $$ we refer to the estimate, that is the number observed with the estimator with a given sample.
 
 > Summarizing, $$ \bar{X} $$ is an estimate of $$ \mu $$, while $$ \bar{x} $$ is an estimate of $$ \mu $$.
 
-> The sample mean has many interesting properties: it is *undistorted*, *consistent* and *asymptotically Normal*.
+> The sample mean has many interesting properties: it is _undistorted_, _consistent_ and _asymptotically Normal_.

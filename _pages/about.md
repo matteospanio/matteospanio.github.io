@@ -21,11 +21,12 @@ social: true # includes social icons at the bottom of the page
 ---
 
 Hi there, I'm Matteo Spanio, Ph. D. student at the [University of Padua](https://www.unipd.it/en/). I'm interested in:
+
 - 🤖 machine learning,
 - 📡 signal processing,
 - 🎹 music.
 
-My Ph. D.  project focuses on studying deep learning methods for music generation based on cross modal perception.
+My Ph. D. project focuses on studying deep learning methods for music generation based on cross modal perception.
 
 I'm member of the [MPAI group](https://mpai.community), the international, unaffiliated, no-profit organisation developing standards for AI-based data coding.
 
