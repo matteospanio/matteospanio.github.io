@@ -4,6 +4,7 @@ github_users:
   - matteospanio
 
 github_repos:
+  - matteospanio/torchfx
   - matteospanio/spam-analyzer
   - matteospanio/sniper-go
   - matteospanio/zillow-prize
