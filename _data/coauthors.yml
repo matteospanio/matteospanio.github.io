@@ -3,25 +3,29 @@
     url: https://www.dei.unipd.it/~canazza/
 
 "Russo":
-  - firstname: ["Alessandro"]
+  - firstname: ["Alessandro", "A."]
     url: "http://hit.psy.unipd.it/alessandro-russo"
 
 "Spohr":
-  - firstname: ["Louis"]
+  - firstname: ["Louis", "L."]
     url: https://en.wikipedia.org/wiki/Louis_Spohr
 
 "Bosi":
-  - firstname: ["Marina"]
+  - firstname: ["Marina", "M."]
     url: https://ccrma.stanford.edu/people/marina-bosi
 
 "Fiordelmondo":
-  - firstname: ["Alessandro"]
+  - firstname: ["Alessandro", "A."]
     url: https://orcid.org/0000-0002-4670-5298
 
 "Pretto":
-  - firstname: ["Niccolò"]
+  - firstname: ["Niccolò", "N."]
     url: https://www.unibz.it/it/faculties/engineering/academic-staff/person/47860-niccolo-pretto
 
 "Rodà":
-  - firstname: ["Antonio"]
+  - firstname: ["Antonio", "A."]
     url: https://www.dei.unipd.it/~roda/
+
+"Zampini":
+  - firstname: ["Massimiliano", "M."]
+    url: https://webapps.unitn.it/du/en/Persona/PER0000123/Curriculum
