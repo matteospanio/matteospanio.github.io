@@ -1,7 +1,7 @@
 {
   "basics": {
     "name": "Matteo Spanio",
-    "label": "Software engineer",
+    "label": "AI Research Engineer",
     "image": "",
     "email": "spanio@dei.unipd.it",
     "phone": "",
@@ -33,13 +33,13 @@
       "position": "Teaching Assistant",
       "url": "https://www.unipd.it/",
       "startDate": "2024-02",
-      "endDate": "2024-09",
+      "endDate": "2025-09",
       "summary": "Teaching assistant for the course of Algorithms and Data Structures for the Bachelor in Electronic Engineering.",
       "highlights": ["Frontal lessons about C programming language and data structures"]
     },
     {
       "name": "SoundFood S.r.l.",
-      "position": "CTO",
+      "position": "AI Research Engineer",
       "url": "https://www.soundfood.it/",
       "startDate": "2023-11-01",
       "endDate": "",
@@ -51,7 +51,7 @@
       "position": "Software Engineer",
       "url": "https://www.audioinnova.com/en/",
       "startDate": "2023-03-06",
-      "endDate": "",
+      "endDate": "2025-09-01",
       "summary": "Audio Innova is a company that develops and manufactures innovative audio products for the professional and consumer markets.",
       "highlights": ["Developed a new algorithm for the automatic detection of damaged parts of audio tapes recorded on magnetic media"]
     },
@@ -69,6 +69,14 @@
   ],
   "volunteer": [],
   "education": [
+    {
+      "institution": "Music Technology Group, University Pompeu Fabra, Barcelona, Spain",
+      "url": "https://www.upf.edu/en/",
+      "area": "Computer Science",
+      "studyType": "Visiting Ph. D. student",
+      "startDate": "2025-11-01",
+      "endDate": "2026-04-30"
+    },
     {
       "institution": "Università degli Studi di Padova, Italy",
       "url": "https://www.unipd.it/",
@@ -174,6 +182,10 @@
     {
       "language": "English",
       "fluency": "Fluent (C1)"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Basic (A2)"
     }
   ],
   "interests": [
