@@ -2,34 +2,33 @@
 layout: about
 title: about
 permalink: /
-subtitle: >
-  <p class="p-0 m-0"><a href='http://csc.dei.unipd.it/'>Centro di Sonologia Computazionale</a>.</p>
-  <p class="p-0 m-0"><a href='https://www.dei.unipd.it/'>Department of Information Engineering.</a></p>
+subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 
 profile:
   align: right
-  image: iome_bn.jpg
+  image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p>CSC lab, building DEI/S</p>
-    <p>Via Gardenigo 6/A</p>
-    <p>Padua, Italy</p>
+    <p>555 your office number</p>
+    <p>123 your address street</p>
+    <p>Your City, State 12345</p>
 
-news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
+
+announcements:
+  enabled: true # includes a list of news items
+  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
+  limit: 5 # leave blank to include all the news in the `_news` folder
+
+latest_posts:
+  enabled: true
+  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
+  limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi there, I'm Matteo Spanio, Ph. D. student at the [University of Padua](https://www.unipd.it/en/). I'm interested in:
+Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
 
-- 🤖 machine learning,
-- 📡 signal processing,
-- 🎹 music.
+Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
 
-My Ph. D. project focuses on studying deep learning methods for music generation based on cross modal perception.
-
-I'm member of the [MPAI group](https://mpai.community), the international, unaffiliated, no-profit organisation developing standards for AI-based data coding.
-
-I'm also a musician, and I play the clarinet on a regular basis in many orchestras and ensembles (Orchestra di Padova e del Veneto, Orchestra del Friuli Venezia Giulia, Orchestra San Marco, Concordia Chamber Orchestra, Rossini Ensemble and many others).
-
-To see my work, check out my [projects]({{ site.baseurl }}/projects/) and [publications]({{ site.baseurl }}/publications/). Time permitting, I also write [blog posts]({{ site.baseurl }}/blog/).
+Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
