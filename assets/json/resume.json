@@ -82,7 +82,8 @@
       "url": "https://www.unipd.it/",
       "area": "Psychology and Computer Science",
       "studyType": "Ph. D. program Brain, Mind and Computer Science",
-      "startDate": "2023-11-01"
+      "startDate": "2023-11-01",
+      "endDate": "2026-11-01"
     },
     {
       "institution": "Ca'Foscari University, Venice, Italy",
@@ -177,7 +178,8 @@
   "languages": [
     {
       "language": "Italian",
-      "fluency": "Native speaker"
+      "fluency": "Native speaker",
+      "icon": ""
     },
     {
       "language": "English",
