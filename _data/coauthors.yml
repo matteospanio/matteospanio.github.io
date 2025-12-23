@@ -1,34 +1,31 @@
-"adams":
-  - firstname: ["Edwin", "E.", "E. P.", "Edwin Plimpton"]
-    url: https://en.wikipedia.org/wiki/Edwin_Plimpton_Adams
+"Canazza":
+  - firstname: ["Sergio", "Sergio T."]
+    url: https://www.dei.unipd.it/~canazza/
 
-"podolsky":
-  - firstname: ["Boris", "B.", "B. Y.", "Boris Yakovlevich"]
-    url: https://en.wikipedia.org/wiki/Boris_Podolsky
+"Russo":
+  - firstname: ["Alessandro", "A."]
+    url: "http://hit.psy.unipd.it/alessandro-russo"
 
-"rosen":
-  - firstname: ["Nathan", "N."]
-    url: https://en.wikipedia.org/wiki/Nathan_Rosen
+"Spohr":
+  - firstname: ["Louis", "L."]
+    url: https://en.wikipedia.org/wiki/Louis_Spohr
 
-"bach":
-  - firstname: ["Johann Sebastian", "J. S."]
-    url: https://en.wikipedia.org/wiki/Johann_Sebastian_Bach
+"Bosi":
+  - firstname: ["Marina", "M."]
+    url: https://ccrma.stanford.edu/people/marina-bosi
 
-  - firstname: ["Carl Philipp Emanuel", "C. P. E."]
-    url: https://en.wikipedia.org/wiki/Carl_Philipp_Emanuel_Bach
+"Fiordelmondo":
+  - firstname: ["Alessandro", "A."]
+    url: https://orcid.org/0000-0002-4670-5298
 
-"przibram":
-  - firstname: ["Karl"]
-    url: https://link.springer.com/article/10.1007/s00016-019-00242-z
+"Pretto":
+  - firstname: ["Niccolò", "N."]
+    url: https://www.unibz.it/it/faculties/engineering/academic-staff/person/47860-niccolo-pretto
 
-"schrodinger":
-  - firstname: ["Erwin"]
-    url: https://en.wikipedia.org/wiki/Erwin_Schr%C3%B6dinger
+"Rodà":
+  - firstname: ["Antonio", "A."]
+    url: https://www.dei.unipd.it/~roda/
 
-"lorentz":
-  - firstname: ["Hendrik Antoon"]
-    url: https://en.wikipedia.org/wiki/Hendrik_Lorentz
-
-"planck":
-  - firstname: ["Max"]
-    url: https://en.wikipedia.org/wiki/Max_Planck
+"Zampini":
+  - firstname: ["Massimiliano", "M."]
+    url: https://webapps.unitn.it/du/en/Persona/PER0000123/Curriculum
