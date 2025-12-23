@@ -2,17 +2,17 @@
 # the commented lines are the default social media links supported by the template
 # the socials will be displayed in the order they are defined here
 
-# academia_edu:  your organization and your username Ex. https://organization.academia.edu/UserName
-#  organization: princeton # your organization as appears in the subdomain
-#  username:  AlbertEinstein # your username
+academia_edu: #  your organization and your username Ex. https://organization.academia.edu/UserName
+  organization: unipd # your organization as appears in the subdomain
+  username:  MatteoSpanio # your username
 # acm_id: # your dl.acm.org/profile/id
 # arxiv_id: # your arXiv author ID
 # blogger_url: # your blogger URL
 # bluesky_url: # your bluesky URL
-cv_pdf: /assets/pdf/example_pdf.pdf # path to your CV PDF file
+# cv_pdf: /assets/pdf/example_pdf.pdf # path to your CV PDF file
 # dblp_url: # your DBLP profile url
 # discord_id: # your discord id (18-digit unique numerical identifier)
-email: you@example.com # your email address
+email: spanio@dei.unipd.it # your email address
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
 github_username: matteospanio # your GitHub user name
@@ -21,7 +21,7 @@ gitlab_username: matteospanio # your GitLab user name
 ieee_id: 535146737522986 # your ieeexplore.ieee.org/author/id
 inspirehep_id: 1010907 # Inspire HEP author ID
 # instagram_id: # your instagram id
-# kaggle_id: # your kaggle id
+kaggle_id: gigioaquilani # your kaggle id
 # keybase_username: # your keybase user name
 # lastfm_id: # your lastfm id
 # lattes_id: # your ID on Lattes (Brazilian Lattes CV)
