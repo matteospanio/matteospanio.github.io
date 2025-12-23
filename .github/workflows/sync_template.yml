@@ -1,0 +1,30 @@
+name: Sync from template
+on:
+  # cronjob trigger
+  schedule:
+    - cron: "0 0 1 * *"
+  # manual trigger
+  workflow_dispatch:
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    # Needed for the action to push changes and open PRs
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # To use this repository's private action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Use the PAT for git operations and avoid overriding it with GITHUB_TOKEN
+          token: ${{ secrets.PAT_TOKEN }}
+          persist-credentials: false
+      - name: actions-template-sync
+        uses: AndreasAugustin/actions-template-sync@v2
+        with:
+          # PAT must have `workflow` (classic) or workflow write (fine-grained) on this repo
+          source_gh_token: ${{ secrets.PAT_TOKEN }}
+          target_gh_token: ${{ secrets.PAT_TOKEN }}
+          source_repo_path: alshedivat/al-folio
+          upstream_branch: master
