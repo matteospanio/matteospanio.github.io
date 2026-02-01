@@ -11,6 +11,7 @@
 [![deploy](https://github.com/alshedivat/al-folio/actions/workflows/deploy.yml/badge.svg)](https://github.com/alshedivat/al-folio/actions/workflows/deploy.yml)
 [![Maintainers](https://img.shields.io/badge/maintainers-4-success.svg)](#maintainers)
 [![GitHub contributors](https://img.shields.io/github/contributors/alshedivat/al-folio.svg)](https://github.com/alshedivat/al-folio/graphs/contributors/)
+
 [![Docker Image Version](https://img.shields.io/docker/v/amirpourmand/al-folio?sort=semver&label=docker%20image&color=blueviolet)](https://hub.docker.com/r/amirpourmand/al-folio)
 [![Docker Image Size](https://img.shields.io/docker/image-size/amirpourmand/al-folio?sort=date&label=docker%20image%20size&color=blueviolet)](https://hub.docker.com/r/amirpourmand/al-folio)
 [![Docker Pulls](https://img.shields.io/docker/pulls/amirpourmand/al-folio?color=blueviolet)](https://hub.docker.com/r/amirpourmand/al-folio)
@@ -19,6 +20,9 @@
 [![GitHub license](https://img.shields.io/github/license/alshedivat/al-folio?color=blue)](https://github.com/alshedivat/al-folio/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/alshedivat/al-folio)](https://github.com/alshedivat/al-folio/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/alshedivat/al-folio)](https://github.com/alshedivat/al-folio/fork)
+
+[![Code Wiki](https://img.shields.io/badge/Code_Wiki-ask_about_repo-blue?logo=googlegemini)](https://codewiki.google/github.com/alshedivat/al-folio)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-ask_about_repo-lightcyan)](https://deepwiki.com/alshedivat/al-folio)
 
 </div>
 
@@ -127,7 +131,6 @@ Feel free to add your own page(s) by sending a PR.
 <a href="https://shubhashisroydipta.com/" target="_blank">★</a>
 <a href="https://astanziola.github.io" target="_blank">★</a>
 <a href="https://tinkerer.in" target="_blank">★</a>
-<a href="https://sam-bieberich.github.io/" target="_blank">★</a>
 <a href="https://afraniomelo.github.io/en/" target="_blank">★</a>
 <a href="https://jonaruthardt.github.io" target="_blank">★</a>
 <a href="https://www.zla.app/" target="_blank">★</a>
@@ -172,6 +175,11 @@ Feel free to add your own page(s) by sending a PR.
 <a href="https://waynexucn.github.io/" target="_blank">★</a>
 <a href="https://zlatanajanovic.com/" target="_blank">★</a>
 <a href="https://mchadolias.github.io/" target="_blank">★</a>
+<a href="https://syanyong.github.io/" target="_blank">★</a>
+<a href="https://jucheval.github.io/" target="_blank">★</a>
+<a href="https://j1yoo.github.io/" target="_blank">★</a>
+<a href="https://zhoji.github.io/" target="_blank">★</a>
+<a href="https://smsnobin77.github.io/" target="_blank">★</a>
 </td>
 </tr>
 <tr>
@@ -186,7 +194,7 @@ Feel free to add your own page(s) by sending a PR.
 <a href="https://inbt.jhu.edu/epidiagnostics/" target="_blank">★</a>
 <a href="https://www.nuesl.org/" target="_blank">★</a>
 <a href="https://big-culture.github.io/" target="_blank">★</a>
-<a href="https://martinbulla.github.io/bullab/" target="_blank">★</a>  
+<a href="https://martinbulla.github.io/bullab/" target="_blank">★</a>
 <a href="https://gpforesteyes.github.io/" target="_blank">★</a>
 </td>
 </tr>
@@ -246,6 +254,10 @@ Run the test yourself: [Google Lighthouse PageSpeed Insights](https://pagespeed.
   - [Getting started](#getting-started)
   - [Installing and Deploying](#installing-and-deploying)
   - [Customizing](#customizing)
+  - [GitHub Copilot Agents](#github-copilot-agents)
+    - [Customization Agent](#customization-agent)
+    - [Documentation Agent](#documentation-agent)
+  - [Documentation](#documentation)
   - [Features](#features)
     - [Light/Dark Mode](#lightdark-mode)
     - [CV](#cv)
@@ -269,7 +281,8 @@ Run the test yourself: [Google Lighthouse PageSpeed Insights](https://pagespeed.
     - [All Contributors](#all-contributors)
   - [Star History](#star-history)
   - [License](#license)
-  <!--te-->
+
+<!--te-->
 
 ## Getting started
 
@@ -282,6 +295,46 @@ For installation and deployment details please refer to [INSTALL.md](INSTALL.md)
 ## Customizing
 
 For customization details please refer to [CUSTOMIZE.md](CUSTOMIZE.md).
+
+## GitHub Copilot Agents
+
+This repository includes two specialized GitHub Copilot agents to enhance your development experience:
+
+### Customization Agent
+
+The **Customization Agent** helps you personalize your al-folio website by:
+
+- Guiding you through configuration changes step-by-step
+- Modifying files directly in your repository
+- Explaining technical concepts in plain language (great for users without coding experience)
+- Assisting with common tasks like updating your CV, adding publications, creating blog posts, and customizing themes
+
+See [CUSTOMIZE.md § GitHub Copilot Customization Agent](CUSTOMIZE.md#github-copilot-customization-agent) for detailed usage instructions.
+
+### Documentation Agent
+
+The **Documentation Agent** maintains clear and up-to-date project documentation by:
+
+- Updating documentation files when features change
+- Writing in a style accessible to academics and researchers
+- Keeping documentation synchronized with the codebase
+- Following documentation best practices
+
+See [CONTRIBUTING.md § GitHub Copilot Agents](CONTRIBUTING.md#github-copilot-agents) for more information.
+
+> **Requirements:** Both agents require a [GitHub Copilot](https://github.com/features/copilot) subscription. For more information about GitHub Copilot and how to use agents, see the [GitHub Copilot documentation](https://docs.github.com/en/copilot).
+
+## Documentation
+
+Comprehensive guides for all aspects of your al-folio website:
+
+- **[Quick Start](QUICKSTART.md)** – Get running in 5 minutes
+- **[Installation & Deployment](INSTALL.md)** – Set up your site on GitHub Pages or other platforms
+- **[Customization Guide](CUSTOMIZE.md)** – Personalize your website (CVs, publications, themes, etc.)
+- **[Troubleshooting](TROUBLESHOOTING.md)** – Fix common issues (deployment, build, styling, content)
+- **[FAQ](FAQ.md)** – Frequently asked questions and solutions
+- **[Analytics](ANALYTICS.md)** – Add website analytics and visitor tracking
+- **[SEO Guide](SEO.md)** – Optimize for search engines and improve discoverability
 
 ## Features
 
@@ -298,9 +351,12 @@ This template has a built-in light/dark mode. It detects the user preferred colo
 
 ### CV
 
-There are currently 2 different ways of generating the CV page content. The first one is by using a json file located in [assets/json/resume.json](assets/json/resume.json). It is a [known standard](https://jsonresume.org/) for creating a CV programmatically. The second one, currently used as a fallback when the json file is not found, is by using a yml file located in [\_data/cv.yml](_data/cv.yml). This was the original way of creating the CV page content and since it is more human readable than a json file we decided to keep it as an option.
+Your CV can be generated in one of two modern formats:
 
-What this means is, if there is no resume data defined in [\_config.yml](_config.yml) and loaded via a json file, it will load the contents of [\_data/cv.yml](_data/cv.yml) as fallback.
+- **[RenderCV](https://rendercv.com/) Format** (recommended): Edit [`_data/cv.yml`](_data/cv.yml) using the human-readable RenderCV YAML format. This format enables automatic PDF generation via GitHub Actions and provides professional styling options.
+- **[JSONResume](https://jsonresume.org/) Format**: Edit [`assets/json/resume.json`](assets/json/resume.json) using the standardized JSON format. This is compatible with other resume tools and services.
+
+You can use both formats simultaneously and switch which one is rendered on your CV page using the `cv_format` frontmatter variable, or maintain just the one you prefer. The two files are independent data sources: if you choose to keep both, you must update each file separately—there is no automatic synchronization between them.
 
 [![CV Preview](readme_preview/cv.png)](https://alshedivat.github.io/al-folio/cv/)
 
@@ -462,8 +518,8 @@ Our most active contributors are welcome to join the maintainers team. If you ar
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="http://maruan.alshedivat.com"><img src="https://avatars.githubusercontent.com/u/2126561?v=4" width="100px;" alt=""/><br /><sub><b>Maruan</b></sub></a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://rohandebsarkar.github.io"><img src="https://avatars.githubusercontent.com/u/50144004?v=4" width="100px;" alt=""/><br /><sub><b>Rohan Deb Sarkar</b></sub></a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://maruan.alshedivat.com"><img src="https://avatars.githubusercontent.com/u/2126561?v=4" width="100px;" alt=""/><br /><sub><b>Maruan</b></sub></a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://rohandebsarkar.github.io"><img src="https://avatars.githubusercontent.com/u/50144004?v=4" width="100px;" alt=""/><br /><sub><b>Rohan Deb Sarkar</b></sub></a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://amirpourmand.ir"><img src="https://avatars.githubusercontent.com/u/32064808?v=4" width="100px;" alt=""/><br /><sub><b>Amir Pourmand</b></sub></a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://george-gca.github.io/"><img src="https://avatars.githubusercontent.com/u/31376482?v=4" width="100px;" alt=""/><br /><sub><b>George</b></sub></a></td>
     </tr>
