@@ -1,9 +1,9 @@
 metadata:
-  last_updated: '2026-02-13'
+  last_updated: '2026-02-20'
 papers:
   CEWwcjUAAAAJ:2osOgNQ5qMEC:
     citations: 4
-    title: "From Tape to Code: An international AI-based standard for audio cultural heritage preservation Don\u2019t play that song for me (if it\u2019s not preserved with ARP!)"
+    title: "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don\u2019t Play That Song for me (If it\u2019s Not Preserved With ARP!)"
     year: '2024'
   CEWwcjUAAAAJ:9yKSN-GCB0IC:
     citations: 6
@@ -15,11 +15,11 @@ papers:
     year: '2025'
   CEWwcjUAAAAJ:W7OEmFMy1HYC:
     citations: 3
-    title: 'Towards Emotionally Aware AI: Challenges and Opportunities in the Evolution of Multimodal Generative Models'
+    title: 'Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models'
     year: '2024'
   CEWwcjUAAAAJ:WF5omc3nYNoC:
     citations: 2
-    title: 'A Multimodal Symphony: Integrating Taste and Sound through Generative AI'
+    title: 'A multimodal symphony: integrating taste and sound through generative AI'
     year: '2025'
   CEWwcjUAAAAJ:Y0pCki6q_DkC:
     citations: 0
@@ -34,7 +34,7 @@ papers:
     title: A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence
     year: '2022'
   CEWwcjUAAAAJ:qjMakFHDy7sC:
-    citations: 0
+    citations: 1
     title: A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard
     year: '2024'
   CEWwcjUAAAAJ:u-x6o8ySG0sC:
