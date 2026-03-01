@@ -3,30 +3,26 @@
 # -----------------------------------------------------------------------------
 
 title: blank # the website title (if blank, full name will be used instead)
-first_name: Matteo
-middle_name:
-last_name: Spanio
-email: spanio@dei.unipd.it
+first_name: You
+middle_name: R.
+last_name: Name
+contact_note: >
+  You can even add a little note about which of these is the best way to reach you.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  This is a very personal blog. I don't write blogs for anyone, but
-  just record what I do or what I think. So there are many things
-  wrong and you may have different thoughts. It would be nice if I
-  share knowledge and thoughts rather than criticism. It will be
-  great help if you give and teach your knowledge and thoughts to me.
+  A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-keywords: blog, academic-website # add your own keywords or leave empty
+  Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
+keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: https://matteospanio.github.io # the base hostname & protocol for your site
-baseurl: "" # the subpath of your site, e.g. /blog/. Leave blank for root
-last_updated: true # set to true if you want to display last updated in the footer
+url: https://alshedivat.github.io # the base hostname & protocol for your site
+baseurl: /al-folio # the subpath of your site, e.g. /blog/. Leave blank for root
+last_updated: false # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 back_to_top: true # set to false to disable the back to top button
-contact_note: >
-  If you want to contact me, please send me an email.
 
 # -----------------------------------------------------------------------------
 # Theme
@@ -39,6 +35,13 @@ repo_trophies:
   enabled: true
   theme_light: flat # https://github.com/ryo-ma/github-profile-trophy
   theme_dark: gitdimmed # https://github.com/ryo-ma/github-profile-trophy
+
+# External service URLs for repository page
+# To use a different instance or service for displaying GitHub stats and trophies,
+# update these URLs. These are used in the repository templates.
+external_services:
+  github_readme_stats_url: https://github-readme-stats.vercel.app
+  github_profile_trophy_url: https://github-profile-trophy.vercel.app
 
 # -----------------------------------------------------------------------------
 # RSS Feed
@@ -59,8 +62,6 @@ bib_search: true
 
 # Dimensions
 max_width: 930px
-
-# TODO: add layout settings (single page vs. multi-page)
 
 # -----------------------------------------------------------------------------
 # Open Graph & Schema.org
@@ -90,13 +91,8 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # Blog
 # -----------------------------------------------------------------------------
 
-blog_name: blog # blog_name will be displayed in your blog page
-blog_description: >
-  This is a very personal blog. I don't write blogs for anyone, but
-  just record what I do or what I think. So there are many things
-  wrong and you may have different thoughts. It would be nice if I
-  share knowledge and thoughts rather than criticism. It will be
-  great help if you give and teach your knowledge and thoughts to me.
+blog_name: al-folio # blog_name will be displayed in your blog page
+blog_description: a simple whitespace theme for academics
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
@@ -111,34 +107,38 @@ related_blog_posts:
 # Giscus comments (RECOMMENDED)
 # Follow instructions on https://giscus.app/ to setup for your repo to fill out the information below.
 giscus:
-  repo: matteospanio/matteospanio.github.io # <your-github-user-name>/<your-github-repo-name>
-  repo_id: R_kgDOGb7Shg # leave empty or specify your repo_id (see https://giscus.app/)
-  category: General # name of the category under which discussions will be created
-  category_id: DIC_kwDOA5PmLc4CTBt6 # leave empty or specify your category_id (see https://giscus.app/)
-  mapping: pathname # identify discussions by post title
-  strict: 0 # use strict identification mode
+  repo: # <your-github-user-name>/<your-github-repo-name>
+  repo_id: # leave empty or specify your repo_id (see https://giscus.app/)
+  category: Comments # name of the category under which discussions will be created
+  category_id: # leave empty or specify your category_id (see https://giscus.app/)
+  mapping: title # identify discussions by post title
+  strict: 1 # use strict identification mode
   reactions_enabled: 1 # enable (1) or disable (0) emoji reactions
-  input_position: top # whether to display input form below (bottom) or above (top) the comments
-  theme: preferred_color_scheme # name of the color scheme (preferred works well with al-folio light/dark mode)
-  emit_metadata: 0
-  lang: en
+  input_position: bottom # whether to display input form below (bottom) or above (top) the comments
   dark_theme: dark # name of the dark color scheme (preferred works well with al-folio dark mode)
   light_theme: light # name of the light color scheme (preferred works well with al-folio light mode)
+  emit_metadata: 0
+  lang: en
 
 # Disqus comments (DEPRECATED)
-disqus_shortname: matteosblog # put your disqus shortname
+disqus_shortname: al-folio # put your disqus shortname
 # https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 # External sources.
 # If you have blog posts published on medium.com or other external sources,
 # you can display them in your blog by adding a link to the RSS feed.
+# Optional: Set default categories and tags for posts from each source.
 external_sources:
-  # - name: medium.com
-  #   rss_url: https://medium.com/@al-folio/feed
-  # - name: Google Blog
-  #   posts:
-  #     - url: https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/
-  #       published_date: 2024-05-14
+  - name: medium.com
+    rss_url: https://medium.com/@al-folio/feed
+    categories: [external-posts]
+    tags: [medium]
+  - name: Google Blog
+    posts:
+      - url: https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/
+        published_date: 2024-05-14
+    categories: [external-posts]
+    tags: [google]
 
 # -----------------------------------------------------------------------------
 # Newsletter
@@ -154,29 +154,16 @@ newsletter:
 # -----------------------------------------------------------------------------
 
 collections:
+  books:
+    output: true
   news:
     defaults:
       layout: post
     output: true
-    permalink: /:collection/:title/
   projects:
     output: true
-    permalink: /:collection/:title/
-  teaching:
+  teachings:
     output: true
-    permalink: /teaching/:path/
-  books:
-    output: true
-
-announcements:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: 5 # leave blank to include all the news in the `_news` folder
-
-latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -223,7 +210,9 @@ keep_files:
 
 # Plug-ins
 plugins:
+  - jekyll-3rd-party-libraries
   - jekyll-archives-v2
+  - jekyll-cache-bust
   - jekyll-email-protect
   - jekyll-feed
   - jekyll-get-json
@@ -235,6 +224,7 @@ plugins:
   - jekyll-regex-replace
   - jekyll/scholar
   - jekyll-sitemap
+  - jekyll-socials
   - jekyll-tabs
   - jekyll-terser
   - jekyll-toc
@@ -289,8 +279,8 @@ display_categories: ["external-services"] # these categories will be displayed o
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Spanio]
-  first_name: [Matteo, M.]
+  last_name: [Einstein]
+  first_name: [Albert, A.]
 
   style: apa
   locale: en
@@ -335,10 +325,14 @@ filtered_bibtex_keywords:
     bibtex_show,
     blog,
     code,
+    dimensions,
+    eprint,
     google_scholar_id,
+    hal,
     html,
     inspirehep_id,
     pdf,
+    pmid,
     poster,
     preview,
     selected,
@@ -387,7 +381,7 @@ imagemagick:
     - ".tiff"
     - ".gif"
   output_formats:
-    webp: "-quality 85"
+    webp: "-auto-orient -quality 85"
 
 # Lazy loading images
 #   If you enable lazy loading, all images will add the loading="lazy" attribute.
@@ -407,6 +401,7 @@ enable_pirsch_analytics: false # enables Pirsch analytics (https://pirsch.io/)
 enable_openpanel_analytics: false # enables Openpanel analytics (https://openpanel.dev/)
 enable_google_verification: false # enables google site verification
 enable_bing_verification: false # enables bing site verification
+enable_cookie_consent: false # enables GDPR-compliant cookie consent dialog (https://github.com/orestbida/cookieconsent)
 enable_masonry: true # enables automatic project cards arrangement
 enable_math: true # enables math typesetting (uses MathJax)
 enable_tooltips: false # enables automatic tooltip links generated for each section titles on pages and posts
@@ -613,6 +608,14 @@ third_party_libraries:
     url:
       js: "https://cdn.jsdelivr.net/npm/swiper@11.1.0/swiper-element-bundle.min.js.map"
     version: "11.0.5"
+  vanilla-cookieconsent:
+    integrity:
+      css: "sha256-ygRrixsQlBByBZiOcJamh7JByO9fP+/l5UPtKNJmRsE="
+      js: "sha256-vG4vLmOB/AJbJ6awr7Wg4fxonG+fxAp4cIrbIFTvRXU="
+    url:
+      css: "https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@{{version}}/dist/cookieconsent.css"
+      js: "https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@{{version}}/dist/cookieconsent.umd.js"
+    version: "3.1.0"
   vega:
     integrity:
       js: "sha256-Yot/cfgMMMpFwkp/5azR20Tfkt24PFqQ6IQS+80HIZs="
