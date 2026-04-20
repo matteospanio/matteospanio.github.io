@@ -1,24 +1,32 @@
 metadata:
-  last_updated: '2026-03-25'
+  last_updated: '2026-04-20'
 papers:
   CEWwcjUAAAAJ:2osOgNQ5qMEC:
-    citations: 7
+    citations: 8
     title: "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don\u2019t Play That Song for me (If it\u2019s Not Preserved With ARP!)"
     year: '2024'
   CEWwcjUAAAAJ:9yKSN-GCB0IC:
-    citations: 6
+    citations: 7
     title: Enhancing preservation and restoration of open reel audio tapes through computer vision
     year: '2023'
+  CEWwcjUAAAAJ:HDshCWvjkbEC:
+    citations: 0
+    title: Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences
+    year: '2026'
   CEWwcjUAAAAJ:LkGwnXOMwfcC:
     citations: 0
     title: Toward a Repository Template for Music Technology Research
     year: '2025'
+  CEWwcjUAAAAJ:TQgYirikUcIC:
+    citations: 0
+    title: 'BMdataset: A Musicologically Curated LilyPond Dataset'
+    year: '2026'
   CEWwcjUAAAAJ:W7OEmFMy1HYC:
-    citations: 3
+    citations: 4
     title: 'Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models'
     year: '2024'
   CEWwcjUAAAAJ:WF5omc3nYNoC:
-    citations: 2
+    citations: 3
     title: 'A multimodal symphony: integrating taste and sound through generative AI'
     year: '2025'
   CEWwcjUAAAAJ:Y0pCki6q_DkC:
