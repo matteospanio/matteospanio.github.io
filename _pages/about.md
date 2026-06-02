@@ -30,7 +30,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi there, I'm Matteo Spanio, Ph. D. student at the [University of Padua](https://www.unipd.it/en/). I'm interested in:
+Hi there, I'm Matteo Spanio, PhD student at the [University of Padua](https://www.unipd.it/en/). I'm interested in:
 
 - 🤖 machine learning,
 - 📡 signal processing,
