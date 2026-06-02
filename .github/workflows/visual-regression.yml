@@ -36,6 +36,7 @@ on:
 
 jobs:
   visual-regression:
+    if: github.repository == 'alshedivat/al-folio'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
