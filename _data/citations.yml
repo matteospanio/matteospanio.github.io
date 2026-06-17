@@ -1,8 +1,8 @@
 metadata:
-  last_updated: '2026-05-22'
+  last_updated: '2026-06-17'
 papers:
   CEWwcjUAAAAJ:2osOgNQ5qMEC:
-    citations: 10
+    citations: 11
     title: "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don\u2019t Play That Song for me (If it\u2019s Not Preserved With ARP!)"
     year: '2024'
   CEWwcjUAAAAJ:9yKSN-GCB0IC:
@@ -18,7 +18,7 @@ papers:
     title: Toward a Repository Template for Music Technology Research
     year: '2025'
   CEWwcjUAAAAJ:TQgYirikUcIC:
-    citations: 0
+    citations: 1
     title: 'BMdataset: A Musicologically Curated LilyPond Dataset'
     year: '2026'
   CEWwcjUAAAAJ:W7OEmFMy1HYC:
@@ -26,7 +26,7 @@ papers:
     title: 'Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models'
     year: '2024'
   CEWwcjUAAAAJ:WF5omc3nYNoC:
-    citations: 3
+    citations: 4
     title: 'A multimodal symphony: integrating taste and sound through generative AI'
     year: '2025'
   CEWwcjUAAAAJ:Y0pCki6q_DkC:
@@ -37,6 +37,10 @@ papers:
     citations: 0
     title: 'TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration'
     year: '2025'
+  CEWwcjUAAAAJ:_Qo2XoVZTnwC:
+    citations: 0
+    title: Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding
+    year: '2026'
   CEWwcjUAAAAJ:d1gkVwhDpl0C:
     citations: 2
     title: A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence
