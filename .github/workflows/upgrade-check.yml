@@ -34,12 +34,8 @@ on:
       - "test/integration_upgrade_cli.sh"
       - ".github/workflows/upgrade-check.yml"
 
-permissions:
-  contents: read
-
 jobs:
   upgrade-check:
-    if: github.repository == 'alshedivat/al-folio'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
