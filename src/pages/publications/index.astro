@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import PublicationCard from '@/components/pub/PublicationCard.astro';
+import type { Publication } from '@/lib/bib';
+import { groupByYear, sortPublications } from '@/lib/bib';
+import { scholarlyArticleSchema } from '@/lib/schema';
+
+const entries = await getCollection('publications');
+const pubs = entries.map((e) => e.data as Publication);
+const byYear = groupByYear(pubs);
+
+const withCitations = pubs.filter((p) => p.citations !== null);
+const totalCitations = withCitations.reduce((sum, p) => sum + (p.citations ?? 0), 0);
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Publications',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: pubs.length,
+      itemListElement: sortPublications(pubs).map((pub, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: scholarlyArticleSchema(pub),
+      })),
+    },
+  },
+];
+---
+
+<Base
+  schema={schema}
+  title="publications"
+  description="Peer-reviewed work on AI for audio cultural-heritage preservation, multimodal generative models, symbolic music and audio DSP."
+>
+  <h1 class="label">publications</h1>
+
+  <p class="summary">
+    {pubs.length} entries · {byYear.length} years
+    {
+      totalCitations > 0 && (
+        <>
+          {' '}· {totalCitations} recorded citations across {withCitations.length} tracked papers
+        </>
+      )
+    }
+  </p>
+
+  {
+    byYear.map(([year, list]) => (
+      <section>
+        <h2 class="year">{year}</h2>
+        {list.map((pub) => (
+          <PublicationCard pub={pub} />
+        ))}
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  h1 {
+    margin-block-end: 0.8rem;
+  }
+
+  .summary {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-end: 2.5rem;
+  }
+
+  section {
+    margin-block-start: 2.5rem;
+  }
+
+  .year {
+    font-size: var(--step-2);
+    color: var(--fg-dim);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

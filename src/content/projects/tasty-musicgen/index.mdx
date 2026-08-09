@@ -1,0 +1,57 @@
+---
+title: tasty-musicgen
+tagline: musicgen fine-tuned to generate music from taste descriptions
+description: A fine-tuned MusicGen-small that generates music from written taste descriptions, released alongside the Frontiers in Computer Science paper "A multimodal symphony".
+status: research
+role: first author
+year: 2025
+theme: multimodal
+stack: [Python, PyTorch, Transformers, AudioCraft, MusicGen, Streamlit]
+repo: https://github.com/matteospanio/tasty-musicgen-small
+hf: https://huggingface.co/csc-unipd/tasty-musicgen-small
+docs: https://osf.io/xs5jy/
+paper: spanio_frontiers_2025
+featured: true
+order: 3
+---
+
+Neuroscientific and psychological research has identified direct relationships between taste and
+auditory perception. tasty-musicgen-small turns that literature into a training signal: it is
+`facebook/musicgen-small` fine-tuned on a patched version of the Taste & Affect Music Database — the
+100 musical stimuli Guedes, Prada, Garrido and Lamy assembled in 2022 for crossmodal and affective
+research — so that a prompt written as a taste description yields music meant to induce the matching
+gustatory sensation. Output is mono at 32 kHz.
+
+The checkpoint is the artefact behind
+[A multimodal symphony](https://doi.org/10.3389/fcomp.2025.1575741) (Frontiers in Computer Science,
+2025; preprint [arXiv:2503.02823](https://arxiv.org/abs/2503.02823)). The experiment there asks
+listeners how coherently the generated music reflects the taste description it was given, and across
+111 participants the fine-tuned model is judged more coherent than the stock one.
+
+On the Hub it is a `MusicgenForConditionalGeneration` served through transformers, tagged
+text-to-audio, shipped as both safetensors and pickle weights. The model card's example is one line
+of pipeline:
+
+```python
+from transformers import pipeline
+
+synthesiser = pipeline("text-to-audio", "csc-unipd/tasty-musicgen-small")
+music = synthesiser("sweet music for fine restaurents", forward_params={"do_sample": True})
+```
+
+Inference through audiocraft works too, which follows from how the weights were made. Fine-tuning
+runs on Meta's audiocraft, and the repository is largely that Hydra config tree —
+`solver/musicgen/musicgen_base_32khz.yaml`, `conditioner/text2music.yaml`,
+`model/lm/model_scale/small.yaml` — plus a handful of scripts, with `bash run.sh` as the single entry
+point. It was tested on Python 3.10 and needs ffmpeg. Dataset construction lives in its own
+repository, [taste-music-dataset](https://github.com/matteospanio/taste-music-dataset), where
+`make data` downloads and reshapes the source database into train and eval splits that then get
+dropped into an audiocraft checkout; it carries
+[doi:10.5281/zenodo.14879128](https://doi.org/10.5281/zenodo.14879128).
+
+A separate Streamlit app, [tasty-musicgen](https://github.com/matteospanio/tasty-musicgen), wraps the
+checkpoint for anyone who would rather click than script, with pages for text-to-audio, audio
+conditioning, continuation, tasty music and a short theory section; it defaults to
+`csc-unipd/tasty-musicgen-small` and starts with
+`streamlit run src/tasty_musicgen/gui/intro.py`. The app is GPL-3.0; the model and the fine-tuning
+code are CC-BY-4.0, and code and data are archived on [OSF](https://osf.io/xs5jy/).

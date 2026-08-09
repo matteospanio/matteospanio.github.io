@@ -1,0 +1,123 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+
+const items = (await getCollection('news')).sort(
+  (a, b) => Number(b.data.pinned) - Number(a.data.pinned) || b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const rendered = await Promise.all(
+  items.map(async (item) => ({ item, Content: (await render(item)).Content })),
+);
+---
+
+<Base title="news" description="Short updates: conference talks, paper acceptances and model releases.">
+  <h1 class="label">news</h1>
+
+  <ol class="feed">
+    {
+      rendered.map(({ item, Content }) => (
+        // id matches the legacy /news/<slug>/ path so those URLs can redirect to an anchor
+        // instead of to thin one-paragraph pages.
+        <li id={item.id}>
+          <p class="meta">
+            <time datetime={item.data.date.toISOString()}>
+              {item.data.date.toISOString().slice(0, 10)}
+            </time>
+            <span class="kind">{item.data.kind}</span>
+          </p>
+          <h2>
+            {item.data.url ? <a href={item.data.url}>{item.data.title}</a> : item.data.title}
+          </h2>
+          <div class="body">
+            <Content />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Base>
+
+<style>
+  h1 {
+    margin-block-end: 2rem;
+  }
+
+  .feed {
+    list-style: none;
+    padding: 0;
+    max-width: var(--measure);
+    /* The rail that makes it read as a timeline. */
+    border-inline-start: 1px solid var(--rule);
+  }
+
+  .feed li {
+    padding: 0 0 2rem 1.5rem;
+    position: relative;
+    scroll-margin-top: 5rem;
+  }
+
+  /* Momentary highlight when arriving from a legacy /news/<slug>/ redirect. */
+  .feed li:target h2 {
+    color: var(--accent);
+  }
+
+  .feed li:target::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-wash);
+  }
+
+  .feed li::before {
+    content: '';
+    position: absolute;
+    left: -4.5px;
+    top: 0.55rem;
+    width: 8px;
+    height: 8px;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+  }
+
+  .feed li:first-child::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-wash);
+  }
+
+  .meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+  }
+
+  .kind {
+    color: var(--fg-dim);
+  }
+
+  h2 {
+    font-size: var(--step-1);
+    margin-block: 0.3rem 0.4rem;
+  }
+
+  h2 a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+  }
+
+  .body {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    line-height: 1.6;
+  }
+
+  .body :global(p + p) {
+    margin-block-start: 0.6em;
+  }
+</style>

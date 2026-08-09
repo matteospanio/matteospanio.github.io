@@ -1,0 +1,53 @@
+---
+title: ML Project template
+tagline: a copier template to train ML/DL models on a SLURM cluster
+description: A Copier template that scaffolds a PyTorch Lightning project wired to run and sweep experiments on the DEI Blade SLURM cluster at the University of Padova.
+status: maintained
+role: author and maintainer
+year: 2025
+theme: engineering
+stack: [Python, Copier, Hydra, submitit, PyTorch Lightning, SLURM, uv, Make, TensorBoard]
+repo: https://github.com/CSCPadova/dei-blade-template
+docs: https://cscpadova.github.io/dei-blade-template/
+featured: false
+order: 11
+---
+
+Starting a training run on a shared cluster is mostly not about the model. It is about which partition
+has the GPUs, where the logs end up, how the environment gets built on a login node you do not
+administer, and how one run becomes a sweep without hand-writing an sbatch script per configuration.
+This template answers those questions once, for the DEI Blade cluster at the University of Padova, so
+the next project starts from a job that already submits. It is a Copier template, so scaffolding is
+one command and four questions — project name, description, author name, author email:
+
+```bash
+copier copy gh:CSCPadova/dei-blade-template your-project-name --trust
+```
+
+What comes out is a `src/<project>` package with `train.py`, `infer.py`, `model.py` and
+`dataloader.py`, a `conf/` tree, three job scripts under `slurm/`, and a `Makefile` whose targets
+are deliberately thin wrappers: `make train` is `sbatch slurm/train.sh`, `make install` is `uv sync`.
+Dependencies are pinned by uv and the generated `pyproject.toml` asks for Python 3.12 or newer.
+Post-copy tasks run `git init` and leave the new project on an initial commit.
+
+The piece doing the real work is the launcher. `conf/hydra/launcher/submitit_slurm.yaml` replaces
+Hydra's default launcher with `hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher`,
+pinned to the `allgroups` partition with `gpu:a40` and two tasks per node, and routes SLURM stdout and
+stderr to `logs/out/%j.txt` and `logs/err/%j.txt`. The consequence is that a Hydra `--multirun` sweep
+stops being a sequential loop on one machine and becomes a set of independent SLURM jobs. The shipped
+`slurm/multirun.sh` uses exactly that to sweep `data.latent_dim`, `optim.lr`, `train.batch_size` and
+`train.epochs` in a single command.
+
+Configuration is Hydra with dataclass-backed structured configs — `Data`, `Train`, `Optim` and a
+top-level `Config` over `config.yaml` — so an override with the wrong name or the wrong type is an
+error rather than an argument that is silently ignored. The worked example underneath is small on
+purpose: a VAE with a linear encoder and decoder over 28x28 MNIST, written as a
+`lightning.LightningModule` and trained with a `TensorBoardLogger` and `EarlyStopping` on validation
+loss. It is there to be deleted; the point is that everything around it already runs, so replacing
+`model.py` and `dataloader.py` is most of the work.
+
+The [documentation](https://cscpadova.github.io/dei-blade-template/) covers the part that usually goes
+unwritten: activating a DEI account, copying the project to `login.dei.unipd.it` with `scp`, and
+installing `uv` into `~/.local/bin` on first login, after which `make train` is enough. Locally the
+same code runs through `uv run train` and `uv run infer`. It is MIT licensed and there is nothing to
+install from PyPI — the repository is the template.

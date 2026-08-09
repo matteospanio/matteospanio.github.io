@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npx astro check
+
+      - name: Build
+        run: npm run build
+
+      # The highest-value check here: every URL the old site served must still
+      # resolve, as a page or a redirect. Broken inbound links fail the PR.
+      - name: Check legacy URLs still resolve
+        run: node scripts/check_legacy_urls.mjs dist
+
+      - name: Check machine-readable endpoints are populated
+        run: node scripts/check_endpoints.mjs dist
+
+      # Catches the one silent failure: a paper added without rebuilding the map.
+      - name: Check the embedding map is not stale
+        run: node scripts/check_embedding_freshness.mjs

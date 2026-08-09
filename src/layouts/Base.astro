@@ -1,0 +1,103 @@
+---
+import { Font } from 'astro:assets';
+import Nav from '@/components/base/Nav.astro';
+import Footer from '@/components/base/Footer.astro';
+import { site } from '@/config/site';
+import { graph, personSchema, websiteSchema } from '@/lib/schema';
+
+import '@/styles/base.css';
+import '@/styles/print.css';
+import '@/styles/tokens.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Gates the KaTeX stylesheet and its webfonts onto pages that need them. */
+  math?: boolean;
+  /** Extra JSON-LD nodes merged into this page's @graph. */
+  schema?: object[];
+  ogType?: string;
+}
+
+const { title, description = site.tagline, math = false, schema = [], ogType = 'website' } = Astro.props;
+
+const jsonLd = graph(personSchema(), websiteSchema(), ...schema);
+
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.jobTitle}`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+---
+
+<!doctype html>
+<html lang={site.locale} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/*
+      Pins the cascade-layer order globally, and must stay the FIRST stylesheet
+      in the document. Layer precedence is set by first registration, and Astro
+      inlines some component CSS ahead of the bundled <link> — without this,
+      whichever file happens to be inlined first silently wins the cascade.
+    */}
+    <style is:inline>@layer reset, tokens, base, components, utilities;</style>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={site.name} href="/feed.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title ?? site.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+    {/* Page-specific head content, e.g. Highwire citation tags on a post. */}
+    <slot name="head" />
+
+    <Font cssVariable="--font-mono-src" preload />
+    <Font cssVariable="--font-sans-src" />
+
+    {math && <link rel="stylesheet" href="/katex/katex.min.css" />}
+
+    {/*
+      Runs before first paint: no flash of the wrong theme.
+      Dark is the default regardless of OS setting — this design is dark-first,
+      and light exists as an opt-in for people who need it.
+    */}
+    <script is:inline>
+      (() => {
+        let t;
+        try {
+          t = localStorage.getItem('theme');
+        } catch {}
+        document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark';
+        // ?print=1 renders the print layout on screen for PDF generation.
+        if (location.search.includes('print=1')) {
+          document.documentElement.dataset.print = '';
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Nav />
+    <main id="main" class="shell">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    padding-block: clamp(2rem, 1rem + 4vw, 4.5rem);
+    flex: 1;
+  }
+</style>

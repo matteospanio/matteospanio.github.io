@@ -1,0 +1,100 @@
+@layer tokens {
+  :root {
+    /* --- surface ------------------------------------------------------- */
+    --bg: #07090c;
+    --bg-1: #0c1014;
+    --bg-2: #12181e;
+    --bg-inset: #05070a;
+
+    /* --- ink ----------------------------------------------------------- */
+    --fg: #d7dee5;
+    --fg-dim: #8b98a5;
+    --fg-faint: #7d8792;
+
+    /* --- structure ----------------------------------------------------- */
+    --rule: #1b232b;
+    --rule-strong: #2a353f;
+
+    /* --- accent -------------------------------------------------------- */
+    --accent: #4ade80;
+    --accent-ink: #07090c;
+    --accent-glow: color-mix(in oklab, var(--accent) 38%, transparent);
+    --accent-wash: color-mix(in oklab, var(--accent) 9%, transparent);
+    --link: #7dd3fc;
+    --warn: #fbbf24;
+    --danger: #f87171;
+
+    /* --- theme hues (also used by the visualisations) ------------------- */
+    --theme-heritage: #5eead4;
+    --theme-multimodal: #c084fc;
+    --theme-symbolic: #fbbf24;
+    --theme-dsp: #4ade80;
+    --theme-musicology: #f87171;
+
+    /* --- type ---------------------------------------------------------- */
+    --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-sans: var(--font-sans-src), system-ui, sans-serif;
+
+    --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
+    --step-0: clamp(0.92rem, 0.89rem + 0.15vw, 1rem);
+    --step-1: clamp(1.1rem, 1.03rem + 0.35vw, 1.3rem);
+    --step-2: clamp(1.35rem, 1.2rem + 0.7vw, 1.8rem);
+    --step-3: clamp(1.7rem, 1.4rem + 1.4vw, 2.6rem);
+
+    /* --- rhythm -------------------------------------------------------- */
+    --grid: 8px;
+    --measure: 68ch;
+    --shell: 76rem;
+    --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+
+    /* --- motion -------------------------------------------------------- */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 120ms;
+    --dur: 240ms;
+
+    color-scheme: dark;
+  }
+
+  /*
+   * Light is a deliberate inversion, not an afterthought: the accent shifts to a
+   * deep teal because terminal green on white is illegible.
+   */
+  :root[data-theme='light'] {
+    --bg: #fbfbf9;
+    --bg-1: #f3f3ef;
+    --bg-2: #e9e9e3;
+    --bg-inset: #ffffff;
+
+    --fg: #16191d;
+    --fg-dim: #4d565f;
+    --fg-faint: #5d666d;
+
+    --rule: #dedcd4;
+    --rule-strong: #c3c1b8;
+
+    --accent: #0f766e;
+    --accent-ink: #ffffff;
+    --link: #0369a1;
+    --warn: #854d0e;
+    --danger: #b91c1c;
+
+    --theme-heritage: #0f766e;
+    --theme-multimodal: #7e22ce;
+    --theme-symbolic: #a16207;
+    --theme-dsp: #15803d;
+    --theme-musicology: #b91c1c;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

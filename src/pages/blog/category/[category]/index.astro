@@ -1,0 +1,49 @@
+---
+import Base from '@/layouts/Base.astro';
+import PostList from '@/components/PostList.astro';
+import { getPosts, groupByTerm } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const grouped = groupByTerm(await getPosts(), 'categories');
+  return [...grouped.entries()].map(([slug, { label, posts }]) => ({
+    params: { category: slug },
+    props: { label, posts },
+  }));
+}
+
+const { label, posts } = Astro.props;
+---
+
+<Base title={label} description={`Blog posts in the ${label} category.`}>
+  <p class="crumb"><a href="/blog/">blog</a> <span>/</span> category</p>
+  <h1 class="label">{label}</h1>
+  <p class="summary">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+  <PostList posts={posts} />
+</Base>
+
+<style>
+  .crumb {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-end: 0.8rem;
+  }
+
+  .crumb a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+
+  .crumb a:hover {
+    color: var(--accent);
+  }
+
+  h1 {
+    margin-block-end: 0.5rem;
+  }
+
+  .summary {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-end: 2.5rem;
+  }
+</style>

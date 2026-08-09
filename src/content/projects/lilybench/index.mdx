@@ -1,0 +1,48 @@
+---
+title: LilyBench
+tagline: a generation and understanding benchmark for LLMs on LilyPond
+description: An evaluation framework for large language models on LilyPond, pairing a metadata-conditioned generation benchmark with ten understanding tasks adapted from ABC-Eval. It accompanies the Ital-IA 2026 paper "Can LLMs understand LilyPond?".
+status: research
+role: first author
+year: 2026
+theme: symbolic-music
+stack: [Python, PyTorch, Transformers, music21, MusPy, LilyPond, NumPy, SciPy]
+repo: https://github.com/CSCPadova/lilybench
+docs: https://cscpadova.github.io/lilybench/
+paper: spanio2026lilypond
+featured: true
+order: 4
+---
+
+LilyPond is a textual, code-like score format: a compiler turns plain text into engraved notation.
+That makes it an attractive target for language models — the output is text, and it either compiles or
+it does not — but saying how well a model handles it needs a fixed measuring stick. LilyBench is the
+evaluation framework built for the Ital-IA 2026 paper
+[Can LLMs understand LilyPond?](https://arxiv.org/abs/2606.08722), and it covers both directions:
+writing LilyPond and reading it.
+
+The generation half starts from a fixed prompt bank — 200 metadata-conditioned prompts built once with
+seed 1234 — reused byte-for-byte across every (model, regime) cell, so differences in the numbers come
+from the model rather than from the prompts. Samples are scored three ways: the fraction the LilyPond
+compiler accepts, Jensen-Shannon similarity over three MusPy descriptors, and a Fréchet Music Distance
+computed with the LilyBERT checkpoint. Decoding here is stochastic, so those metrics drift between
+runs; the understanding half is greedy by construction and does not.
+
+The understanding half is ten tasks adapted from ABC-Eval — bar count, metadata QA, bar sequencing,
+next-bar prediction, metadata prediction, music captioning, composer recognition, genre recognition,
+emotion recognition and error detection — scored with accuracy, exact match, a penalised Kendall-tau
+for the ordering task, and macro-F1. Four backbones are registered out of the box (phi4, qwen-coder,
+deepseek-coder, codestral); the paper sweep runs those four across three generation regimes and all
+ten understanding tasks.
+
+The interesting part is that neither half is a closed set. A new generation regime is a subclass of
+`Regime` plus a `register_regime` call, a new task is a class under the `@register_task` decorator,
+and a new backbone is a single `register_model(ModelSpec(...))`. Everything sits behind one CLI with
+four verbs — prompt-bank, generation, understanding, metrics — and the compile-rate metric shells out
+to the LilyPond binary itself (2.24.4, overridable through `LILYPOND_BIN`), which keeps the definition
+of a valid score honest: it is whatever the real engraver accepts. Splits are computed at the work
+level, so no two parts of the same piece land on opposite sides.
+
+The code is MIT and not on PyPI, so installing it means a clone and an editable install. The companion
+datasets — BMdataset in domain, Mutopia out of domain, EMOPIA for emotion recognition — are archived
+on [Zenodo](https://doi.org/10.5281/zenodo.20267079) and keep their upstream licences.

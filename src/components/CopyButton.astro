@@ -1,0 +1,59 @@
+---
+interface Props {
+  /** id of the element whose textContent gets copied */
+  target: string;
+  label?: string;
+}
+
+const { target, label = 'copy' } = Astro.props;
+---
+
+<button type="button" class="copy" data-copy-target={target}>{label}</button>
+
+<style>
+  .copy {
+    font-size: var(--step--1);
+    font-family: var(--font-mono);
+    background: none;
+    border: 1px solid var(--rule-strong);
+    color: var(--fg-dim);
+    padding: 0.1em 0.6em;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .copy:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .copy[data-done] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>
+
+<script>
+  // One delegated listener for every copy button on the page, now and later.
+  document.addEventListener('click', async (event) => {
+    const button = (event.target as HTMLElement)?.closest<HTMLButtonElement>('[data-copy-target]');
+    if (!button) return;
+
+    const source = document.getElementById(button.dataset.copyTarget!);
+    if (!source?.textContent) return;
+
+    try {
+      await navigator.clipboard.writeText(source.textContent.trim());
+    } catch {
+      return; // Insecure context or denied permission: leave the label alone.
+    }
+
+    const previous = button.textContent;
+    button.textContent = 'copied';
+    button.dataset.done = '';
+    setTimeout(() => {
+      button.textContent = previous;
+      delete button.dataset.done;
+    }, 1600);
+  });
+</script>

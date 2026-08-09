@@ -1,0 +1,41 @@
+---
+import Base from '@/layouts/Base.astro';
+
+// Where Web3Forms lands a no-JavaScript submission.
+---
+
+<Base title="message sent" description="Your message has been delivered.">
+  <div class="wrap">
+    <p class="prompt">&gt; message transmitted · ack 200</p>
+    <h1>Thanks — your message is in my inbox.</h1>
+    <p class="hint">I read everything and reply to most things, usually within a few days.</p>
+    <p class="back"><a href="/">← back to the site</a></p>
+  </div>
+</Base>
+
+<style>
+  .wrap {
+    max-width: var(--measure);
+    padding-block: 3rem;
+  }
+
+  .prompt {
+    color: var(--accent);
+    font-size: var(--step--1);
+  }
+
+  h1 {
+    font-size: var(--step-2);
+    margin-block: 0.7rem 1rem;
+  }
+
+  .hint {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+  }
+
+  .back {
+    margin-block-start: 2rem;
+    font-size: var(--step--1);
+  }
+</style>

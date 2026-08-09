@@ -1,0 +1,178 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  href: string;
+}
+
+const { project, href } = Astro.props;
+const p = project.data;
+
+const LINKS = [
+  ['repo', 'code'],
+  ['pypi', 'pypi'],
+  ['hf', 'hf'],
+  ['docs', 'docs'],
+] as const;
+
+const links = LINKS.filter(([k]) => p[k]).map(([k, label]) => ({ label, href: p[k]! }));
+
+const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `${p.year}`;
+---
+
+<article class="card">
+  <p class="meta">
+    <span class="years">{span}</span>
+    <span class:list={['status', `status--${p.status}`]}>{p.status}</span>
+    {p.theme && <span class="theme">{p.theme.replace(/-/g, ' ')}</span>}
+  </p>
+
+  <h3><a href={href}>{p.title}</a></h3>
+  <p class="tagline">{p.tagline}</p>
+  <p class="desc">{p.description}</p>
+
+  {
+    p.stack.length > 0 && (
+      <ul class="stack">
+        {p.stack.slice(0, 7).map((s) => (
+          <li>{s}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    links.length > 0 && (
+      <p class="links">
+        {links.map((l) => (
+          <a href={l.href}>{l.label}</a>
+        ))}
+      </p>
+    )
+  }
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--rule);
+    background: var(--bg-1);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--rule-strong);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+  }
+
+  .years {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status::before {
+    content: '● ';
+  }
+
+  .status--active {
+    color: var(--accent);
+  }
+  .status--maintained {
+    color: var(--theme-heritage);
+  }
+  .status--research {
+    color: var(--theme-multimodal);
+  }
+  .status--archived {
+    color: var(--fg-faint);
+  }
+
+  .theme {
+    margin-inline-start: auto;
+  }
+
+  h3 {
+    font-size: var(--step-1);
+  }
+
+  h3 a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  /* Whole card is the hit area, but the accessible name stays on the link. */
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card {
+    position: relative;
+  }
+
+  h3 a:hover {
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-size: var(--step--1);
+    color: var(--accent);
+  }
+
+  .desc {
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    line-height: 1.6;
+  }
+
+  .stack {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+  }
+
+  .stack li {
+    border: 1px solid var(--rule);
+    color: var(--fg-faint);
+    padding: 0.05em 0.45em;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-start: auto;
+    padding-block-start: 0.6rem;
+  }
+
+  /* Sits above the card-wide link overlay so these stay clickable. */
+  .links a {
+    position: relative;
+    z-index: 1;
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    text-decoration: none;
+    border: 1px solid var(--rule-strong);
+    padding: 0.05em 0.55em;
+  }
+
+  .links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+title: spam-analyzer
+tagline: a command line spam filter with a random forest under the hood
+description: A command line spam filter and email feature-extraction library that classifies messages with a Random Forest trained on header, body and attachment features.
+status: archived
+role: author and maintainer
+year: 2022
+endYear: 2024
+theme: engineering
+stack: [Python, scikit-learn, Click, NLTK, TextBlob, BeautifulSoup, pandas, NumPy, Docker]
+repo: https://github.com/matteospanio/spam-analyzer
+pypi: https://pypi.org/project/spam-analyzer/
+featured: false
+order: 10
+---
+
+An older personal project, written in late 2022. The README describes it as a fast spam filter
+inspired by SpamAssassin and integrated with machine learning: rather than accumulating hand-written
+rules, it pulls a fixed set of features out of a message and hands them to a Random Forest. The model
+travels inside the wheel as a pickle at `src/spamanalyzer/ml/classifier.pkl`, trained on a dataset of
+19,900 emails, and can be retrained on your own data.
+
+The classifier is the least interesting half; the feature extraction is where the work went. Parsing
+goes through mail-parser, and the signal comes from three places. From the headers: SPF, DKIM and
+DMARC, whether the sender domain matches the first received header, RFC 2822 date compliance and
+time-zone validity. From the body: links, images, mailto links, JavaScript, HTML and HTML forms, the
+percentage of uppercase text, the percentage of blacklisted words, and TextBlob polarity and
+subjectivity. And from the attachments.
+
+The package splits in two. `spamanalyzer` is the library — typed, shipping `py.typed`, usable on its
+own — and `app` is the CLI layer on top of Click and click-extra, with three commands: `analyze`,
+`configure` and `plugins`. Output can be JSON. On first run the program writes a configuration
+directory to `~/.config/spamanalyzer/` holding the paths to the wordlist and the model. Plugins are
+ordinary Click commands carrying a `@plugin` decorator from `spamanalyzer.plugins`.
+
+The library API is small, and asynchronous:
+
+```python
+from spamanalyzer import SpamAnalyzer
+
+analyzer = SpamAnalyzer(forbidden_words=["viagra", "cialis"])
+analysis = await analyzer.analyze("path/to/email.txt")
+```
+
+I no longer develop it. The last release, 1.0.11, went out in November 2023; a few dependency and
+documentation commits followed that December, and after that the only activity is Dependabot. PyPI
+still carries the `3 - Alpha` development status the project never grew out of. The code is GPL-3.0 and needs Python 3.10 or later. The documentation site it used to advertise,
+`docs.spamanalyzer.tech`, no longer resolves, so the repository and the package are what is left.

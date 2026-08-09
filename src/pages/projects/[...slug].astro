@@ -1,0 +1,174 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { softwareSchema } from '@/lib/schema';
+import { site } from '@/config/site';
+import '@/styles/prose.css';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id.replace(/\/index$/, '') },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const p = project.data;
+
+const LINKS = [
+  ['repo', 'repository'],
+  ['pypi', 'pypi'],
+  ['hf', 'hugging face'],
+  ['docs', 'documentation'],
+] as const;
+const links = LINKS.filter(([k]) => p[k]).map(([k, label]) => ({ label, href: p[k]! }));
+
+const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `${p.year}`;
+
+const schema = [
+  softwareSchema({
+    title: p.title,
+    description: p.description,
+    repo: p.repo,
+    stack: p.stack,
+    url: new URL(Astro.url.pathname, site.url).href,
+  }),
+];
+---
+
+<Base title={p.title} description={p.description} schema={schema}>
+  <article>
+    <header>
+      <p class="meta">
+        <a href="/projects/">projects</a>
+        <span class="sep">/</span>
+        <span>{span}</span>
+        <span class:list={['status', `status--${p.status}`]}>{p.status}</span>
+      </p>
+      <h1>{p.title}</h1>
+      <p class="tagline">{p.tagline}</p>
+
+      <dl class="facts">
+        <dt>role</dt>
+        <dd>{p.role}</dd>
+        {
+          p.stack.length > 0 && (
+            <>
+              <dt>stack</dt>
+              <dd>{p.stack.join(' · ')}</dd>
+            </>
+          )
+        }
+        {
+          links.length > 0 && (
+            <>
+              <dt>links</dt>
+              <dd class="links">
+                {links.map((l) => (
+                  <a href={l.href}>{l.label}</a>
+                ))}
+              </dd>
+            </>
+          )
+        }
+        {
+          p.paper && (
+            <>
+              <dt>paper</dt>
+              <dd>
+                <a href={`/publications/#${p.paper}`}>see publications</a>
+              </dd>
+            </>
+          )
+        }
+      </dl>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  article {
+    max-width: var(--measure);
+  }
+
+  header {
+    border-block-end: 1px solid var(--rule);
+    padding-block-end: 1.5rem;
+    margin-block-end: 2rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-end: 0.8rem;
+  }
+
+  .meta a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+
+  .meta a:hover {
+    color: var(--accent);
+  }
+
+  .status::before {
+    content: '● ';
+  }
+  .status--active {
+    color: var(--accent);
+  }
+  .status--maintained {
+    color: var(--theme-heritage);
+  }
+  .status--research {
+    color: var(--theme-multimodal);
+  }
+  .status--archived {
+    color: var(--fg-faint);
+  }
+
+  h1 {
+    font-size: var(--step-3);
+  }
+
+  .tagline {
+    color: var(--accent);
+    margin-block: 0.4rem 1.4rem;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 0.4rem 1rem;
+    font-size: var(--step--1);
+  }
+
+  dt {
+    color: var(--fg-faint);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--fg-dim);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  dd a {
+    color: var(--link);
+  }
+</style>

@@ -1,103 +1,48 @@
-name: Update Google Scholar Citations
+name: Update citations
 
 on:
   schedule:
-    - cron: "0 0 * * 1" # Monday
-    - cron: "0 0 * * 3" # Wednesday
-    - cron: "0 0 * * 5" # Friday
+    - cron: "0 4 * * 1,3,5" # Mon/Wed/Fri
   workflow_dispatch:
 
-jobs:
-  update-citations:
-    runs-on: ubuntu-latest
+permissions:
+  contents: write
 
+concurrency:
+  group: data-citations
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # PAT rather than GITHUB_TOKEN: the built-in token deliberately does not
+      # trigger downstream workflows, and this push needs to trigger Deploy.
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.PAT_TOKEN }}
-      # See docs/CUSTOMIZE.md for details on how to set up PAT for triggering subsequent workflows
-      #        with:
-      #          token: ${{ secrets.PAT }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
 
-      - name: Install dependencies
-        run: |
-          echo "🔧 Installing dependencies..."
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      - run: pip install -r scripts/requirements-data.txt
 
-      - name: Save current citations.yml hash
-        id: before
+      # Scholar throttles datacenter IPs, so a failed run must leave the existing
+      # numbers alone rather than fail the job. The script already merges by max.
+      - name: Refresh citation counts
+        continue-on-error: true
+        run: timeout 300 python scripts/update_citations.py
+
+      - name: Commit if changed
         run: |
-          echo "📦 Checking existing citations.yml hash..."
-          if [ -f _data/citations.yml ]; then
-            sha_before=$(sha256sum _data/citations.yml | awk '{print $1}')
-            echo "sha_before=$sha_before" >> $GITHUB_OUTPUT
-            echo "📝 SHA before: $sha_before"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/citations.json
+          if git diff --staged --quiet; then
+            echo "citations unchanged" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "sha_before=none" >> $GITHUB_OUTPUT
-            echo "📝 No existing citations.yml file found."
-          fi
-
-      - name: Run citation update script
-        id: run_citation_update
-        shell: bash
-        run: |
-          set +e
-          echo "🚀 Running citation update script (single attempt)..."
-          start_time=$(date)
-          timeout 90 python bin/update_scholar_citations.py
-          status=$?
-          end_time=$(date)
-          if [ $status -eq 0 ]; then
-            echo "✅ Citation update succeeded (started at $start_time, ended at $end_time)."
-            echo "✅ Citation update succeeded." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ Citation update script failed with exit code $status (started at $start_time, ended at $end_time)."
-            echo "❌ Citation update script failed with exit code $status." >> $GITHUB_STEP_SUMMARY
-          fi
-          set -e
-
-      - name: Save new citations.yml hash
-        id: after
-        run: |
-          echo "🔍 Checking updated citations.yml hash..."
-          if [ -f _data/citations.yml ]; then
-            sha_after=$(sha256sum _data/citations.yml | awk '{print $1}')
-            echo "sha_after=$sha_after" >> $GITHUB_OUTPUT
-            echo "📝 SHA after: $sha_after"
-          else
-            echo "sha_after=none" >> $GITHUB_OUTPUT
-            echo "📝 citations.yml was not created or is missing."
-          fi
-
-      - name: Report citations.yml change in summary
-        run: |
-          echo "📋 Comparing citation file hashes..."
-          if [ "${{ steps.before.outputs.sha_before }}" != "${{ steps.after.outputs.sha_after }}" ]; then
-            echo "✅ _data/citations.yml was updated."
-            echo "✅ _data/citations.yml was updated." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "ℹ️ _data/citations.yml was not changed."
-            echo "ℹ️ _data/citations.yml was not changed." >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: Configure Git
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          echo "🔧 Git configured."
-
-      - name: Commit and push if changed
-        run: |
-          git add _data/citations.yml
-          git diff --staged --quiet || (
-            echo "📤 Committing and pushing changes..."
-            git commit -m "Update Google Scholar citations"
+            git commit -m "🤖 Update citation counts"
             git push
-          )
+            echo "citations updated" >> "$GITHUB_STEP_SUMMARY"
+          fi

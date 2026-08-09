@@ -1,0 +1,179 @@
+/**
+ * Print / PDF stylesheet.
+ *
+ * Also used for the standalone post PDFs: Google Scholar strongly prefers a
+ * crawlable PDF on the same host at `citation_pdf_url`, and that PDF has to look
+ * like a document rather than a screenshot of a website.
+ */
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm 18mm;
+  }
+
+  :root {
+    /* Force the light palette regardless of the stored theme. */
+    --bg: #fff;
+    --bg-1: #fff;
+    --bg-2: #f4f4f2;
+    --bg-inset: #fafaf8;
+    --fg: #111;
+    --fg-dim: #333;
+    --fg-faint: #666;
+    --rule: #ccc;
+    --rule-strong: #999;
+    --accent: #000;
+    --link: #000;
+  }
+
+  html {
+    background: #fff !important;
+    background-image: none !important; /* kill the grid */
+  }
+
+  body {
+    background: #fff !important;
+    color: #111;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  /* Chrome that means nothing on paper. */
+  header,
+  footer,
+  nav,
+  aside,
+  .skip-link,
+  #theme-toggle,
+  .copy,
+  .toc,
+  form,
+  .links,
+  .facets {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .layout {
+    display: block !important;
+  }
+
+  article {
+    max-width: none !important;
+  }
+
+  /* A serif body reads better in print than the screen's Inter. */
+  .prose {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: none;
+  }
+
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  h1 {
+    font-size: 20pt;
+  }
+
+  .prose h2 {
+    font-size: 14pt;
+  }
+
+  .prose h3 {
+    font-size: 12pt;
+  }
+
+  pre,
+  code,
+  .expressive-code {
+    font-family: 'DejaVu Sans Mono', Consolas, monospace;
+    font-size: 8.5pt;
+  }
+
+  pre,
+  blockquote,
+  figure,
+  table,
+  .callout,
+  .expressive-code {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+    break-inside: avoid;
+  }
+
+  /* Anchors are useless on paper; spell the destination out instead. */
+  .prose a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  .heading-anchor {
+    display: none !important;
+  }
+
+  /* Disclosure widgets must be open or their content vanishes from the PDF. */
+  details {
+    display: block !important;
+  }
+
+  details > summary {
+    display: none !important;
+  }
+}
+
+/*
+ * `?print=1` renders the print layout on screen, so the Playwright PDF step and
+ * a human previewing it see exactly the same thing.
+ */
+:root[data-print] header,
+:root[data-print] footer,
+:root[data-print] aside,
+:root[data-print] .skip-link {
+  display: none !important;
+}
+
+:root[data-print] {
+  --bg: #fff;
+  --bg-1: #fff;
+  --bg-2: #f4f4f2;
+  --bg-inset: #fafaf8;
+  --fg: #111;
+  --fg-dim: #333;
+  --fg-faint: #666;
+  --rule: #ccc;
+  --rule-strong: #999;
+  --accent: #000;
+  --link: #000;
+  color-scheme: light;
+}
+
+:root[data-print] html,
+:root[data-print] body {
+  background: #fff !important;
+  background-image: none !important;
+}
+
+:root[data-print] .prose {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+:root[data-print] .layout {
+  display: block !important;
+}

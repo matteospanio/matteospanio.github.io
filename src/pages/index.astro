@@ -1,0 +1,231 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/config/site';
+import type { Publication } from '@/lib/bib';
+import { sortPublications } from '@/lib/bib';
+import '@/styles/prose.css';
+
+// A single standalone page, so a direct MDX import beats defining a collection for it.
+import About from '@/content/about.mdx';
+import StatRow from '@/components/viz/StatRow.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const news = (await getCollection('news'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
+
+const pubs = (await getCollection('publications')).map((e) => e.data as Publication);
+const selected = sortPublications(pubs.filter((p) => p.selected));
+
+const postHref = (p: (typeof posts)[number]) =>
+  `/blog/${p.data.date.getFullYear()}/${p.data.slug}/`;
+const day = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base>
+  <section class="hero">
+    <p class="prompt">&gt; whoami</p>
+    <h1>{site.name}</h1>
+    <p class="role">{site.jobTitle} · {site.affiliation.parent}</p>
+  </section>
+
+  <section class="about prose">
+    <About />
+  </section>
+
+  <section class="numbers">
+    <StatRow href="/impact/" />
+  </section>
+
+  <div class="columns">
+    <section>
+      <h2 class="label">selected work</h2>
+      <ul class="pubs">
+        {
+          selected.map((p) => (
+            <li>
+              <a href={`/publications/#${p.id}`}>
+                <span class="y">{p.year}</span>
+                <span class="t">{p.title}</span>
+              </a>
+              <p class="v">{p.venue}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="more"><a href="/publications/">all {pubs.length} publications →</a></p>
+    </section>
+
+    <section>
+      <h2 class="label">news</h2>
+      <ul class="news">
+        {
+          news.map((n) => (
+            <li>
+              <time datetime={n.data.date.toISOString()}>{day(n.data.date)}</time>
+              <span>{n.data.title}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="more"><a href="/news/">all news →</a></p>
+    </section>
+  </div>
+
+  <section>
+    <h2 class="label">recent writing</h2>
+    <ul class="posts">
+      {
+        posts.map((p) => (
+          <li>
+            <a href={postHref(p)}>
+              <time datetime={p.data.date.toISOString()}>{day(p.data.date)}</time>
+              <span class="t">{p.data.title}</span>
+            </a>
+            <p class="d">{p.data.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="more"><a href="/blog/">all posts →</a></p>
+  </section>
+</Base>
+
+<style>
+  section + section,
+  .columns + section {
+    margin-block-start: 4rem;
+  }
+
+  .prompt {
+    color: var(--accent);
+    font-size: var(--step--1);
+  }
+
+  h1 {
+    font-size: var(--step-3);
+    margin-block: 0.4rem 0.5rem;
+  }
+
+  .role {
+    color: var(--fg-dim);
+  }
+
+  .about {
+    margin-block-start: 2.5rem;
+  }
+
+  .numbers {
+    margin-block-start: 3rem;
+  }
+
+  /* The about copy sets its own h2s; keep them from shouting over the section labels. */
+  .about :global(h2) {
+    font-size: var(--step-1);
+  }
+
+  .columns {
+    margin-block-start: 4rem;
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .columns {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .label {
+    margin-block-end: 1.2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1.1rem;
+    max-width: var(--measure);
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  time,
+  .y {
+    color: var(--fg-faint);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .pubs a,
+  .posts a,
+  .news li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+  }
+
+  .t {
+    border-block-end: 1px solid transparent;
+  }
+
+  .pubs a:hover .t,
+  .posts a:hover .t {
+    color: var(--accent);
+    border-block-end-color: var(--accent);
+  }
+
+  .v,
+  .d {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-start: 0.25rem;
+    padding-inline-start: calc(4ch + 0.9rem);
+  }
+
+  .d {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+    padding-inline-start: calc(10ch + 0.9rem);
+  }
+
+  .news li {
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+  }
+
+  .more {
+    margin-block-start: 1.4rem;
+    font-size: var(--step--1);
+  }
+
+  .more a {
+    color: var(--fg-dim);
+  }
+
+  .more a:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 560px) {
+    .pubs a,
+    .posts a {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .v,
+    .d {
+      padding-inline-start: 0;
+    }
+  }
+</style>

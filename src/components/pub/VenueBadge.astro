@@ -1,0 +1,36 @@
+---
+import venuesData from '@/data/venues.json';
+
+interface Props {
+  venueKey: string | null;
+  inPress?: boolean;
+}
+
+const { venueKey, inPress = false } = Astro.props;
+const venue = venueKey ? (venuesData as Record<string, any>)[venueKey] : null;
+---
+
+{
+  venue && (
+    <span class="badge" style={`--badge: ${venue.color}`} title={venue.full}>
+      {venue.label}
+    </span>
+  )
+}
+{inPress && <span class="badge badge--press" title="Accepted, not yet published">in press</span>}
+
+<style>
+  .badge {
+    font-size: var(--step--1);
+    line-height: 1.4;
+    padding: 0.05em 0.5em;
+    border: 1px solid color-mix(in oklab, var(--badge, var(--fg-dim)) 55%, transparent);
+    color: var(--badge, var(--fg-dim));
+    background: color-mix(in oklab, var(--badge, var(--fg-dim)) 10%, transparent);
+    white-space: nowrap;
+  }
+
+  .badge--press {
+    --badge: var(--warn);
+  }
+</style>

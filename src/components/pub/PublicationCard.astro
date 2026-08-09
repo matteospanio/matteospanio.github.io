@@ -1,0 +1,247 @@
+---
+import { Image } from 'astro:assets';
+import type { Publication } from '@/lib/bib';
+import AuthorList from './AuthorList.astro';
+import VenueBadge from './VenueBadge.astro';
+import CopyButton from '@/components/CopyButton.astro';
+
+interface Props {
+  pub: Publication;
+}
+
+const { pub } = Astro.props;
+
+/**
+ * Preview thumbnails are named in the .bib as bare filenames, so they cannot go
+ * through frontmatter `image()`. Glob them at build time instead — this still
+ * runs through astro:assets, so they get optimised and responsive.
+ */
+const previews = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/publications/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+const preview = pub.preview ? previews[`/src/assets/publications/${pub.preview}`]?.default : undefined;
+
+const LINK_ORDER = [
+  ['pdf', 'PDF'],
+  ['arxiv', 'arXiv'],
+  ['doi', 'DOI'],
+  ['code', 'code'],
+  ['html', 'page'],
+  ['website', 'site'],
+  ['poster', 'poster'],
+  ['url', 'link'],
+] as const;
+
+// `url` is often the same destination as doi/html; only offer it as a last resort.
+const links = LINK_ORDER.filter(([key]) => {
+  const value = pub.links[key as keyof typeof pub.links];
+  if (!value) return false;
+  if (key === 'url' && (pub.links.doi || pub.links.html || pub.links.pdf)) return false;
+  return true;
+}).map(([key, label]) => ({ label, href: pub.links[key as keyof typeof pub.links]! }));
+
+const bibId = `bib-${pub.id.replace(/[^a-zA-Z0-9]/g, '-')}`;
+---
+
+<article class="pub" id={pub.id}>
+  <div class="thumb">
+    {
+      preview ? (
+        <Image src={preview} alt="" widths={[128, 256]} sizes="128px" loading="lazy" decoding="async" />
+      ) : (
+        <span class="thumb__none" aria-hidden="true">
+          {pub.type === 'thesis' ? '§' : '¶'}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="body">
+    <p class="meta">
+      <span class="year">{pub.year}</span>
+      <VenueBadge venueKey={pub.venueKey} inPress={pub.inPress} />
+      {pub.selected && <span class="starred" title="Selected work">selected</span>}
+      {
+        pub.citations !== null && pub.citations > 0 && (
+          <span class="cites" title="Citations recorded by Google Scholar">
+            {pub.citations} {pub.citations === 1 ? 'citation' : 'citations'}
+          </span>
+        )
+      }
+    </p>
+
+    <h3 lang={pub.lang}>{pub.title}</h3>
+    <AuthorList authors={pub.authors} />
+
+    {pub.venue && <p class="venue">{pub.venue}</p>}
+
+    {
+      links.length > 0 && (
+        <p class="links">
+          {links.map((l) => (
+            <a href={l.href}>{l.label}</a>
+          ))}
+        </p>
+      )
+    }
+
+    {
+      pub.abstract && (
+        <details class="disclosure">
+          <summary>abstract</summary>
+          <p lang={pub.lang}>{pub.abstract}</p>
+        </details>
+      )
+    }
+
+    <details class="disclosure">
+      <summary>bibtex</summary>
+      <div class="bibtex">
+        <CopyButton target={bibId} />
+        <pre id={bibId} tabindex="0">{pub.raw}</pre>
+      </div>
+    </details>
+  </div>
+</article>
+
+<style>
+  .pub {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 1.25rem;
+    padding-block: 1.75rem;
+    border-block-start: 1px solid var(--rule);
+    scroll-margin-top: 5rem;
+  }
+
+  .thumb {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .thumb__none {
+    color: var(--fg-faint);
+    font-size: 1.6rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+    margin-block-end: 0.5rem;
+  }
+
+  .year {
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .starred {
+    color: var(--accent);
+  }
+
+  .starred::before {
+    content: '★ ';
+  }
+
+  .cites {
+    color: var(--fg-faint);
+  }
+
+  h3 {
+    font-size: var(--step-1);
+    margin-block-end: 0.4rem;
+    text-wrap: pretty;
+  }
+
+  .venue {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-start: 0.3rem;
+    font-style: italic;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-start: 0.7rem;
+  }
+
+  .links a {
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    text-decoration: none;
+    border: 1px solid var(--rule-strong);
+    padding: 0.05em 0.55em;
+  }
+
+  .links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .disclosure {
+    margin-block-start: 0.7rem;
+    font-size: var(--step--1);
+  }
+
+  .disclosure summary {
+    cursor: pointer;
+    color: var(--fg-faint);
+    width: fit-content;
+  }
+
+  .disclosure summary:hover {
+    color: var(--accent);
+  }
+
+  .disclosure p {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+    margin-block-start: 0.6rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .bibtex {
+    position: relative;
+    margin-block-start: 0.6rem;
+  }
+
+  .bibtex :global(.copy) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--bg-2);
+  }
+
+  pre {
+    background: var(--bg-inset);
+    border: 1px solid var(--rule);
+    padding: 0.9rem;
+    overflow-x: auto;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 560px) {
+    .pub {
+      grid-template-columns: 72px 1fr;
+      gap: 0.9rem;
+    }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) ||
+    a.data.order - b.data.order ||
+    b.data.year - a.data.year,
+);
+---
+
+<Base
+  title="projects"
+  description="Open-source software and research artifacts: GPU-accelerated audio DSP, symbolic music models and datasets, and research tooling."
+>
+  <h1 class="label">projects</h1>
+  <p class="summary">Software and models, mostly open source.</p>
+
+  <div class="grid">
+    {projects.map((p) => <ProjectCard project={p} href={`/projects/${p.id.replace(/\/index$/, '')}/`} />)}
+  </div>
+</Base>
+
+<style>
+  h1 {
+    margin-block-end: 0.8rem;
+  }
+
+  .summary {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-end: 2rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: 1rem;
+  }
+</style>

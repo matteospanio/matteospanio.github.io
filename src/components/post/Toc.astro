@@ -1,0 +1,108 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+// h2 and h3 only: deeper levels make the rail longer than the post.
+const headings = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  headings.length > 2 && (
+    <nav class="toc" aria-labelledby="toc-h">
+      <p id="toc-h" class="toc__title">contents</p>
+      <ol>
+        {headings.map((h) => (
+          <li class:list={[`d${h.depth}`]}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    font-size: var(--step--1);
+  }
+
+  .toc__title {
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+    margin-block-end: 0.8rem;
+  }
+
+  .toc__title::before {
+    content: '## ';
+    color: var(--accent);
+  }
+
+  ol {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+    border-inline-start: 1px solid var(--rule);
+  }
+
+  li {
+    padding-inline-start: 0.9rem;
+  }
+
+  li.d3 {
+    padding-inline-start: 1.9rem;
+  }
+
+  a {
+    color: var(--fg-dim);
+    text-decoration: none;
+    display: block;
+    line-height: 1.4;
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+
+  /* Highlights the section currently in view; set by the script below. */
+  a[data-current] {
+    color: var(--accent);
+  }
+
+  @media print {
+    .toc {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const links = new Map<string, HTMLAnchorElement>();
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('.toc a')) {
+    links.set(decodeURIComponent(link.hash.slice(1)), link);
+  }
+
+  if (links.size > 0) {
+    const headings = [...links.keys()]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    // Top-most heading that has crossed the top of the viewport wins.
+    const observer = new IntersectionObserver(
+      () => {
+        let current: HTMLElement | undefined;
+        for (const heading of headings) {
+          if (heading.getBoundingClientRect().top < 120) current = heading;
+        }
+        for (const link of links.values()) delete link.dataset.current;
+        if (current) links.get(current.id)?.setAttribute('data-current', '');
+      },
+      { rootMargin: '-100px 0px -70% 0px', threshold: 0 },
+    );
+
+    for (const heading of headings) observer.observe(heading);
+  }
+</script>

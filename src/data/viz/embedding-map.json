@@ -1,0 +1,953 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-10",
+  "model": "intfloat/multilingual-e5-base",
+  "projection": {
+    "method": "umap",
+    "seed": 42,
+    "n_neighbors": 10,
+    "min_dist": 0.3,
+    "metric": "cosine",
+    "note": "UMAP is fitted on chunk documents, chunk coordinates are averaged into one node per source item, then rotated onto principal axes and scaled uniformly (aspect preserved) into [-1, 1].",
+    "extent": {
+      "x": [
+        -0.6713,
+        1.0
+      ],
+      "y": [
+        -0.2758,
+        0.4539
+      ]
+    }
+  },
+  "sourceHash": "c18b10f607782867d6ada84a25b2fecf27d0a8d9b4e1d99c1e2ac20fc722188d",
+  "sanity": {
+    "n": 36,
+    "chunks": 81,
+    "silhouetteVsThemes": 0.1029,
+    "silhouetteVsThemesEmbedding": 0.1396,
+    "meanIntraTheme": 0.855,
+    "meanInterTheme": 0.8142,
+    "seedStability": 0.9659,
+    "edgeFloor": 0.72,
+    "edgeFloorRejected": 0,
+    "edgeWeightRange": [
+      0.8194,
+      0.9541
+    ],
+    "crossThemeEdges": 32
+  },
+  "sources": {
+    "bib": {
+      "ok": true,
+      "entries": 17,
+      "used": 17
+    },
+    "blog": {
+      "ok": true,
+      "used": 5
+    },
+    "projects": {
+      "ok": true,
+      "used": 6
+    },
+    "news": {
+      "ok": true,
+      "used": 8
+    },
+    "model": {
+      "ok": true,
+      "name": "intfloat/multilingual-e5-base"
+    }
+  },
+  "themes": [
+    {
+      "id": "cultural-heritage",
+      "label": "AI for audio cultural heritage",
+      "color": "#5eead4",
+      "n": 10
+    },
+    {
+      "id": "multimodal",
+      "label": "Multimodal and crossmodal AI",
+      "color": "#c084fc",
+      "n": 6
+    },
+    {
+      "id": "symbolic-music",
+      "label": "Symbolic music and LilyPond",
+      "color": "#fbbf24",
+      "n": 5
+    },
+    {
+      "id": "dsp-tooling",
+      "label": "Audio DSP tooling",
+      "color": "#4ade80",
+      "n": 5
+    },
+    {
+      "id": "musicology",
+      "label": "Musicology and performance",
+      "color": "#f87171",
+      "n": 3
+    },
+    {
+      "id": "engineering",
+      "label": "Software and research engineering",
+      "color": "#7dd3fc",
+      "n": 7
+    }
+  ],
+  "nodes": [
+    {
+      "id": "10.1007/978-3-031-51026-7_26",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "Enhancing Preservation and Restoration of Open Reel Audio Tapes Through Computer Vision",
+      "short": "Enhancing Preservation and…",
+      "year": 2024,
+      "venue": "ICIAP",
+      "url": "/publications/#10.1007/978-3-031-51026-7_26",
+      "chunks": 3,
+      "x": -0.626,
+      "y": 0.1543
+    },
+    {
+      "id": "https://doi.org/10.13140/rg.2.2.36838.50247",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence",
+      "short": "A study on Equalization Curve…",
+      "year": 2023,
+      "venue": "Unpublished",
+      "url": "/publications/#https://doi.org/10.13140/rg.2.2.36838.50247",
+      "chunks": 2,
+      "x": -0.6713,
+      "y": 0.0963
+    },
+    {
+      "id": "https://doi.org/10.13140/rg.2.2.17327.82088",
+      "kind": "paper",
+      "theme": "musicology",
+      "title": "TUTTI QUANTI VOGLION FARE JAZZ - Contaminazioni Jazz nel repertorio clarinettistico del '900",
+      "short": "TUTTI QUANTI VOGLION FARE JAZZ",
+      "year": 2021,
+      "venue": "Master's Thesis",
+      "url": "/publications/#https://doi.org/10.13140/rg.2.2.17327.82088",
+      "chunks": 1,
+      "x": -0.2452,
+      "y": -0.203
+    },
+    {
+      "id": "sphor:woo15",
+      "kind": "paper",
+      "theme": "musicology",
+      "title": "Variations on Theme from Alruna",
+      "short": "Variations on Theme from Alruna",
+      "year": 2019,
+      "venue": "Edizioni Eufonia",
+      "url": "/publications/#sphor:woo15",
+      "chunks": 1,
+      "x": -0.1934,
+      "y": -0.215
+    },
+    {
+      "id": "https://doi.org/10.13140/rg.2.2.24143.56489",
+      "kind": "paper",
+      "theme": "musicology",
+      "title": "IL CLARINETTO ALL'OPERA",
+      "short": "IL CLARINETTO ALL'OPERA",
+      "year": 2019,
+      "venue": "Bachelor's Thesis",
+      "url": "/publications/#https://doi.org/10.13140/rg.2.2.24143.56489",
+      "chunks": 4,
+      "x": -0.379,
+      "y": -0.2728
+    },
+    {
+      "id": "bosi2024a",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard",
+      "short": "A novel derivative-based approach…",
+      "year": 2024,
+      "venue": "AES",
+      "url": "/publications/#bosi2024a",
+      "chunks": 2,
+      "x": -0.6479,
+      "y": 0.0635
+    },
+    {
+      "id": "ieeeaccess2024",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
+      "short": "From Tape to Code",
+      "year": 2024,
+      "venue": "IEEEAccess",
+      "url": "/publications/#ieeeaccess2024",
+      "chunks": 2,
+      "x": -0.5746,
+      "y": 0.0668
+    },
+    {
+      "id": "Cinar2024",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "Filming the sound: Anomaly Detection on Audio Tape Recordings using Computer Vision Algorithms",
+      "short": "Filming the sound",
+      "year": 2024,
+      "venue": "IAI4CH",
+      "url": "/publications/#Cinar2024",
+      "chunks": 1,
+      "x": -0.5105,
+      "y": 0.0654
+    },
+    {
+      "id": "Spanio2024",
+      "kind": "paper",
+      "theme": "multimodal",
+      "title": "Towards Emotionally Aware AI: Challenges and Opportunities in the Evolution of Multimodal Generative Models",
+      "short": "Towards Emotionally Aware AI",
+      "year": 2024,
+      "venue": "AIxIADC",
+      "url": "/publications/#Spanio2024",
+      "chunks": 2,
+      "x": -0.1948,
+      "y": -0.0075
+    },
+    {
+      "id": "spanio_frontiers_2025",
+      "kind": "paper",
+      "theme": "multimodal",
+      "title": "A multimodal symphony: integrating taste and sound through generative AI",
+      "short": "A multimodal symphony",
+      "year": 2025,
+      "venue": "Frontiers in CS",
+      "url": "/publications/#spanio_frontiers_2025",
+      "chunks": 1,
+      "x": 0.0634,
+      "y": -0.1362
+    },
+    {
+      "id": "fiordelmondo_nime_2025",
+      "kind": "paper",
+      "theme": "engineering",
+      "title": "Towards a Repository Template for Music Technology\n Research",
+      "short": "Towards a Repository Template for…",
+      "year": 2025,
+      "venue": "NIME",
+      "url": "/publications/#fiordelmondo_nime_2025",
+      "chunks": 1,
+      "x": -0.1557,
+      "y": -0.1245
+    },
+    {
+      "id": "spanio2025torchfx",
+      "kind": "paper",
+      "theme": "dsp-tooling",
+      "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
+      "short": "TorchFX",
+      "year": 2025,
+      "venue": "DAFX",
+      "url": "/publications/#spanio2025torchfx",
+      "chunks": 1,
+      "x": 0.6773,
+      "y": -0.2758
+    },
+    {
+      "id": "spanio2026bmdataset",
+      "kind": "paper",
+      "theme": "symbolic-music",
+      "title": "BMdataset: A Musicologically Curated LilyPond Dataset",
+      "short": "BMdataset",
+      "year": 2026,
+      "venue": "SMC",
+      "url": "/publications/#spanio2026bmdataset",
+      "chunks": 1,
+      "x": -0.0725,
+      "y": -0.1507
+    },
+    {
+      "id": "spanio2026multimodal",
+      "kind": "paper",
+      "theme": "multimodal",
+      "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
+      "short": "Multimodal Dataset Normalization and…",
+      "year": 2026,
+      "venue": "arXiv preprint arXiv:2604.10632",
+      "url": "/publications/#spanio2026multimodal",
+      "chunks": 1,
+      "x": -0.0885,
+      "y": -0.0914
+    },
+    {
+      "id": "canazza2026preserving",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "Preserving Memory, Expanding Creativity: Human-Centered AI Trajectory in Engineering and Music Research at the CSC of Padua University",
+      "short": "Preserving Memory, Expanding…",
+      "year": 2026,
+      "venue": "Ital-IA",
+      "url": "/publications/#canazza2026preserving",
+      "chunks": 1,
+      "x": -0.2023,
+      "y": 0.0433
+    },
+    {
+      "id": "spanio2026lilypond",
+      "kind": "paper",
+      "theme": "symbolic-music",
+      "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
+      "short": "Can LLMs understand LilyPond",
+      "year": 2026,
+      "venue": "Ital-IA",
+      "url": "/publications/#spanio2026lilypond",
+      "chunks": 1,
+      "x": -0.066,
+      "y": 0.0587
+    },
+    {
+      "id": "pretto2026advanced",
+      "kind": "paper",
+      "theme": "cultural-heritage",
+      "title": "Toward an Advanced Web Interface for Analyzing and Annotating Digitized Audio Tape Recordings",
+      "short": "Toward an Advanced Web Interface for…",
+      "year": 2026,
+      "venue": "AVI-CH",
+      "url": "/publications/#pretto2026advanced",
+      "chunks": 1,
+      "x": -0.3431,
+      "y": -0.0286
+    },
+    {
+      "id": "post:DSP-il-suono-in-digitale",
+      "kind": "post",
+      "theme": "dsp-tooling",
+      "title": "DSP: il suono in digitale",
+      "short": "DSP",
+      "year": 2021,
+      "venue": null,
+      "url": "/blog/2021/DSP-il-suono-in-digitale/",
+      "chunks": 4,
+      "x": -0.558,
+      "y": -0.2611
+    },
+    {
+      "id": "post:Principles-of-statistic",
+      "kind": "post",
+      "theme": "engineering",
+      "title": "Principles of statistics",
+      "short": "Principles of statistics",
+      "year": 2022,
+      "venue": null,
+      "url": "/blog/2022/Principles-of-statistic/",
+      "chunks": 5,
+      "x": 0.768,
+      "y": 0.4539
+    },
+    {
+      "id": "post:python-environments",
+      "kind": "post",
+      "theme": "engineering",
+      "title": "Python's virtual environments",
+      "short": "Python's virtual environments",
+      "year": 2024,
+      "venue": null,
+      "url": "/blog/2024/python-environments/",
+      "chunks": 7,
+      "x": 1.0,
+      "y": -0.0395
+    },
+    {
+      "id": "post:python-static-typing",
+      "kind": "post",
+      "theme": "engineering",
+      "title": "Python's Static Typing Safari: In Search of Code Clarity",
+      "short": "Python's Static Typing Safari",
+      "year": 2023,
+      "venue": null,
+      "url": "/blog/2023/python-static-typing/",
+      "chunks": 6,
+      "x": 0.9698,
+      "y": 0.2065
+    },
+    {
+      "id": "post:slow-python",
+      "kind": "post",
+      "theme": "dsp-tooling",
+      "title": "Making scientific Python blazingly fast with PyTorch",
+      "short": "Making scientific Python blazingly…",
+      "year": 2025,
+      "venue": null,
+      "url": "/blog/2025/slow-python/",
+      "chunks": 4,
+      "x": 0.7398,
+      "y": -0.1047
+    },
+    {
+      "id": "project:lilybench",
+      "kind": "project",
+      "theme": "symbolic-music",
+      "title": "LilyBench",
+      "short": "LilyBench",
+      "year": 2026,
+      "venue": null,
+      "url": "/projects/lilybench/",
+      "chunks": 4,
+      "x": 0.1891,
+      "y": 0.1173
+    },
+    {
+      "id": "project:lilybert",
+      "kind": "project",
+      "theme": "symbolic-music",
+      "title": "lilyBERT",
+      "short": "lilyBERT",
+      "year": 2025,
+      "venue": null,
+      "url": "/projects/lilybert/",
+      "chunks": 3,
+      "x": 0.2208,
+      "y": 0.0654
+    },
+    {
+      "id": "project:ml-project-template",
+      "kind": "project",
+      "theme": "engineering",
+      "title": "ML Project template",
+      "short": "ML Project template",
+      "year": 2025,
+      "venue": null,
+      "url": "/projects/ml-project-template/",
+      "chunks": 4,
+      "x": 0.5173,
+      "y": 0.0384
+    },
+    {
+      "id": "project:spam-analyzer",
+      "kind": "project",
+      "theme": "engineering",
+      "title": "spam-analyzer",
+      "short": "spam-analyzer",
+      "year": 2022,
+      "venue": null,
+      "url": "/projects/spam-analyzer/",
+      "chunks": 3,
+      "x": 0.4301,
+      "y": 0.1951
+    },
+    {
+      "id": "project:tasty-musicgen",
+      "kind": "project",
+      "theme": "multimodal",
+      "title": "tasty-musicgen",
+      "short": "tasty-musicgen",
+      "year": 2025,
+      "venue": null,
+      "url": "/projects/tasty-musicgen/",
+      "chunks": 3,
+      "x": 0.187,
+      "y": -0.0841
+    },
+    {
+      "id": "project:torchfx",
+      "kind": "project",
+      "theme": "dsp-tooling",
+      "title": "TorchFX",
+      "short": "TorchFX",
+      "year": 2025,
+      "venue": null,
+      "url": "/projects/torchfx/",
+      "chunks": 4,
+      "x": 0.5828,
+      "y": -0.1448
+    },
+    {
+      "id": "news:2026-ItalIA",
+      "kind": "news",
+      "theme": "cultural-heritage",
+      "title": "Ital-IA 2026",
+      "short": "Ital-IA 2026",
+      "year": 2026,
+      "venue": null,
+      "url": "/news/#2026-ItalIA",
+      "chunks": 1,
+      "x": -0.2261,
+      "y": 0.1604
+    },
+    {
+      "id": "news:aes2024NY",
+      "kind": "news",
+      "theme": "cultural-heritage",
+      "title": "AES 2024",
+      "short": "AES 2024",
+      "year": 2024,
+      "venue": null,
+      "url": "/news/#aes2024NY",
+      "chunks": 1,
+      "x": -0.4566,
+      "y": 0.1583
+    },
+    {
+      "id": "news:aixia2024",
+      "kind": "news",
+      "theme": "multimodal",
+      "title": "AIxIA 2024",
+      "short": "AIxIA 2024",
+      "year": 2024,
+      "venue": null,
+      "url": "/news/#aixia2024",
+      "chunks": 1,
+      "x": -0.3303,
+      "y": 0.1211
+    },
+    {
+      "id": "news:ann_4",
+      "kind": "news",
+      "theme": "engineering",
+      "title": "ACDL",
+      "short": "ACDL",
+      "year": 2024,
+      "venue": null,
+      "url": "/news/#ann_4",
+      "chunks": 1,
+      "x": -0.162,
+      "y": 0.1739
+    },
+    {
+      "id": "news:announcement_2",
+      "kind": "news",
+      "theme": "cultural-heritage",
+      "title": "ICIAP 2023",
+      "short": "ICIAP 2023",
+      "year": 2023,
+      "venue": null,
+      "url": "/news/#announcement_2",
+      "chunks": 1,
+      "x": -0.4103,
+      "y": 0.1321
+    },
+    {
+      "id": "news:dafx2025",
+      "kind": "news",
+      "theme": "dsp-tooling",
+      "title": "DAFx 2025",
+      "short": "DAFx 2025",
+      "year": 2025,
+      "venue": null,
+      "url": "/news/#dafx2025",
+      "chunks": 1,
+      "x": 0.6394,
+      "y": -0.2315
+    },
+    {
+      "id": "news:hf2025",
+      "kind": "news",
+      "theme": "multimodal",
+      "title": "New DL model released",
+      "short": "New DL model released",
+      "year": 2025,
+      "venue": null,
+      "url": "/news/#hf2025",
+      "chunks": 1,
+      "x": 0.0775,
+      "y": -0.0456
+    },
+    {
+      "id": "news:hf2026-lilybert",
+      "kind": "news",
+      "theme": "symbolic-music",
+      "title": "Lilybert is available on Hugging Face",
+      "short": "Lilybert is available on Hugging Face",
+      "year": 2026,
+      "venue": null,
+      "url": "/news/#hf2026-lilybert",
+      "chunks": 1,
+      "x": 0.0515,
+      "y": 0.0459
+    }
+  ],
+  "edges": [
+    {
+      "s": "project:lilybench",
+      "t": "project:lilybert",
+      "w": 0.9541
+    },
+    {
+      "s": "bosi2024a",
+      "t": "ieeeaccess2024",
+      "w": 0.9503
+    },
+    {
+      "s": "post:slow-python",
+      "t": "project:torchfx",
+      "w": 0.9322
+    },
+    {
+      "s": "project:tasty-musicgen",
+      "t": "spanio_frontiers_2025",
+      "w": 0.9261
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "ieeeaccess2024",
+      "w": 0.9184
+    },
+    {
+      "s": "project:lilybench",
+      "t": "spanio2026lilypond",
+      "w": 0.915
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "bosi2024a",
+      "w": 0.9133
+    },
+    {
+      "s": "Cinar2024",
+      "t": "ieeeaccess2024",
+      "w": 0.9129
+    },
+    {
+      "s": "project:ml-project-template",
+      "t": "project:torchfx",
+      "w": 0.911
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "Cinar2024",
+      "w": 0.9098
+    },
+    {
+      "s": "spanio2026bmdataset",
+      "t": "spanio2026lilypond",
+      "w": 0.9098
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "https://doi.org/10.13140/rg.2.2.36838.50247",
+      "w": 0.9088
+    },
+    {
+      "s": "Cinar2024",
+      "t": "bosi2024a",
+      "w": 0.9079
+    },
+    {
+      "s": "post:python-environments",
+      "t": "post:python-static-typing",
+      "w": 0.9078
+    },
+    {
+      "s": "canazza2026preserving",
+      "t": "news:2026-ItalIA",
+      "w": 0.9069
+    },
+    {
+      "s": "news:dafx2025",
+      "t": "spanio2025torchfx",
+      "w": 0.906
+    },
+    {
+      "s": "news:dafx2025",
+      "t": "project:torchfx",
+      "w": 0.9059
+    },
+    {
+      "s": "news:hf2026-lilybert",
+      "t": "project:lilybert",
+      "w": 0.9058
+    },
+    {
+      "s": "Cinar2024",
+      "t": "https://doi.org/10.13140/rg.2.2.36838.50247",
+      "w": 0.9051
+    },
+    {
+      "s": "project:lilybench",
+      "t": "project:ml-project-template",
+      "w": 0.9042
+    },
+    {
+      "s": "post:python-environments",
+      "t": "project:ml-project-template",
+      "w": 0.9039
+    },
+    {
+      "s": "project:lilybert",
+      "t": "project:ml-project-template",
+      "w": 0.9037
+    },
+    {
+      "s": "news:hf2025",
+      "t": "news:hf2026-lilybert",
+      "w": 0.9023
+    },
+    {
+      "s": "post:slow-python",
+      "t": "project:ml-project-template",
+      "w": 0.9019
+    },
+    {
+      "s": "news:2026-ItalIA",
+      "t": "spanio2026lilypond",
+      "w": 0.9003
+    },
+    {
+      "s": "project:torchfx",
+      "t": "spanio2025torchfx",
+      "w": 0.9
+    },
+    {
+      "s": "post:python-environments",
+      "t": "post:slow-python",
+      "w": 0.8988
+    },
+    {
+      "s": "project:lilybench",
+      "t": "project:tasty-musicgen",
+      "w": 0.8971
+    },
+    {
+      "s": "project:ml-project-template",
+      "t": "project:spam-analyzer",
+      "w": 0.8967
+    },
+    {
+      "s": "project:lilybert",
+      "t": "project:tasty-musicgen",
+      "w": 0.8951
+    },
+    {
+      "s": "bosi2024a",
+      "t": "https://doi.org/10.13140/rg.2.2.36838.50247",
+      "w": 0.8948
+    },
+    {
+      "s": "project:lilybert",
+      "t": "project:spam-analyzer",
+      "w": 0.8946
+    },
+    {
+      "s": "project:lilybert",
+      "t": "spanio2026bmdataset",
+      "w": 0.8942
+    },
+    {
+      "s": "news:aes2024NY",
+      "t": "news:aixia2024",
+      "w": 0.8938
+    },
+    {
+      "s": "news:dafx2025",
+      "t": "post:slow-python",
+      "w": 0.8937
+    },
+    {
+      "s": "project:lilybench",
+      "t": "project:spam-analyzer",
+      "w": 0.8918
+    },
+    {
+      "s": "post:python-static-typing",
+      "t": "project:ml-project-template",
+      "w": 0.8898
+    },
+    {
+      "s": "post:python-static-typing",
+      "t": "post:slow-python",
+      "w": 0.889
+    },
+    {
+      "s": "Spanio2024",
+      "t": "spanio_frontiers_2025",
+      "w": 0.8875
+    },
+    {
+      "s": "canazza2026preserving",
+      "t": "spanio2026lilypond",
+      "w": 0.8874
+    },
+    {
+      "s": "spanio2026bmdataset",
+      "t": "spanio2026multimodal",
+      "w": 0.8871
+    },
+    {
+      "s": "news:hf2026-lilybert",
+      "t": "project:lilybench",
+      "w": 0.8864
+    },
+    {
+      "s": "fiordelmondo_nime_2025",
+      "t": "pretto2026advanced",
+      "w": 0.8857
+    },
+    {
+      "s": "project:tasty-musicgen",
+      "t": "spanio2026multimodal",
+      "w": 0.8854
+    },
+    {
+      "s": "fiordelmondo_nime_2025",
+      "t": "spanio2026multimodal",
+      "w": 0.8847
+    },
+    {
+      "s": "post:slow-python",
+      "t": "spanio2025torchfx",
+      "w": 0.8826
+    },
+    {
+      "s": "news:2026-ItalIA",
+      "t": "news:aixia2024",
+      "w": 0.8777
+    },
+    {
+      "s": "fiordelmondo_nime_2025",
+      "t": "spanio2026bmdataset",
+      "w": 0.8768
+    },
+    {
+      "s": "post:Principles-of-statistic",
+      "t": "post:python-static-typing",
+      "w": 0.8738
+    },
+    {
+      "s": "news:aixia2024",
+      "t": "news:announcement_2",
+      "w": 0.8738
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "news:announcement_2",
+      "w": 0.8722
+    },
+    {
+      "s": "pretto2026advanced",
+      "t": "spanio2026multimodal",
+      "w": 0.8716
+    },
+    {
+      "s": "https://doi.org/10.13140/rg.2.2.24143.56489",
+      "t": "post:DSP-il-suono-in-digitale",
+      "w": 0.8703
+    },
+    {
+      "s": "Spanio2024",
+      "t": "news:aixia2024",
+      "w": 0.8674
+    },
+    {
+      "s": "spanio2026multimodal",
+      "t": "spanio_frontiers_2025",
+      "w": 0.8668
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "pretto2026advanced",
+      "w": 0.8666
+    },
+    {
+      "s": "bosi2024a",
+      "t": "news:aes2024NY",
+      "w": 0.8663
+    },
+    {
+      "s": "ieeeaccess2024",
+      "t": "news:announcement_2",
+      "w": 0.8629
+    },
+    {
+      "s": "canazza2026preserving",
+      "t": "fiordelmondo_nime_2025",
+      "w": 0.86
+    },
+    {
+      "s": "post:Principles-of-statistic",
+      "t": "project:spam-analyzer",
+      "w": 0.8564
+    },
+    {
+      "s": "ieeeaccess2024",
+      "t": "news:aes2024NY",
+      "w": 0.8563
+    },
+    {
+      "s": "post:Principles-of-statistic",
+      "t": "project:ml-project-template",
+      "w": 0.855
+    },
+    {
+      "s": "news:hf2025",
+      "t": "project:tasty-musicgen",
+      "w": 0.8546
+    },
+    {
+      "s": "https://doi.org/10.13140/rg.2.2.17327.82088",
+      "t": "https://doi.org/10.13140/rg.2.2.24143.56489",
+      "w": 0.8503
+    },
+    {
+      "s": "post:DSP-il-suono-in-digitale",
+      "t": "project:torchfx",
+      "w": 0.8461
+    },
+    {
+      "s": "Spanio2024",
+      "t": "project:lilybench",
+      "w": 0.8433
+    },
+    {
+      "s": "news:hf2025",
+      "t": "project:lilybench",
+      "w": 0.8409
+    },
+    {
+      "s": "https://doi.org/10.13140/rg.2.2.24143.56489",
+      "t": "sphor:woo15",
+      "w": 0.84
+    },
+    {
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "post:DSP-il-suono-in-digitale",
+      "w": 0.8351
+    },
+    {
+      "s": "spanio2026bmdataset",
+      "t": "sphor:woo15",
+      "w": 0.8334
+    },
+    {
+      "s": "https://doi.org/10.13140/rg.2.2.17327.82088",
+      "t": "spanio2026bmdataset",
+      "w": 0.8297
+    },
+    {
+      "s": "news:2026-ItalIA",
+      "t": "news:ann_4",
+      "w": 0.8287
+    },
+    {
+      "s": "https://doi.org/10.13140/rg.2.2.17327.82088",
+      "t": "spanio2026multimodal",
+      "w": 0.8286
+    },
+    {
+      "s": "canazza2026preserving",
+      "t": "sphor:woo15",
+      "w": 0.8271
+    },
+    {
+      "s": "news:ann_4",
+      "t": "news:dafx2025",
+      "w": 0.8196
+    },
+    {
+      "s": "news:ann_4",
+      "t": "project:ml-project-template",
+      "w": 0.8194
+    }
+  ]
+}
