@@ -1,0 +1,83 @@
+---
+title: Making scientific Python blazingly fast with PyTorch
+description: Swapping NumPy and SciPy for PyTorch buys GPU acceleration, an object-oriented API and AI interoperability at once.
+date: 2025-08-28
+slug: slow-python
+theme: dsp-tooling
+categories: [Python, Programming, Scientific Computing]
+tags: [python, programming, code, scientific-computing, gpu]
+cover: ./cover.jpg
+relatedPapers: [spanio2025torchfx]
+---
+
+If you've ever written scientific code in Python, you know the pain: Python is elegant, easy to read,
+and full of libraries — but when it comes to performance, it often feels like you're driving a Ferrari
+with the handbrake on. In my recent paper _TorchFX: A Modern Approach to Audio DSP with PyTorch and GPU
+Acceleration_ (DAFx25), we introduce a solution to this long-standing problem.
+
+The idea is simple yet powerful: instead of relying on the traditional **NumPy + SciPy stack**, we can
+**swap them out for PyTorch**, instantly gaining GPU acceleration, an object-oriented API, and direct
+compatibility with AI workflows.
+
+## The slow Python problem
+
+Python itself is notoriously slow for heavy computations. The interpreter adds overhead, and loops kill
+performance. That's why scientific programming in Python always starts with NumPy and SciPy, which wrap
+C and Fortran under the hood. But even then, scaling to multi-channel or real-time contexts (like audio
+DSP) is a challenge.
+
+## Already used solutions, and their limitations
+
+Over the years, developers have tried different hacks to speed up Python:
+
+- **Vectorization with NumPy** — great, but requires reshaping your code.
+- **Cython** — lets you drop into C, but you need to rewrite parts of your program.
+- **Numba** — JIT compilation is cool, but not everything is parallelizable, and libraries like SciPy
+  aren't fully supported.
+
+All of these approaches share one problem: you must **refactor your code** in sometimes unnatural ways,
+and you're still limited by CPU-based execution.
+
+## PyTorch to the rescue
+
+This is where **PyTorch** comes in. Originally built for AI, PyTorch provides:
+
+- **Tensors that work like NumPy arrays**, but with GPU acceleration.
+- **An object-oriented API**, more structured than SciPy's MATLAB-inspired procedural style.
+- **Direct integration with AI models** — any DSP function you write can be dropped into a neural network.
+
+In our paper, we introduce **TorchFX**, a library built on top of PyTorch, designed specifically for
+audio DSP. With TorchFX, you can apply FIR and IIR filters using GPU acceleration, work naturally with
+multichannel audio, and build filter chains with an intuitive pipe operator:
+
+```python
+from torchfx import Wave
+from torchfx.filter import LoButterworth, ParametricEQ
+
+wave = Wave.from_file("audio.wav")
+
+lowpass = LoButterworth(cutoff=5000, order=4, fs=wave.fs)
+eq = ParametricEQ(frequency=1000, q=2.0, gain=3.0, fs=wave.fs)
+
+# Sequential with `|`, parallel with `+`.
+processed = wave | lowpass | eq
+processed.save("output.wav")
+```
+
+Every filter is a `torch.nn.Module`, so the whole chain is differentiable and drops straight into a
+training loop.
+
+And the performance? In our benchmarks, TorchFX crushed SciPy when dealing with multi-channel or
+long-duration signals. While SciPy slows down linearly with more channels, TorchFX — especially on GPU —
+keeps execution times almost flat, even for huge datasets.
+
+## Conclusions
+
+Python's slowness has always been the elephant in the room for scientific computing. While solutions
+like Numba and Cython help, they demand compromises. Our proposal is simple: **if you're starting from
+NumPy and SciPy, switch to PyTorch.**
+
+With TorchFX, we show how this shift can revolutionize scientific Python for audio DSP: cleaner
+object-oriented code, built-in AI compatibility, and GPU acceleration out of the box.
+
+TorchFX is open source: [github.com/matteospanio/torchfx](https://github.com/matteospanio/torchfx).

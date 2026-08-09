@@ -1,0 +1,116 @@
+---
+import { nav, site } from '@/config/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+
+/** `/` only matches itself; every other entry matches its whole subtree. */
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header>
+  <div class="shell bar">
+    <a href="/" class="brand" aria-label={`${site.name} — home`}>
+      <span class="prompt">~/</span><span class="who">{site.handle}</span>
+    </a>
+
+    <nav aria-label="Main">
+      <ul>
+        {
+          nav.map(({ href, label }) => (
+            <li>
+              <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  header {
+    border-block-end: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.25rem;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 500;
+    margin-inline-end: auto;
+  }
+
+  .prompt {
+    color: var(--accent);
+  }
+
+  .who {
+    border-block-end: 1px solid transparent;
+  }
+
+  .brand:hover .who {
+    border-block-end-color: var(--accent);
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    padding: 0;
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+
+  nav a::before {
+    content: '[';
+    color: var(--fg-faint);
+  }
+
+  nav a::after {
+    content: ']';
+    color: var(--fg-faint);
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--accent);
+  }
+
+  nav a[aria-current='page']::before,
+  nav a[aria-current='page']::after {
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .bar {
+      padding-block: 0.6rem;
+    }
+    nav {
+      order: 3;
+      width: 100%;
+    }
+  }
+</style>

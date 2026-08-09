@@ -15,3 +15,7 @@ node_modules/
 output/playwright/
 test-results/
 vendor
+
+# Astro
+dist/
+.astro/

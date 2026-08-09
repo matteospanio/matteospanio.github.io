@@ -1,0 +1,112 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import { site } from '@/config/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<Base>
+  <section class="hero">
+    <p class="prompt">&gt; whoami</p>
+    <h1>{site.name}</h1>
+    <p class="role">{site.jobTitle} · {site.affiliation.parent}</p>
+    <p class="tagline">{site.tagline}</p>
+  </section>
+
+  <section class="areas">
+    <h2 class="label">research</h2>
+    <ul>
+      {site.researchAreas.map((area) => <li>{area}</li>)}
+    </ul>
+  </section>
+
+  <section class="recent">
+    <h2 class="label">recent writing</h2>
+    <ul>
+      {
+        posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.data.date.getFullYear()}/${post.data.slug}/`}>
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toISOString().slice(0, 10)}
+              </time>
+              <span>{post.data.title}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  section + section {
+    margin-block-start: 4rem;
+  }
+
+  .prompt {
+    color: var(--accent);
+    font-size: var(--step--1);
+  }
+
+  h1 {
+    font-size: var(--step-3);
+    margin-block: 0.4rem 0.5rem;
+  }
+
+  .role {
+    color: var(--fg-dim);
+    font-size: var(--step-0);
+  }
+
+  .tagline {
+    font-family: var(--font-sans);
+    color: var(--fg);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    max-width: var(--measure);
+    margin-block-start: 1.5rem;
+    text-wrap: pretty;
+  }
+
+  .label {
+    margin-block-end: 1.2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    max-width: var(--measure);
+  }
+
+  .areas li {
+    color: var(--fg-dim);
+    font-size: var(--step--1);
+    border-inline-start: 2px solid var(--rule-strong);
+    padding-inline-start: 0.8rem;
+  }
+
+  .recent a {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .recent time {
+    color: var(--fg-faint);
+    font-size: var(--step--1);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .recent a:hover span {
+    color: var(--accent);
+  }
+</style>

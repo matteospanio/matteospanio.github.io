@@ -1,0 +1,56 @@
+---
+// Three-state is overkill here; two explicit states plus "follow the system"
+// as the untouched default is what people actually use.
+---
+
+<button id="theme-toggle" type="button" aria-label="Toggle colour theme" title="Toggle colour theme">
+  <span aria-hidden="true" class="glyph glyph--dark">◐</span>
+  <span aria-hidden="true" class="glyph glyph--light">◑</span>
+</button>
+
+<style>
+  button {
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--fg-dim);
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  button:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .glyph {
+    grid-area: 1 / 1;
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  :global(:root:not([data-theme='light'])) .glyph--light,
+  :global(:root[data-theme='light']) .glyph--dark {
+    display: none;
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+
+  toggle?.addEventListener('click', () => {
+    const isLight = document.documentElement.dataset.theme === 'light';
+    const next = isLight ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      // Private mode or blocked storage: the toggle still works for this page.
+    }
+  });
+</script>

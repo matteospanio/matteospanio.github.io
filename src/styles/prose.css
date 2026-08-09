@@ -1,0 +1,164 @@
+@layer components {
+  /*
+   * Body copy switches to Inter: monospace is the site's chrome, not its reading
+   * surface. Headings and all metadata stay mono so the identity holds.
+   */
+  .prose {
+    font-family: var(--font-sans);
+    max-width: var(--measure);
+    line-height: 1.72;
+  }
+
+  .prose > * + * {
+    margin-block-start: 1.15em;
+  }
+
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    font-family: var(--font-mono);
+    margin-block-start: 2.2em;
+    margin-block-end: 0.7em;
+    scroll-margin-top: 5rem;
+  }
+
+  .prose h2 {
+    font-size: var(--step-2);
+    padding-block-end: 0.3em;
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .prose h3 {
+    font-size: var(--step-1);
+  }
+
+  .prose h4 {
+    font-size: var(--step-0);
+    color: var(--fg-dim);
+  }
+
+  .heading-anchor {
+    margin-inline-start: 0.4em;
+    color: var(--fg-faint);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  :is(h2, h3, h4):hover .heading-anchor,
+  .heading-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .prose :is(ul, ol) {
+    padding-inline-start: 1.4em;
+  }
+
+  .prose li + li {
+    margin-block-start: 0.35em;
+  }
+
+  .prose blockquote {
+    border-inline-start: 2px solid var(--accent);
+    padding-inline-start: 1.1em;
+    color: var(--fg-dim);
+    font-style: italic;
+  }
+
+  .prose img {
+    border: 1px solid var(--rule);
+    margin-inline: auto;
+  }
+
+  .prose figure figcaption {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    margin-block-start: 0.6em;
+    text-align: center;
+  }
+
+  /* Wide content must scroll inside itself; the page never scrolls sideways. */
+  .prose :is(table, pre, .expressive-code) {
+    max-width: 100%;
+  }
+
+  .prose .table-wrap {
+    overflow-x: auto;
+  }
+
+  .prose table {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .prose :is(th, td) {
+    border: 1px solid var(--rule);
+    padding: 0.45em 0.7em;
+    text-align: start;
+  }
+
+  .prose th {
+    background: var(--bg-2);
+    font-weight: 500;
+  }
+
+  /* --- callouts (`:::note{title="…"}`) --------------------------------- */
+  .callout {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    border: 1px solid var(--rule);
+    border-inline-start: 2px solid var(--accent);
+    background: var(--bg-1);
+    padding: 0.9em 1.1em;
+  }
+
+  .callout__title {
+    color: var(--accent);
+    text-transform: lowercase;
+    letter-spacing: 0.06em;
+    margin-block-end: 0.4em;
+  }
+
+  .callout__title::before {
+    content: '> ';
+  }
+
+  .callout--warning {
+    border-inline-start-color: var(--warn);
+  }
+  .callout--warning .callout__title {
+    color: var(--warn);
+  }
+
+  .callout--danger {
+    border-inline-start-color: var(--danger);
+  }
+  .callout--danger .callout__title {
+    color: var(--danger);
+  }
+
+  /* --- footnotes (GFM) -------------------------------------------------- */
+  .prose .footnotes {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    margin-block-start: 3rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .prose .footnotes h2 {
+    font-size: var(--step-0);
+    border: 0;
+  }
+
+  /* --- math ------------------------------------------------------------- */
+  .prose .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: 0.4em;
+  }
+}

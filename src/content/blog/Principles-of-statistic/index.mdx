@@ -1,0 +1,89 @@
+---
+title: Principles of statistics
+description: Populations, samples, estimators and the errors that separate an estimate from the parameter it chases.
+date: 2022-08-30
+slug: Principles-of-statistic
+theme: engineering
+categories: [Statistic]
+tags: [statistic, math]
+math: true
+---
+
+## Introduction
+
+Statistics is the field of mathematics that studies collections of empirical data. How are data
+distributed? Can we infer something from our data?
+
+With statistics we can answer these and other questions. In this article we discuss the fundamentals
+we need before starting any analysis of the data.
+
+## Population samples, parameters and statistics
+
+Data collection is crucial in statistics. The _samples_ collected and analysed are used to make
+assertions about the _population_ at scale.
+
+It is therefore necessary to distinguish the types of data we are dealing with. If a _parameter_
+(usually a number) concerns a fact about the entire object under consideration — say, the number of
+women living on earth at a given moment — then it observes the reality of the facts and does not change
+depending on the observation. It is usually the quantity we are after, since it is often very difficult
+or impossible to know it directly. Statistics takes a smaller sample of the population, studies the
+quantities at that smaller scale, and then carries them back up.
+
+### Glossary
+
+- **Population**: the reality whose aspects we want to know; all the units belonging to a certain group.
+- **Parameter $\theta$**: a characteristic that describes the population, for example its true mean or median.
+- **Census**: observation of **all** population units in order to quantify a parameter.
+- **Sample**: a subset of the population used to estimate $\theta$.
+- **Statistic**: any function of census or sample data.
+- **Estimator $\hat{\theta}$**: a statistic used to reconstruct $\theta$.
+- **Estimate**: the value of the estimator on a particular sample.
+
+## Sampling and non-sampling errors
+
+The discrepancy between the estimate and the parameter comes from two sources of error:
+
+1. **Sampling errors**, unavoidable. They arise because we observe only part of the population, and
+   they decrease as the sample size grows provided the estimator $\hat{\theta}$ is well constructed.
+2. **Non-sampling errors**, avoidable. They arise from a badly constructed sample or an incorrect
+   estimator, and there is no guarantee they decrease as the sample size grows.
+
+## Sample statistics
+
+Once we have established which entities to focus on, let us define which statistics are of interest.
+
+Consider a random sample of size $n$:
+
+$$
+(X_1, \ldots, X_n)
+$$
+
+The goal is to use the observed data to reconstruct parameters of the population. Simple descriptive
+statistics that measure location, variability and other properties need not already exist in the
+sample, but estimators and parameter estimates follow from it easily.
+
+The main statistics for location are the **sample mean**, the **sample median**, and the
+**quantiles, percentiles and quartiles** that identify portions of the sample. The statistics that
+measure variability — how wide the curve is — are the **sample variance** and **standard deviation**,
+and the **interquartile range**.
+
+Each statistic is a random variable, because it is computed from a sample. That is why they are said to
+describe the _sampling distribution_.
+
+Throughout what follows, remember that we consider observations on independent and identically
+distributed random variables (i.i.d.) with expected value $E(X) = \mu$ and variance $Var(X) = \sigma^2$.
+
+### Sample mean
+
+The sample mean estimates the population mean $\mu = E(X)$ and is written:
+
+$$
+\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
+$$
+
+So $\bar{X}$ is the random variable of the sample mean — the estimator — while $\bar{x}$ is the
+estimate, the number actually observed for a given sample.
+
+:::note{title="properties"}
+The sample mean is _unbiased_, _consistent_ and _asymptotically normal_.
+:::

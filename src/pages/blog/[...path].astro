@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import Post from '@/layouts/Post.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return posts.map((post) => ({
+    // Reproduces Jekyll's `/blog/:year/:title/` permalink, case included.
+    params: { path: `${post.data.date.getFullYear()}/${post.data.slug}` },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Post post={post}>
+  <Content />
+</Post>
