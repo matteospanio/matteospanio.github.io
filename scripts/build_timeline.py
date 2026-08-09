@@ -12,10 +12,7 @@ Where months come from, in the order the resolver tries them:
      publisher records). This is the only place a human writes a date.
   2. The arXiv identifier. A modern arXiv id encodes YYMM of the first posting, so
      `arxiv = {2604.10628}` is April 2026 by construction, not by guesswork.
-  3. The previous run's value, if it was exact. This matters only for the GitHub
-     lane, and it exists so that a build with no network degrades to stale-but-true
-     rather than to wrong.
-  4. The year's midpoint, tagged `"approx": true`. The component is expected to
+  3. The year's midpoint, tagged `"approx": true`. The component is expected to
      render approximate events differently; the alternative — a confident-looking
      date nobody can defend — is the failure mode this whole file exists to avoid.
 
@@ -367,7 +364,6 @@ def software_events(
 def paper_events(
     bib: list[dict[str, Any]],
     curated_papers: dict[str, Any],
-    previous: dict[str, dict[str, Any]],
     problems: list[str],
 ) -> tuple[list[dict[str, Any]], list[str]]:
     kinds = {"thesis": "thesis", "misc": "score"}
@@ -386,10 +382,6 @@ def paper_events(
         source = "curated"
         if not resolved:
             resolved, source = arxiv_month(entry["arxiv"]), "arxiv-id"
-        if not resolved:
-            held = previous.get(event_id)
-            if held and not held.get("approx") and held.get("date"):
-                resolved, source = held["date"], held.get("dateSource", "previous")
         approx = False
         if not resolved:
             if not entry["year"]:
@@ -484,15 +476,13 @@ def main() -> int:
             previous_doc = json.loads(OUT.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             problems.append(f"{OUT.name} was unreadable; rebuilt from scratch")
-    previous = {e["id"]: e for e in previous_doc.get("events", []) if e.get("id")}
-
     bib = read_bibliography()
     news = read_news()
     blog = read_blog()
     projects = read_projects()
 
     events: list[dict[str, Any]] = []
-    papers, uncurated = paper_events(bib, curated_papers, previous, problems)
+    papers, uncurated = paper_events(bib, curated_papers, problems)
     events += papers
     events += news_events(news, curated_news, problems)
     events += blog_events(blog, problems)
@@ -500,10 +490,16 @@ def main() -> int:
     github, gh_error = fetch_github(curated_sw)
     if gh_error:
         problems.append(f"GitHub unavailable: {gh_error}")
-        # Stale-but-true beats invented: carry the last good software lane forward.
-        carried = [dict(e) for e in previous_doc.get("events", []) if e.get("lane") == "software"]
-        carried = [e for e in carried if e.get("kind") in {"release", "repo"}]
-        events += carried
+        # Stale-but-true beats invented: carry the last good release history forward.
+        # `repo` is the marker of a GitHub-derived event — the software lane also
+        # holds model announcements read from news, which have already been emitted
+        # above and must not be duplicated.
+        seen = {e["id"] for e in events}
+        events += [
+            dict(e)
+            for e in previous_doc.get("events", [])
+            if e.get("lane") == "software" and e.get("repo") and e.get("id") not in seen
+        ]
     else:
         events += software_events(github, curated_sw, projects)
 

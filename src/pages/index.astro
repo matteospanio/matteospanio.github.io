@@ -8,6 +8,7 @@ import '@/styles/prose.css';
 
 // A single standalone page, so a direct MDX import beats defining a collection for it.
 import About from '@/content/about.mdx';
+import StatRow from '@/components/viz/StatRow.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -34,6 +35,10 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
 
   <section class="about prose">
     <About />
+  </section>
+
+  <section class="numbers">
+    <StatRow href="/impact/" />
   </section>
 
   <div class="columns">
@@ -112,6 +117,10 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
 
   .about {
     margin-block-start: 2.5rem;
+  }
+
+  .numbers {
+    margin-block-start: 3rem;
   }
 
   /* The about copy sets its own h2s; keep them from shouting over the section labels. */

@@ -1,0 +1,330 @@
+---
+import timeline from '@/data/viz/timeline.json';
+
+/**
+ * Server-rendered CSS Grid: every grid-column is computed here, at build time,
+ * from the event's month. No layout library, no runtime maths, and the whole
+ * thing degrades to an ordered list of dated links when the grid does not apply.
+ */
+
+const monthIndex = (ym: string) => {
+  const [y, m] = ym.split('-').map(Number);
+  return y * 12 + (m - 1);
+};
+
+const START = monthIndex(timeline.range.start);
+const END = monthIndex(timeline.range.end);
+const MONTHS = END - START + 1;
+
+/** 1-based grid column for a YYYY-MM, clamped into range. */
+const col = (ym: string) => Math.min(Math.max(monthIndex(ym) - START, 0), MONTHS - 1) + 1;
+
+const years: number[] = [];
+for (let y = Number(timeline.range.start.slice(0, 4)); y <= Number(timeline.range.end.slice(0, 4)); y++) {
+  years.push(y);
+}
+
+const lanes = timeline.lanes.filter((l) => l.id !== 'life');
+const eventsByLane = new Map(
+  lanes.map((lane) => [lane.id, timeline.events.filter((e) => e.lane === lane.id)]),
+);
+
+const spans = timeline.spans;
+const KINDS: Record<string, string> = {
+  paper: '▪',
+  talk: '▲',
+  release: '●',
+  post: '◆',
+  award: '★',
+};
+---
+
+<figure class="tl">
+  <figcaption>
+    {timeline.events.length} events across {lanes.length} tracks, {timeline.range.start} to{' '}
+    {timeline.range.end}. Scroll sideways. Hollow markers are months inferred from the venue
+    rather than recorded exactly.
+  </figcaption>
+
+  <div class="scroll">
+    <div class="grid" style={`--months: ${MONTHS}`}>
+      {/* year ruler */}
+      <div class="ruler">
+        {
+          years.map((y) => (
+            <span class="year" style={`grid-column: ${col(`${y}-01`)} / span 12`}>
+              {y}
+            </span>
+          ))
+        }
+      </div>
+
+      {/* life spans sit behind the lanes */}
+      <div class="spans">
+        {
+          spans.map((s, i) => (
+            <span
+              class="span"
+              style={`grid-column: ${col(s.start)} / ${col(s.end ?? timeline.range.end) + 1}; grid-row: ${i + 1}`}
+              title={s.label}
+            >
+              <span class="span__label">{s.label}</span>
+            </span>
+          ))
+        }
+      </div>
+
+      {/* one row per lane */}
+      {
+        lanes.map((lane) => (
+          <div class="lane" style={`--lane: ${lane.color}`}>
+            <span class="lane__name">{lane.label}</span>
+            <div class="lane__track">
+              {(eventsByLane.get(lane.id) ?? []).map((e) => (
+                <a
+                  class:list={['ev', e.approx && 'ev--approx']}
+                  href={e.url ?? '#'}
+                  style={`grid-column: ${col(e.date)}`}
+                  title={`${e.date} — ${e.title}`}
+                >
+                  <span class="ev__dot">{KINDS[e.kind] ?? '▪'}</span>
+                  <span class="ev__title">{e.title}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  {/* Always present: the accessible, crawlable, no-CSS version. */}
+  <details class="list">
+    <summary>as a chronological list</summary>
+    <ol>
+      {
+        [...timeline.events]
+          .sort((a, b) => b.date.localeCompare(a.date))
+          .map((e) => (
+            <li>
+              <time datetime={e.date}>{e.date}</time>
+              <span class="k">{e.lane}</span>
+              {e.url ? <a href={e.url}>{e.title}</a> : <span>{e.title}</span>}
+            </li>
+          ))
+      }
+    </ol>
+  </details>
+</figure>
+
+<style>
+  .tl {
+    margin: 0;
+  }
+
+  figcaption {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    max-width: var(--measure);
+    margin-block-end: 1rem;
+  }
+
+  .scroll {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    background: var(--bg-1);
+    scroll-snap-type: x proximity;
+  }
+
+  .grid {
+    /* One column per month; ~13px reads as a decade without being unusable. */
+    --col: 13px;
+    min-width: calc(var(--months) * var(--col));
+    padding: 0.8rem 0;
+  }
+
+  .ruler,
+  .spans,
+  .lane__track {
+    display: grid;
+    grid-template-columns: repeat(var(--months), var(--col));
+  }
+
+  .ruler {
+    border-block-end: 1px solid var(--rule);
+    padding-block-end: 0.4rem;
+    margin-block-end: 0.6rem;
+  }
+
+  .year {
+    font-size: 0.7rem;
+    color: var(--fg-faint);
+    border-inline-start: 1px solid var(--rule);
+    padding-inline-start: 0.3em;
+    scroll-snap-align: start;
+  }
+
+  .spans {
+    margin-block-end: 0.7rem;
+  }
+
+  .span {
+    background: color-mix(in oklab, var(--accent) 7%, transparent);
+    border: 1px solid var(--rule);
+    border-inline-start: 2px solid var(--rule-strong);
+    height: 1.15rem;
+    margin-block-end: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .span__label {
+    font-size: 0.68rem;
+    color: var(--fg-faint);
+    white-space: nowrap;
+    padding-inline: 0.4em;
+  }
+
+  .lane {
+    border-block-start: 1px solid var(--rule);
+    padding-block: 0.5rem;
+  }
+
+  .lane__name {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--lane);
+    padding-inline-start: 0.6rem;
+    margin-block-end: 0.3rem;
+  }
+
+  .lane__track {
+    min-height: 1.9rem;
+    align-items: center;
+  }
+
+  .ev {
+    grid-row: 1;
+    position: relative;
+    display: block;
+    text-decoration: none;
+    color: var(--lane);
+    line-height: 1;
+    scroll-snap-align: center;
+  }
+
+  .ev__dot {
+    /* Big enough to aim at with a mouse and to read as a mark, not a speck. */
+    font-size: 0.95rem;
+    display: block;
+    text-align: center;
+    width: 13px;
+  }
+
+  .ev--approx .ev__dot {
+    opacity: 0.45;
+  }
+
+  /* The label only appears on hover/focus: 41 labels at once would be mush. */
+  .ev__title {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 0;
+    white-space: nowrap;
+    background: var(--bg-2);
+    border: 1px solid var(--lane);
+    color: var(--fg);
+    font-size: 0.7rem;
+    padding: 0.2em 0.5em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out);
+    z-index: 2;
+  }
+
+  .ev:hover .ev__title,
+  .ev:focus-visible .ev__title {
+    opacity: 1;
+  }
+
+  .ev:hover .ev__dot,
+  .ev:focus-visible .ev__dot {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .list {
+    margin-block-start: 1rem;
+    font-size: var(--step--1);
+  }
+
+  .list summary {
+    cursor: pointer;
+    color: var(--fg-faint);
+    width: fit-content;
+  }
+
+  .list summary:hover {
+    color: var(--accent);
+  }
+
+  .list ol {
+    list-style: none;
+    padding: 0;
+    margin-block-start: 0.8rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .list li {
+    display: flex;
+    gap: 0.8rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .list time {
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .list .k {
+    color: var(--fg-faint);
+    min-width: 5rem;
+  }
+
+  .list a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+
+  .list a:hover {
+    color: var(--accent);
+  }
+
+  /* Below the fold of a phone the grid is unusable; the list is the whole story. */
+  @media (max-width: 720px) {
+    .scroll {
+      display: none;
+    }
+
+    .list {
+      margin-block-start: 0;
+    }
+
+    .list summary {
+      display: none;
+    }
+
+    .list[open] ol,
+    .list ol {
+      margin-block-start: 0;
+    }
+  }
+</style>
+
+<script>
+  // Open the chronological list on small screens, where the grid is hidden.
+  const details = document.querySelector<HTMLDetailsElement>('.tl .list');
+  if (details && window.matchMedia('(max-width: 720px)').matches) details.open = true;
+</script>

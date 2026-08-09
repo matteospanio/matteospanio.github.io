@@ -1,0 +1,266 @@
+---
+import Base from '@/layouts/Base.astro';
+import StatRow from '@/components/viz/StatRow.astro';
+import CoauthorGraph from '@/components/viz/CoauthorGraph.astro';
+import Timeline from '@/components/viz/Timeline.astro';
+import footprint from '@/data/viz/footprint.json';
+
+const cited = [...footprint.citations.byPaper]
+  .filter((p) => p.citations > 0)
+  .sort((a, b) => b.citations - a.citations);
+const maxCitations = Math.max(...cited.map((p) => p.citations), 1);
+
+const repos = [...footprint.github.repos].sort((a, b) => (b.stars ?? 0) - (a.stars ?? 0));
+const models = footprint.huggingface.models ?? [];
+
+const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.generatedAt;
+---
+
+<Base
+  title="impact"
+  description="Where the research and the software have actually landed: citations, coauthors, repositories and released models."
+>
+  <h1 class="label">footprint</h1>
+  <p class="intro">
+    Everything here is measured, not estimated. The numbers are refreshed automatically and last
+    changed on {fetched}. Where a source has no data, the section says so rather than guessing.
+  </p>
+
+  <StatRow />
+
+  <section>
+    <h2 class="sub">citations by paper</h2>
+    <p class="note">
+      {footprint.citations.total} recorded citations across {footprint.citations.papers} tracked
+      papers, from Google Scholar with OpenAlex as a secondary source. Papers with no recorded
+      citations are omitted rather than shown as zero.
+    </p>
+
+    <ol class="bars">
+      {
+        cited.map((p) => (
+          <li>
+            <span class="bar-label">{p.title}</span>
+            <span class="bar-track">
+              <span class="bar-fill" style={`--w: ${(p.citations / maxCitations) * 100}%`} />
+            </span>
+            <span class="bar-n">{p.citations}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="caveat">
+      A citations-over-time chart is missing on purpose: only one of these papers has year-level
+      data from any source I can query, so a trend line would be an invention.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="sub">trajectory</h2>
+    <Timeline />
+  </section>
+
+  <section>
+    <h2 class="sub">coauthors</h2>
+    <CoauthorGraph />
+  </section>
+
+  <section>
+    <h2 class="sub">software</h2>
+    <p class="note">
+      {footprint.github.repos.length} public repositories, {footprint.github.totalStars} stars,
+      {footprint.github.totalForks} forks.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>repository</th><th>language</th><th>stars</th><th>forks</th><th>updated</th></tr>
+        </thead>
+        <tbody>
+          {
+            repos.map((r) => (
+              <tr>
+                <td>
+                  <a href={r.html_url ?? r.url}>{r.full_name ?? r.name}</a>
+                  {r.archived && <span class="tag">archived</span>}
+                </td>
+                <td>{r.language ?? '—'}</td>
+                <td class="n">{r.stars}</td>
+                <td class="n">{r.forks}</td>
+                <td>{(r.pushed_at ?? '').slice(0, 7) || '—'}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {
+    models.length > 0 && (
+      <section>
+        <h2 class="sub">released models</h2>
+        <p class="note">
+          On Hugging Face under <a href="https://huggingface.co/csc-unipd">csc-unipd</a>.
+          Downloads are the last-30-days figure the API reports.
+        </p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>model</th><th>task</th><th>downloads</th><th>likes</th></tr>
+            </thead>
+            <tbody>
+              {models.map((m) => (
+                <tr>
+                  <td>
+                    <a href={m.url ?? `https://huggingface.co/${m.id}`}>{m.id}</a>
+                  </td>
+                  <td>{m.pipeline_tag ?? '—'}</td>
+                  <td class="n">{m.downloads ?? '—'}</td>
+                  <td class="n">{m.likes ?? '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  h1 {
+    margin-block-end: 0.8rem;
+  }
+
+  .intro {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+    max-width: var(--measure);
+    margin-block-end: 2rem;
+  }
+
+  section {
+    margin-block-start: 3.5rem;
+  }
+
+  .sub {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+    margin-block-end: 1rem;
+  }
+
+  .sub::before {
+    content: '## ';
+    color: var(--accent);
+  }
+
+  .note,
+  .caveat {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    max-width: var(--measure);
+    margin-block-end: 1.2rem;
+  }
+
+  .caveat {
+    margin-block: 1.2rem 0;
+    border-inline-start: 2px solid var(--rule-strong);
+    padding-inline-start: 0.9rem;
+  }
+
+  .bars {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+    max-width: 46rem;
+  }
+
+  .bars li {
+    display: grid;
+    grid-template-columns: minmax(0, 22rem) 1fr 2.5rem;
+    gap: 0.8rem;
+    align-items: center;
+    font-size: var(--step--1);
+  }
+
+  .bar-label {
+    color: var(--fg-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bar-track {
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    height: 0.85rem;
+  }
+
+  .bar-fill {
+    display: block;
+    height: 100%;
+    width: var(--w);
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .bar-n {
+    color: var(--accent);
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 700px) {
+    .bars li {
+      grid-template-columns: 1fr 2.5rem;
+    }
+    .bar-track {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .scroll {
+    overflow-x: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+    font-size: var(--step--1);
+    width: 100%;
+    min-width: 34rem;
+  }
+
+  th,
+  td {
+    border: 1px solid var(--rule);
+    padding: 0.4em 0.7em;
+    text-align: start;
+  }
+
+  th {
+    background: var(--bg-2);
+    color: var(--fg-faint);
+    font-weight: 500;
+  }
+
+  td {
+    color: var(--fg-dim);
+  }
+
+  td.n {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tag {
+    margin-inline-start: 0.5em;
+    font-size: 0.7rem;
+    border: 1px solid var(--rule-strong);
+    color: var(--fg-faint);
+    padding-inline: 0.35em;
+  }
+</style>
