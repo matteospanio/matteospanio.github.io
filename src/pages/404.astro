@@ -1,0 +1,52 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+
+<Base title="404" description="That page does not exist.">
+  <div class="wrap">
+    <p class="prompt">&gt; cat {Astro.url.pathname}</p>
+    <h1>404 — no such file or directory</h1>
+    <p class="hint">
+      The page you asked for is not here. It may have moved when this site was rebuilt.
+    </p>
+    <ul>
+      <li><a href="/">about</a></li>
+      <li><a href="/publications/">publications</a></li>
+      <li><a href="/projects/">projects</a></li>
+      <li><a href="/blog/">blog</a></li>
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .wrap {
+    max-width: var(--measure);
+    padding-block: 3rem;
+  }
+
+  .prompt {
+    color: var(--accent);
+    font-size: var(--step--1);
+    word-break: break-all;
+  }
+
+  h1 {
+    font-size: var(--step-2);
+    margin-block: 0.6rem 1rem;
+  }
+
+  .hint {
+    color: var(--fg-dim);
+    font-family: var(--font-sans);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-block-start: 2rem;
+    font-size: var(--step--1);
+  }
+</style>

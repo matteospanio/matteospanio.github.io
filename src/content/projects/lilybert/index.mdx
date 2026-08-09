@@ -1,0 +1,54 @@
+---
+title: lilyBERT
+tagline: codebert adapted to lilypond notation
+description: A masked language model for LilyPond, built by extending CodeBERT's vocabulary with 115 music-specific tokens and pre-training on curated Baroque scores. Released with the training, tokenisation and probing code.
+status: research
+role: first author
+year: 2025
+theme: symbolic-music
+stack: [Python, PyTorch, Transformers, Hydra, ONNX, Typer, LilyPond]
+repo: https://github.com/CSCPadova/lilybert
+hf: https://huggingface.co/csc-unipd/lilybert
+paper: spanio2026bmdataset
+featured: true
+order: 2
+---
+
+LilyPond is a text-based engraving language: formal grammar, block structure, backslash commands.
+That makes a score closer to source code than to prose, and the premise of lilyBERT is that a code
+model is therefore a better starting point than a general text model. It begins from
+`microsoft/codebert-base`, adds 115 domain-specific tokens (`\trill`, `\fermata`, `\mordent`,
+`\staccato` and the like) to the vocabulary, and continues with masked language modelling. The result
+is a `RobertaForMaskedLM` with 12 layers, 768 hidden units and 12 heads, a vocabulary of 50,380
+(50,265 base tokens plus the 115 musical ones), a maximum sequence length of 512 and an MLM
+probability of 0.15.
+
+The published checkpoint is trained in two stages: first on PDMX, a large corpus of automatically
+converted LilyPond files, then on BMdataset — roughly 470 musicologically curated Baroque scores,
+about 90M tokens. Linear probing on the out-of-domain Mutopia corpus (layer 6, 5-fold
+cross-validation) gives 84.3 composer / 82.9 style accuracy for that checkpoint, against 80.8 / 82.6
+for CodeBERT trained on the full 15B-token PDMX. Curation, not volume, is what moves the numbers:
+90M tokens of expert-prepared data beat 15B tokens of automatic conversion.
+
+The repository ships the pipeline rather than just the weights. A parser-aware BPE tokenizer sits on
+top of `data/lexer.py`, which linearises LilyPond into tokens, and `data/parser.py`, which validates
+syntax and normalises pitches. Three Hydra-configured commands — `preprocess`, `train`, `embed` —
+cover the workflow, with DDP and FSDP utilities for multi-GPU runs. There is no PyPI release; you
+install from source.
+
+An ONNX export on the Hub lets the encoder run without PyTorch, from any ONNX runtime:
+
+```python
+from lilybert.models import LilyBERTOnnxEncoder
+
+encoder = LilyBERTOnnxEncoder("csc-unipd/lilybert")
+embeddings = encoder.encode(input_ids, attention_mask)  # (batch, 768) numpy array
+```
+
+The exported graph takes int64 `input_ids` and `attention_mask` and returns a float32
+`last_hidden_state` of shape (batch, seq_len, 768), so slicing `[:, 0, :]` gives the CLS embeddings.
+
+The code is Apache-2.0; BMdataset is released separately on Zenodo under
+[doi:10.5281/zenodo.18723290](https://doi.org/10.5281/zenodo.18723290). The model card also points at
+a companion paper on whether LLMs can read LilyPond at all, which uses a separate benchmark
+repository.

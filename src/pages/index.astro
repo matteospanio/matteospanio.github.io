@@ -2,10 +2,27 @@
 import { getCollection } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import { site } from '@/config/site';
+import type { Publication } from '@/lib/bib';
+import { sortPublications } from '@/lib/bib';
+import '@/styles/prose.css';
+
+// A single standalone page, so a direct MDX import beats defining a collection for it.
+import About from '@/content/about.mdx';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
+
+const news = (await getCollection('news'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
+
+const pubs = (await getCollection('publications')).map((e) => e.data as Publication);
+const selected = sortPublications(pubs.filter((p) => p.selected));
+
+const postHref = (p: (typeof posts)[number]) =>
+  `/blog/${p.data.date.getFullYear()}/${p.data.slug}/`;
+const day = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <Base>
@@ -13,37 +30,69 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     <p class="prompt">&gt; whoami</p>
     <h1>{site.name}</h1>
     <p class="role">{site.jobTitle} · {site.affiliation.parent}</p>
-    <p class="tagline">{site.tagline}</p>
   </section>
 
-  <section class="areas">
-    <h2 class="label">research</h2>
-    <ul>
-      {site.researchAreas.map((area) => <li>{area}</li>)}
-    </ul>
+  <section class="about prose">
+    <About />
   </section>
 
-  <section class="recent">
+  <div class="columns">
+    <section>
+      <h2 class="label">selected work</h2>
+      <ul class="pubs">
+        {
+          selected.map((p) => (
+            <li>
+              <a href={`/publications/#${p.id}`}>
+                <span class="y">{p.year}</span>
+                <span class="t">{p.title}</span>
+              </a>
+              <p class="v">{p.venue}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="more"><a href="/publications/">all {pubs.length} publications →</a></p>
+    </section>
+
+    <section>
+      <h2 class="label">news</h2>
+      <ul class="news">
+        {
+          news.map((n) => (
+            <li>
+              <time datetime={n.data.date.toISOString()}>{day(n.data.date)}</time>
+              <span>{n.data.title}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="more"><a href="/news/">all news →</a></p>
+    </section>
+  </div>
+
+  <section>
     <h2 class="label">recent writing</h2>
-    <ul>
+    <ul class="posts">
       {
-        posts.map((post) => (
+        posts.map((p) => (
           <li>
-            <a href={`/blog/${post.data.date.getFullYear()}/${post.data.slug}/`}>
-              <time datetime={post.data.date.toISOString()}>
-                {post.data.date.toISOString().slice(0, 10)}
-              </time>
-              <span>{post.data.title}</span>
+            <a href={postHref(p)}>
+              <time datetime={p.data.date.toISOString()}>{day(p.data.date)}</time>
+              <span class="t">{p.data.title}</span>
             </a>
+            <p class="d">{p.data.description}</p>
           </li>
         ))
       }
     </ul>
+    <p class="more"><a href="/blog/">all posts →</a></p>
   </section>
 </Base>
 
 <style>
-  section + section {
+  section + section,
+  .columns + section {
     margin-block-start: 4rem;
   }
 
@@ -59,17 +108,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   .role {
     color: var(--fg-dim);
-    font-size: var(--step-0);
   }
 
-  .tagline {
-    font-family: var(--font-sans);
-    color: var(--fg);
+  .about {
+    margin-block-start: 2.5rem;
+  }
+
+  /* The about copy sets its own h2s; keep them from shouting over the section labels. */
+  .about :global(h2) {
     font-size: var(--step-1);
-    line-height: 1.5;
-    max-width: var(--measure);
-    margin-block-start: 1.5rem;
-    text-wrap: pretty;
+  }
+
+  .columns {
+    margin-block-start: 4rem;
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .columns {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+    }
   }
 
   .label {
@@ -80,33 +141,82 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     list-style: none;
     padding: 0;
     display: grid;
-    gap: 0.6rem;
+    gap: 1.1rem;
     max-width: var(--measure);
   }
 
-  .areas li {
-    color: var(--fg-dim);
-    font-size: var(--step--1);
-    border-inline-start: 2px solid var(--rule-strong);
-    padding-inline-start: 0.8rem;
-  }
-
-  .recent a {
-    display: flex;
-    gap: 1rem;
-    align-items: baseline;
+  a {
     text-decoration: none;
     color: var(--fg);
   }
 
-  .recent time {
+  time,
+  .y {
     color: var(--fg-faint);
     font-size: var(--step--1);
-    flex-shrink: 0;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
   }
 
-  .recent a:hover span {
+  .pubs a,
+  .posts a,
+  .news li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+  }
+
+  .t {
+    border-block-end: 1px solid transparent;
+  }
+
+  .pubs a:hover .t,
+  .posts a:hover .t {
     color: var(--accent);
+    border-block-end-color: var(--accent);
+  }
+
+  .v,
+  .d {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-start: 0.25rem;
+    padding-inline-start: calc(4ch + 0.9rem);
+  }
+
+  .d {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+    padding-inline-start: calc(10ch + 0.9rem);
+  }
+
+  .news li {
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+  }
+
+  .more {
+    margin-block-start: 1.4rem;
+    font-size: var(--step--1);
+  }
+
+  .more a {
+    color: var(--fg-dim);
+  }
+
+  .more a:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 560px) {
+    .pubs a,
+    .posts a {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .v,
+    .d {
+      padding-inline-start: 0;
+    }
   }
 </style>

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "sources": {
+    "scholar": {
+      "fetchedAt": "2026-06-17",
+      "ok": true
+    }
+  },
+  "papers": {
+    "2osOgNQ5qMEC": {
+      "citations": 11,
+      "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
+      "year": "2024"
+    },
+    "9yKSN-GCB0IC": {
+      "citations": 7,
+      "title": "Enhancing preservation and restoration of open reel audio tapes through computer vision",
+      "year": "2023"
+    },
+    "HDshCWvjkbEC": {
+      "citations": 0,
+      "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
+      "year": "2026"
+    },
+    "LkGwnXOMwfcC": {
+      "citations": 0,
+      "title": "Toward a Repository Template for Music Technology Research",
+      "year": "2025"
+    },
+    "TQgYirikUcIC": {
+      "citations": 1,
+      "title": "BMdataset: A Musicologically Curated LilyPond Dataset",
+      "year": "2026"
+    },
+    "W7OEmFMy1HYC": {
+      "citations": 4,
+      "title": "Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models",
+      "year": "2024"
+    },
+    "WF5omc3nYNoC": {
+      "citations": 4,
+      "title": "A multimodal symphony: integrating taste and sound through generative AI",
+      "year": "2025"
+    },
+    "Y0pCki6q_DkC": {
+      "citations": 0,
+      "title": "Filming the sound: Anomaly Detection on Audio Tape Recordings using Computer Vision Algorithms",
+      "year": "2024"
+    },
+    "_FxGoFyzp5QC": {
+      "citations": 0,
+      "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
+      "year": "2025"
+    },
+    "_Qo2XoVZTnwC": {
+      "citations": 0,
+      "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
+      "year": "2026"
+    },
+    "d1gkVwhDpl0C": {
+      "citations": 2,
+      "title": "A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence",
+      "year": "2022"
+    },
+    "qjMakFHDy7sC": {
+      "citations": 1,
+      "title": "A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard",
+      "year": "2024"
+    },
+    "u-x6o8ySG0sC": {
+      "citations": 1,
+      "title": "Tutti Quanti Voglion Fare Jazz: contaminazioni jazz nel repertorio clarinettistico del’900",
+      "year": "2021"
+    },
+    "u5HHmVD_uO8C": {
+      "citations": 0,
+      "title": "IL CLARINETTO ALL’OPERA",
+      "year": "2019"
+    }
+  }
+}

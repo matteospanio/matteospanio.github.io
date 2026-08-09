@@ -1,0 +1,91 @@
+---
+import type { Post } from '@/lib/blog';
+import { postHref } from '@/lib/blog';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="list">
+  {
+    posts.map((post) => (
+      <li>
+        <a href={postHref(post)}>
+          <time datetime={post.data.date.toISOString()}>
+            {post.data.date.toISOString().slice(0, 10)}
+          </time>
+          <span class="title">{post.data.title}</span>
+          {post.data.lang === 'it' && (
+            <span class="lang" title="Written in Italian">
+              IT
+            </span>
+          )}
+        </a>
+        <p class="desc">{post.data.description}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1.75rem;
+    max-width: var(--measure);
+  }
+
+  a {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  time {
+    color: var(--fg-faint);
+    font-size: var(--step--1);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .title {
+    font-size: var(--step-1);
+    border-block-end: 1px solid transparent;
+  }
+
+  a:hover .title {
+    color: var(--accent);
+    border-block-end-color: var(--accent);
+  }
+
+  .lang {
+    font-size: 0.7rem;
+    border: 1px solid var(--rule-strong);
+    color: var(--warn);
+    padding-inline: 0.3em;
+  }
+
+  .desc {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+    font-size: var(--step--1);
+    margin-block-start: 0.4rem;
+    padding-inline-start: calc(10ch + 1rem);
+  }
+
+  @media (max-width: 560px) {
+    a {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .desc {
+      padding-inline-start: 0;
+    }
+  }
+</style>

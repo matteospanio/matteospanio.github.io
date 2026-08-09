@@ -1,0 +1,71 @@
+---
+title: TorchFX
+tagline: gpu-accelerated audio dsp, filters as torch modules
+description: A GPU-accelerated audio DSP library built on PyTorch, where every filter and effect is an nn.Module and pipelines are composed with the pipe (|) and add (+) operators.
+status: active
+role: author and maintainer
+year: 2025
+theme: dsp-tooling
+stack: [Python, PyTorch, CUDA, C++, NumPy, SoundFile, CMake]
+repo: https://github.com/matteospanio/torchfx
+pypi: https://pypi.org/project/torchfx/
+docs: https://matteospanio.github.io/torchfx/
+paper: spanio2025torchfx
+featured: true
+order: 1
+---
+
+The usual scientific Python stack treats a filter as a function call: procedural, CPU-bound, and
+awkward to place inside a training loop. TorchFX starts from the other end. Every filter and effect
+subclasses `torch.nn.Module`, so a chain runs on CUDA devices and stays open to gradient-based
+optimisation, and composition is expressed with operators — `|` for sequential processing, `+` for
+combining filters in parallel:
+
+```python
+from torchfx import Wave
+from torchfx.filter import LoButterworth, ParametricEQ
+
+wave = Wave.from_file("audio.wav")
+
+lowpass = LoButterworth(cutoff=5000, order=4, fs=wave.fs)
+eq = ParametricEQ(frequency=1000, q=2.0, gain=3.0, fs=wave.fs)
+
+processed = wave | lowpass | eq
+
+stereo_enhancer = lowpass + eq
+enhanced = wave | stereo_enhancer
+
+processed.save("output.wav")
+```
+
+`torchfx.filter` covers IIR designs — Butterworth, Chebyshev I and II, elliptic, Linkwitz-Riley and
+shelving each ship as a low and a high variant, while notch, parametric EQ, peaking and all-pass are
+single classes — plus RBJ biquads, FIR and designable FIR, and a log filter bank. `torchfx.effect` adds gain, normalisation, reverb, delay,
+compressor, expander, gate and limiter.
+
+Under the Python layer sit hand-written native kernels in `src/torchfx/_csrc`, built through CMake: a
+C++ CPU path for IIR, compressor, expander, limiter, delay and reverb, with CUDA counterparts
+alongside it. The IIR case is the one worth dwelling on. A biquad cascade is a sequential recurrence,
+which is exactly the wrong shape for a GPU, so the GPU path evaluates it with a parallel scan
+instead; since 0.7.0 the default is a single-pass decoupled look-back fused scan, with
+`TORCHFX_FUSED_SCAN=0` restoring the older three-phase implementation. A fusion planner
+(`Wave._build_plan`) collapses adjacent SOS filters into a single `FusedSOSCascade` and folds static
+gains into it before anything reaches the kernels. Kernels are templated on the scalar type and
+dispatch on input dtype rather than upcasting everything to float64.
+
+Correctness is pinned to `scipy.signal.sosfilt`: `tests/test_fp32_precision.py` validates the FP64
+path to double precision and bounds the FP32 path, and `tests/test_fused_scan_equivalence.py` gates
+the fused GPU scan against the three-phase oracle. Beyond offline processing there is a realtime
+subpackage that runs DSP in a dedicated worker thread behind the PortAudio callback, passing tensors
+through ring buffers, plus a `CudaGraphRunner` that replays a captured fixed-shape forward. The
+package also installs a `torchfx` command with `process`, `play`, `record`, `watch`, `preset`, `sox`
+and `info` subcommands.
+
+Install with `pip install torchfx`; it needs Python 3.10 or newer and torch 2.6 or newer, and the
+dependency list stops at numpy, soundfile and annotated-types. Sixteen releases have gone out between
+April 2025 and June 2026, the most recent adding streaming recurrence state to the dynamics
+processors and reverb so that block-wise processing matches one-shot processing, and a
+differentiable-DSP proof of concept that trains a learnable RBJ parametric EQ against a
+multi-resolution STFT loss. The design is described in the DAFx25 paper
+[TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration](https://arxiv.org/abs/2504.08624).
+The code is GPL-3.0 and still carries an alpha classifier.

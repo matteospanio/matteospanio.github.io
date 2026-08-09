@@ -1,87 +1,85 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import PostList from '@/components/PostList.astro';
+import { getPosts, groupByTerm, groupByYear } from '@/lib/blog';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
-
-const href = (p: (typeof posts)[number]) =>
-  `/blog/${p.data.date.getFullYear()}/${p.data.slug}/`;
+const posts = await getPosts();
+const tags = [...groupByTerm(posts, 'tags').entries()].sort((a, b) => b[1].posts.length - a[1].posts.length);
+const years = [...groupByYear(posts).keys()].sort((a, b) => b - a);
 ---
 
-<Base title="blog" description="Notes on audio DSP, machine learning and the tooling around them.">
+<Base
+  title="blog"
+  description="Notes on audio DSP, machine learning and the Python tooling around them."
+>
   <h1 class="label">blog</h1>
-  <ul class="list">
-    {
-      posts.map((post) => (
-        <li>
-          <a href={href(post)}>
-            <time datetime={post.data.date.toISOString()}>
-              {post.data.date.toISOString().slice(0, 10)}
-            </time>
-            <span class="title">{post.data.title}</span>
+  <p class="summary">{posts.length} posts. Mostly audio, machine learning and the tools in between.</p>
+
+  <nav class="facets" aria-label="Browse posts">
+    <div>
+      <span class="facet-label">years</span>
+      {years.map((y) => <a href={`/blog/${y}/`}>{y}</a>)}
+    </div>
+    <div>
+      <span class="facet-label">tags</span>
+      {
+        tags.map(([slug, { label, posts: p }]) => (
+          <a href={`/blog/tag/${slug}/`}>
+            {label}
+            <span class="n">{p.length}</span>
           </a>
-          <p class="desc">{post.data.description}</p>
-        </li>
-      ))
-    }
-  </ul>
+        ))
+      }
+    </div>
+  </nav>
+
+  <PostList posts={posts} />
 </Base>
 
 <style>
   h1 {
-    margin-block-end: 2rem;
+    margin-block-end: 0.8rem;
   }
 
-  .list {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: 1.75rem;
-    max-width: var(--measure);
-  }
-
-  a {
-    display: flex;
-    gap: 1rem;
-    align-items: baseline;
-    text-decoration: none;
-    color: var(--fg);
-  }
-
-  time {
+  .summary {
+    font-size: var(--step--1);
     color: var(--fg-faint);
+  }
+
+  .facets {
+    margin-block: 2rem 3rem;
+    display: grid;
+    gap: 0.7rem;
     font-size: var(--step--1);
+  }
+
+  .facets div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: baseline;
+  }
+
+  .facet-label {
+    color: var(--fg-faint);
+    width: 4rem;
     flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
   }
 
-  .title {
-    font-size: var(--step-1);
-    border-block-end: 1px solid transparent;
-  }
-
-  a:hover .title {
-    color: var(--accent);
-    border-block-end-color: var(--accent);
-  }
-
-  .desc {
-    font-family: var(--font-sans);
+  .facets a {
     color: var(--fg-dim);
-    font-size: var(--step--1);
-    margin-block-start: 0.4rem;
-    padding-inline-start: calc(10ch + 1rem);
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    padding: 0.05em 0.5em;
   }
 
-  @media (max-width: 560px) {
-    a {
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-    .desc {
-      padding-inline-start: 0;
-    }
+  .facets a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .n {
+    color: var(--fg-faint);
+    margin-inline-start: 0.4em;
   }
 </style>

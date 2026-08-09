@@ -1,0 +1,97 @@
+{
+  "IEEEAccess": {
+    "label": "IEEE Access",
+    "full": "IEEE Access",
+    "kind": "journal",
+    "color": "#5eead4",
+    "url": "https://ieeeaccess.ieee.org/"
+  },
+  "AES": {
+    "label": "JAES",
+    "full": "Journal of the Audio Engineering Society",
+    "kind": "journal",
+    "color": "#5eead4",
+    "url": "https://aes2.org/publications/journal/"
+  },
+  "Frontiers in CS": {
+    "label": "Frontiers CS",
+    "full": "Frontiers in Computer Science",
+    "kind": "journal",
+    "color": "#c084fc",
+    "url": "https://www.frontiersin.org/journals/computer-science"
+  },
+  "ICIAP": {
+    "label": "ICIAP",
+    "full": "International Conference on Image Analysis and Processing",
+    "kind": "conference",
+    "color": "#5eead4",
+    "url": "https://iciap2023.org/"
+  },
+  "DAFX": {
+    "label": "DAFx",
+    "full": "International Conference on Digital Audio Effects",
+    "kind": "conference",
+    "color": "#4ade80",
+    "url": "https://dafx.de/"
+  },
+  "NIME": {
+    "label": "NIME",
+    "full": "New Interfaces for Musical Expression",
+    "kind": "conference",
+    "color": "#4ade80",
+    "url": "https://www.nime.org/"
+  },
+  "SMC": {
+    "label": "SMC",
+    "full": "Sound and Music Computing Conference",
+    "kind": "conference",
+    "color": "#fbbf24",
+    "url": "https://smcnetwork.org/"
+  },
+  "AIxIADC": {
+    "label": "AIxIA DC",
+    "full": "AIxIA Doctoral Consortium",
+    "kind": "workshop",
+    "color": "#c084fc",
+    "url": "https://aixia2024.events.unibz.it/"
+  },
+  "IAI4CH": {
+    "label": "IAI4CH",
+    "full": "Workshop on Artificial Intelligence for Cultural Heritage",
+    "kind": "workshop",
+    "color": "#5eead4",
+    "url": "https://ceur-ws.org/Vol-3865/"
+  },
+  "Ital-IA": {
+    "label": "Ital-IA",
+    "full": "Italian Conference on Artificial Intelligence",
+    "kind": "conference",
+    "color": "#fbbf24",
+    "url": "https://www.ital-ia2026.it/"
+  },
+  "AVI-CH": {
+    "label": "AVI-CH",
+    "full": "Advanced Visual Interfaces for Cultural Heritage",
+    "kind": "workshop",
+    "color": "#5eead4"
+  },
+  "arXiv": {
+    "label": "arXiv",
+    "full": "arXiv preprint",
+    "kind": "preprint",
+    "color": "#8b98a5",
+    "url": "https://arxiv.org/"
+  },
+  "Thesis": {
+    "label": "thesis",
+    "full": "Academic thesis",
+    "kind": "thesis",
+    "color": "#8b98a5"
+  },
+  "Score": {
+    "label": "score",
+    "full": "Published musical score",
+    "kind": "other",
+    "color": "#f87171"
+  }
+}
