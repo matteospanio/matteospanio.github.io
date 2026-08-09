@@ -30,8 +30,8 @@ const maxWeight = Math.max(...edges.map((e) => e.w));
     shared papers; a line means two people appeared on the same paper.
   </figcaption>
 
-  <div class="scroll">
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Coauthor network diagram">
+  <div class="scroll" tabindex="0" role="region" aria-label="scrollable content">
+    <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-label="Coauthor network diagram">
       <g class="edges">
         {
           edges.map((e) => {

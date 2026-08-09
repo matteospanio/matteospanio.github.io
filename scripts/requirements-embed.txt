@@ -1,0 +1,8 @@
+# CPU-only torch keeps the CI install around 200 MB instead of ~2.5 GB.
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple
+torch
+sentence-transformers>=5
+umap-learn>=0.5
+scikit-learn
+numpy

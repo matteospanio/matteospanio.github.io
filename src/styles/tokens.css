@@ -9,7 +9,7 @@
     /* --- ink ----------------------------------------------------------- */
     --fg: #d7dee5;
     --fg-dim: #8b98a5;
-    --fg-faint: #55606b;
+    --fg-faint: #7d8792;
 
     /* --- structure ----------------------------------------------------- */
     --rule: #1b232b;
@@ -67,7 +67,7 @@
 
     --fg: #16191d;
     --fg-dim: #4d565f;
-    --fg-faint: #858e97;
+    --fg-faint: #5d666d;
 
     --rule: #dedcd4;
     --rule-strong: #c3c1b8;
@@ -75,10 +75,10 @@
     --accent: #0f766e;
     --accent-ink: #ffffff;
     --link: #0369a1;
-    --warn: #a16207;
+    --warn: #854d0e;
     --danger: #b91c1c;
 
-    --theme-heritage: #0d9488;
+    --theme-heritage: #0f766e;
     --theme-multimodal: #7e22ce;
     --theme-symbolic: #a16207;
     --theme-dsp: #15803d;

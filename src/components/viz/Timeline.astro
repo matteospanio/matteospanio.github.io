@@ -46,7 +46,7 @@ const KINDS: Record<string, string> = {
     rather than recorded exactly.
   </figcaption>
 
-  <div class="scroll">
+  <div class="scroll" tabindex="0" role="region" aria-label="scrollable content">
     <div class="grid" style={`--months: ${MONTHS}`}>
       {/* year ruler */}
       <div class="ruler">
@@ -181,7 +181,7 @@ const KINDS: Record<string, string> = {
 
   .span__label {
     font-size: 0.68rem;
-    color: var(--fg-faint);
+    color: var(--fg-dim);
     white-space: nowrap;
     padding-inline: 0.4em;
   }
@@ -195,6 +195,11 @@ const KINDS: Record<string, string> = {
     display: block;
     font-size: 0.7rem;
     color: var(--lane);
+  }
+
+  /* The hue stays on the markers, where it is decoration rather than text. */
+  :global(:root[data-theme='light']) .lane__name {
+    color: var(--fg-dim);
     padding-inline-start: 0.6rem;
     margin-block-end: 0.3rem;
   }

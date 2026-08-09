@@ -99,7 +99,7 @@ const bibId = `bib-${pub.id.replace(/[^a-zA-Z0-9]/g, '-')}`;
       <summary>bibtex</summary>
       <div class="bibtex">
         <CopyButton target={bibId} />
-        <pre id={bibId}>{pub.raw}</pre>
+        <pre id={bibId} tabindex="0">{pub.raw}</pre>
       </div>
     </details>
   </div>

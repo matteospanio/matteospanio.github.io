@@ -34,3 +34,7 @@ jobs:
 
       - name: Check machine-readable endpoints are populated
         run: node scripts/check_endpoints.mjs dist
+
+      # Catches the one silent failure: a paper added without rebuilding the map.
+      - name: Check the embedding map is not stale
+        run: node scripts/check_embedding_freshness.mjs

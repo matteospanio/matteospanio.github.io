@@ -1,0 +1,562 @@
+---
+import map from '@/data/viz/embedding-map.json';
+
+/**
+ * Canvas 2D, no library.
+ *
+ * The layout is precomputed in Python, so d3 would only be supplying scale and
+ * zoom helpers — about 30 KB gzipped for what a single affine transform does in
+ * a dozen lines. regl and deck.gl are shader plumbing for 36 circles.
+ *
+ * Positions come from the embedding; colours come from declared research
+ * themes. Colouring by a clustering run on 36 documents would invent structure
+ * that the sanity numbers say is not there.
+ */
+const { nodes, edges, themes, sanity } = map;
+
+const byTheme = themes
+  .map((t) => ({ ...t, items: nodes.filter((n) => n.theme === t.id) }))
+  .filter((t) => t.items.length > 0);
+
+const KIND_LABEL: Record<string, string> = {
+  paper: 'paper',
+  post: 'post',
+  project: 'project',
+  news: 'news',
+};
+---
+
+<figure class="map">
+  <div class="chrome">
+    <p class="legend">
+      {
+        byTheme.map((t) => (
+          <span class="key">
+            <span class="swatch" style={`background:${t.color}`} />
+            {t.label}
+            <span class="n">{t.items.length}</span>
+          </span>
+        ))
+      }
+    </p>
+  </div>
+
+  {/* The canvas is decoration layered over the list below, which is the real content. */}
+  <div class="canvas-wrap" aria-hidden="true">
+    <canvas id="emap"></canvas>
+    <div id="emap-tip" class="tip" hidden></div>
+    <p class="hint">scroll to zoom · drag to pan · double-click to reset</p>
+  </div>
+
+  <figcaption>
+    {nodes.length} items — {nodes.filter((n) => n.kind === 'paper').length} papers, {
+      nodes.filter((n) => n.kind === 'project').length
+    } projects, {nodes.filter((n) => n.kind === 'post').length} posts, {
+      nodes.filter((n) => n.kind === 'news').length
+    } news — embedded with {map.model} over {sanity.chunks} text chunks and projected with UMAP.
+    <br />
+    <strong>Read the geometry loosely.</strong> The silhouette score of the projection against my
+    declared research areas is {sanity.silhouetteVsThemes.toFixed(2)}, and mean within-area
+    similarity ({sanity.meanIntraTheme.toFixed(2)}) barely exceeds between-area similarity ({
+      sanity.meanInterTheme.toFixed(2)
+    }). That is the honest result for a corpus this size and this topically narrow: nearly
+    everything here is audio, music and machine learning, so the model finds them all similar.
+    Neighbourhoods are informative; distances across the map are not.
+  </figcaption>
+
+  {/*
+    Always server-rendered. Visually hidden once JS boots (see the script), but it
+    stays in the DOM and the accessibility tree — so screen readers, keyboard
+    users, no-JS visitors and crawlers all get the full contents.
+  */}
+  <div class="fallback" id="emap-list">
+    {
+      byTheme.map((t) => (
+        <section>
+          <h3 style={`--c:${t.color}`}>{t.label}</h3>
+          <ul>
+            {t.items.map((n) => (
+              <li>
+                <a href={n.url} data-node={n.id}>
+                  {n.title}
+                </a>
+                <span class="meta">
+                  {KIND_LABEL[n.kind] ?? n.kind}
+                  {n.year ? ` · ${n.year}` : ''}
+                  {n.venue ? ` · ${n.venue}` : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+
+  <script
+    type="application/json"
+    id="emap-data"
+    is:inline
+    set:html={JSON.stringify({ nodes, edges, themes })}
+  />
+</figure>
+
+<style>
+  .map {
+    margin: 0;
+  }
+
+  .chrome {
+    margin-block-end: 0.7rem;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .swatch {
+    width: 0.6rem;
+    height: 0.6rem;
+    display: inline-block;
+  }
+
+  .n {
+    color: var(--fg-faint);
+  }
+
+  .canvas-wrap {
+    position: relative;
+    border: 1px solid var(--rule);
+    background: var(--bg-1);
+    aspect-ratio: 16 / 9;
+    max-height: 34rem;
+    overflow: hidden;
+    /* Only meaningful with JS; hidden until the script says otherwise. */
+    display: none;
+  }
+
+  :global(html.js) .canvas-wrap {
+    display: block;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+    cursor: grab;
+  }
+
+  canvas:active {
+    cursor: grabbing;
+  }
+
+  .tip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--bg-2);
+    border: 1px solid var(--rule-strong);
+    padding: 0.4rem 0.6rem;
+    font-size: var(--step--1);
+    max-width: 22rem;
+    z-index: 2;
+    line-height: 1.4;
+  }
+
+  .tip :global(strong) {
+    display: block;
+    color: var(--fg);
+    font-weight: 500;
+    margin-block-end: 0.15rem;
+  }
+
+  .tip :global(span) {
+    display: block;
+    color: var(--fg-faint);
+  }
+
+  .hint {
+    position: absolute;
+    bottom: 0.4rem;
+    right: 0.6rem;
+    font-size: 0.68rem;
+    color: var(--fg-faint);
+    pointer-events: none;
+  }
+
+  figcaption {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    margin-block-start: 0.8rem;
+    max-width: var(--measure);
+    line-height: 1.55;
+  }
+
+  figcaption strong {
+    color: var(--fg-dim);
+  }
+
+  .fallback {
+    margin-block-start: 1.5rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .fallback h3 {
+    font-size: var(--step--1);
+    color: var(--c);
+    margin-block-end: 0.5rem;
+  }
+
+  .fallback ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    border-inline-start: 1px solid var(--rule);
+  }
+
+  .fallback li {
+    padding-inline-start: 0.8rem;
+    font-size: var(--step--1);
+  }
+
+  .fallback a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+
+  .fallback a:hover,
+  .fallback a:focus-visible {
+    color: var(--accent);
+  }
+
+  .fallback .meta {
+    color: var(--fg-faint);
+    margin-inline-start: 0.5rem;
+  }
+
+  /* Once the canvas is live the list becomes the accessible layer, not a duplicate. */
+  :global(html.js) .fallback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ...but bring it back whenever anything inside it is focused. */
+  :global(html.js) .fallback:focus-within {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+</style>
+
+<script>
+  interface Node {
+    id: string;
+    kind: string;
+    theme: string;
+    title: string;
+    short: string;
+    year?: number;
+    venue?: string;
+    url: string;
+    x: number;
+    y: number;
+  }
+
+  const dataEl = document.getElementById('emap-data');
+  const canvas = document.getElementById('emap') as HTMLCanvasElement | null;
+  const tip = document.getElementById('emap-tip');
+  const list = document.getElementById('emap-list');
+
+  if (dataEl && canvas && tip) {
+    document.documentElement.classList.add('js');
+
+    const { nodes, edges, themes } = JSON.parse(dataEl.textContent!) as {
+      nodes: Node[];
+      edges: { s: string; t: string; w: number }[];
+      themes: { id: string; color: string }[];
+    };
+
+    const colour = new Map(themes.map((t) => [t.id, t.color]));
+    const index = new Map(nodes.map((n, i) => [n.id, i]));
+    const ctx = canvas.getContext('2d')!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // view transform
+    let k = 1;
+    let tx = 0;
+    let ty = 0;
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
+    let hover = -1;
+    let dirty = true;
+    let running = false;
+    let start = 0;
+
+    const R = 5;
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = rect.width;
+      h = rect.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      refit();
+      dirty = true;
+      request();
+    };
+
+    /*
+     * The projection preserves aspect, so its extent is not square — mapping it
+     * onto [-1,1] in both axes left the cloud in a thin band with most of the
+     * canvas empty. Fit the real bounding box instead, still with one uniform
+     * scale so relative distances survive.
+     */
+    const pad = 46;
+    const xs = nodes.map((n) => n.x);
+    const ys = nodes.map((n) => n.y);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    const spanX = maxX - minX || 1;
+    const spanY = maxY - minY || 1;
+
+    let fit = 1;
+    let offX = 0;
+    let offY = 0;
+
+    const refit = () => {
+      fit = Math.min((w - pad * 2) / spanX, (h - pad * 2) / spanY);
+      offX = (w - spanX * fit) / 2;
+      offY = (h - spanY * fit) / 2;
+    };
+
+    const sx = (x: number) => (offX + (x - minX) * fit) * k + tx;
+    const sy = (y: number) => (offY + (y - minY) * fit) * k + ty;
+
+    function draw(now: number) {
+      running = false;
+      if (!start) start = now;
+      const t = reduced ? 1 : Math.min(1, (now - start) / 700);
+      // cubic-bezier(.16,1,.3,1)-ish ease-out
+      const e = 1 - Math.pow(1 - t, 3);
+
+      ctx.clearRect(0, 0, w, h);
+
+      const styles = getComputedStyle(document.documentElement);
+      const ruleColour = styles.getPropertyValue('--rule-strong').trim() || '#2a353f';
+      const fg = styles.getPropertyValue('--fg-dim').trim() || '#8b98a5';
+
+      const hovered = hover >= 0 ? nodes[hover] : null;
+      const neighbours = new Set<string>();
+      if (hovered) {
+        for (const edge of edges) {
+          if (edge.s === hovered.id) neighbours.add(edge.t);
+          if (edge.t === hovered.id) neighbours.add(edge.s);
+        }
+      }
+
+      // edges first, dimmed
+      ctx.lineWidth = 1;
+      for (const edge of edges) {
+        const a = nodes[index.get(edge.s)!];
+        const b = nodes[index.get(edge.t)!];
+        if (!a || !b) continue;
+        const lit = hovered && (edge.s === hovered.id || edge.t === hovered.id);
+        ctx.globalAlpha = (lit ? 0.6 : 0.16) * e;
+        ctx.strokeStyle = lit ? colour.get(hovered!.theme) || fg : ruleColour;
+        ctx.beginPath();
+        ctx.moveTo(sx(a.x), sy(a.y));
+        ctx.lineTo(sx(b.x), sy(b.y));
+        ctx.stroke();
+      }
+
+      // nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        // Ease outward from the centre of the fitted extent on entry.
+        const cx0 = (minX + maxX) / 2;
+        const cy0 = (minY + maxY) / 2;
+        const px = sx(cx0 + (n.x - cx0) * e);
+        const py = sy(cy0 + (n.y - cy0) * e);
+        const isHover = i === hover;
+        const isNeighbour = neighbours.has(n.id);
+        const c = colour.get(n.theme) || fg;
+
+        ctx.globalAlpha = hovered && !isHover && !isNeighbour ? 0.3 * e : e;
+
+        // shadowBlur is expensive; only the hovered node pays for it.
+        if (isHover) {
+          ctx.shadowColor = c;
+          ctx.shadowBlur = 16;
+        }
+
+        ctx.beginPath();
+        ctx.arc(px, py, isHover ? R + 2.5 : R, 0, Math.PI * 2);
+        ctx.fillStyle = isHover || isNeighbour ? c : 'transparent';
+        ctx.strokeStyle = c;
+        ctx.lineWidth = 1.6;
+        if (isHover || isNeighbour) ctx.fill();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.globalAlpha = 1;
+
+      if (t < 1) request();
+    }
+
+    function request() {
+      if (running) return;
+      running = true;
+      requestAnimationFrame(draw);
+    }
+
+    /** Linear scan is fine below a few hundred nodes; a quadtree would be noise. */
+    function pick(mx: number, my: number): number {
+      let best = -1;
+      let bestDist = 14 * 14;
+      for (let i = 0; i < nodes.length; i++) {
+        const dx = sx(nodes[i].x) - mx;
+        const dy = sy(nodes[i].y) - my;
+        const d = dx * dx + dy * dy;
+        if (d < bestDist) {
+          bestDist = d;
+          best = i;
+        }
+      }
+      return best;
+    }
+
+    let pending = false;
+    canvas.addEventListener('pointermove', (event) => {
+      if (dragging) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = event.clientX - rect.left;
+      const my = event.clientY - rect.top;
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        pending = false;
+        const hit = pick(mx, my);
+        if (hit !== hover) {
+          hover = hit;
+          canvas.style.cursor = hit >= 0 ? 'pointer' : 'grab';
+          if (hit >= 0) {
+            const n = nodes[hit];
+            tip.innerHTML = '';
+            const strong = document.createElement('strong');
+            strong.textContent = n.title;
+            const meta = document.createElement('span');
+            meta.textContent = [n.kind, n.year, n.venue].filter(Boolean).join(' · ');
+            tip.append(strong, meta);
+            tip.hidden = false;
+            tip.style.left = `${Math.min(mx + 14, rect.width - 240)}px`;
+            tip.style.top = `${my + 14}px`;
+          } else {
+            tip.hidden = true;
+          }
+          request();
+        } else if (hit >= 0) {
+          tip.style.left = `${Math.min(mx + 14, rect.width - 240)}px`;
+          tip.style.top = `${my + 14}px`;
+        }
+      });
+    });
+
+    canvas.addEventListener('pointerleave', () => {
+      hover = -1;
+      tip.hidden = true;
+      request();
+    });
+
+    canvas.addEventListener('click', () => {
+      if (hover >= 0) location.href = nodes[hover].url;
+    });
+
+    // pan
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    canvas.addEventListener('pointerdown', (event) => {
+      dragging = true;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      canvas.setPointerCapture(event.pointerId);
+      tip.hidden = true;
+    });
+
+    canvas.addEventListener('pointerup', () => (dragging = false));
+
+    canvas.addEventListener('pointermove', (event) => {
+      if (!dragging) return;
+      tx += event.clientX - lastX;
+      ty += event.clientY - lastY;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      request();
+    });
+
+    // zoom about the cursor
+    canvas.addEventListener(
+      'wheel',
+      (event) => {
+        event.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const mx = event.clientX - rect.left;
+        const my = event.clientY - rect.top;
+        const factor = Math.exp(-event.deltaY * 0.0016);
+        const next = Math.min(6, Math.max(0.6, k * factor));
+        const ratio = next / k;
+        tx = mx - (mx - tx) * ratio;
+        ty = my - (my - ty) * ratio;
+        k = next;
+        request();
+      },
+      { passive: false },
+    );
+
+    canvas.addEventListener('dblclick', () => {
+      k = 1;
+      tx = 0;
+      ty = 0;
+      request();
+    });
+
+    // Keyboard users tab the list; focusing an entry highlights its node.
+    list?.addEventListener('focusin', (event) => {
+      const id = (event.target as HTMLElement)?.dataset?.node;
+      if (!id) return;
+      const i = index.get(id);
+      if (i === undefined) return;
+      hover = i;
+      request();
+    });
+
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+  }
+</script>

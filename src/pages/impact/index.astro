@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro';
 import StatRow from '@/components/viz/StatRow.astro';
 import CoauthorGraph from '@/components/viz/CoauthorGraph.astro';
 import Timeline from '@/components/viz/Timeline.astro';
+import EmbeddingMap from '@/components/viz/EmbeddingMap.astro';
 import footprint from '@/data/viz/footprint.json';
 
 const cited = [...footprint.citations.byPaper]
@@ -57,6 +58,11 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
   </section>
 
   <section>
+    <h2 class="sub">research map</h2>
+    <EmbeddingMap />
+  </section>
+
+  <section>
     <h2 class="sub">trajectory</h2>
     <Timeline />
   </section>
@@ -72,7 +78,7 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
       {footprint.github.repos.length} public repositories, {footprint.github.totalStars} stars,
       {footprint.github.totalForks} forks.
     </p>
-    <div class="scroll">
+    <div class="scroll" tabindex="0" role="region" aria-label="scrollable content">
       <table>
         <thead>
           <tr><th>repository</th><th>language</th><th>stars</th><th>forks</th><th>updated</th></tr>
@@ -105,7 +111,7 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
           On Hugging Face under <a href="https://huggingface.co/csc-unipd">csc-unipd</a>.
           Downloads are the last-30-days figure the API reports.
         </p>
-        <div class="scroll">
+        <div class="scroll" tabindex="0" role="region" aria-label="scrollable content">
           <table>
             <thead>
               <tr><th>model</th><th>task</th><th>downloads</th><th>likes</th></tr>
