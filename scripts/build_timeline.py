@@ -429,7 +429,11 @@ def news_events(
                 "title": data.get("title") or item["id"],
                 "url": data.get("url") or "/news/",
                 "theme": theme,
-                "approx": False,
+                # The frontmatter date is when the announcement was written, not
+                # when the conference happened — DAFx-25 was announced on 28 Aug
+                # and held 2-6 Sept. Mark these as approximate so the marker does
+                # not claim a precision it does not have.
+                "approx": True,
             }
         )
     return events

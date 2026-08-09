@@ -35,7 +35,7 @@
   "counts": {
     "events": 41,
     "spans": 9,
-    "approx": 3,
+    "approx": 11,
     "byLane": {
       "papers": 17,
       "software": 13,
@@ -302,7 +302,7 @@
       "title": "ICIAP 2023",
       "url": "https://sites.google.com/view/iciap-2023/home",
       "theme": "cultural-heritage",
-      "approx": false
+      "approx": true
     },
     {
       "id": "spam-analyzer-v1-0-11",
@@ -335,7 +335,7 @@
       "title": "ACDL",
       "url": "https://acdl2024.icas.events/",
       "theme": "engineering",
-      "approx": false
+      "approx": true
     },
     {
       "id": "post-python-environments",
@@ -369,7 +369,7 @@
       "title": "AES 2024",
       "url": "https://aes2.org/events-calendar/aes-show-2024-ny/",
       "theme": "cultural-heritage",
-      "approx": false
+      "approx": true
     },
     {
       "id": "bosi2024a",
@@ -421,7 +421,7 @@
       "title": "AIxIA 2024",
       "url": "https://aixia2024.events.unibz.it/",
       "theme": "multimodal",
-      "approx": false
+      "approx": true
     },
     {
       "id": "news-hf2025",
@@ -431,7 +431,7 @@
       "title": "New DL model released",
       "url": "https://huggingface.co/csc-unipd/tasty-musicgen-small",
       "theme": "multimodal",
-      "approx": false
+      "approx": true
     },
     {
       "id": "torchfx-v0-1-0",
@@ -482,7 +482,7 @@
       "title": "DAFx 2025",
       "url": "https://dafx25.dii.univpm.it/",
       "theme": "dsp-tooling",
-      "approx": false
+      "approx": true
     },
     {
       "id": "post-slow-python",
@@ -620,7 +620,7 @@
       "title": "Lilybert is available on Hugging Face",
       "url": "https://huggingface.co/csc-unipd/lilybert",
       "theme": "symbolic-music",
-      "approx": false
+      "approx": true
     },
     {
       "id": "news-2026-italia",
@@ -630,7 +630,7 @@
       "title": "Ital-IA 2026",
       "url": "https://www.ital-ia2026.it/",
       "theme": "symbolic-music",
-      "approx": false
+      "approx": true
     },
     {
       "id": "canazza2026preserving",

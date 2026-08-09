@@ -11,10 +11,13 @@ const cited = [...footprint.citations.byPaper]
   .sort((a, b) => b.citations - a.citations);
 const maxCitations = Math.max(...cited.map((p) => p.citations), 1);
 
-const repos = [...footprint.github.repos].sort((a, b) => (b.stars ?? 0) - (a.stars ?? 0));
+const allRepos = [...footprint.github.repos].sort((a, b) => (b.stars ?? 0) - (a.stars ?? 0));
+const repos = allRepos.filter((r) => (r.stars ?? 0) > 0);
+const hiddenRepos = allRepos.length - repos.length;
 const models = footprint.huggingface.models ?? [];
 
 const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.generatedAt;
+const citationsStale = footprint.sources.citations?.stale === true;
 ---
 
 <Base
@@ -35,6 +38,16 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
       {footprint.citations.total} recorded citations across {footprint.citations.papers} tracked
       papers, from Google Scholar with OpenAlex as a secondary source. Papers with no recorded
       citations are omitted rather than shown as zero.
+      {
+        citationsStale && (
+          <>
+            {' '}
+            Google Scholar blocks automated queries from datacentre addresses, and its last fetch
+            failed, so these counts were carried forward from an earlier run rather than measured
+            today.
+          </>
+        )
+      }
     </p>
 
     <ol class="bars">
@@ -75,8 +88,9 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
   <section>
     <h2 class="sub">software</h2>
     <p class="note">
-      {footprint.github.repos.length} public repositories, {footprint.github.totalStars} stars,
-      {footprint.github.totalForks} forks.
+      {footprint.github.repos.length} public non-fork repositories, {footprint.github.totalStars}{' '}
+      stars, {footprint.github.totalForks} forks in total. The table lists the {repos.length} that
+      have at least one star; {hiddenRepos} others are not shown.
     </p>
     <div class="scroll" tabindex="0" role="region" aria-label="scrollable content">
       <table>
@@ -88,13 +102,13 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
             repos.map((r) => (
               <tr>
                 <td>
-                  <a href={r.html_url ?? r.url}>{r.full_name ?? r.name}</a>
+                  <a href={r.url ?? r.html_url}>{r.fullName ?? r.name}</a>
                   {r.archived && <span class="tag">archived</span>}
                 </td>
                 <td>{r.language ?? '—'}</td>
                 <td class="n">{r.stars}</td>
                 <td class="n">{r.forks}</td>
-                <td>{(r.pushed_at ?? '').slice(0, 7) || '—'}</td>
+                <td>{(r.pushedAt ?? '').slice(0, 7) || '—'}</td>
               </tr>
             ))
           }
@@ -109,7 +123,7 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
         <h2 class="sub">released models</h2>
         <p class="note">
           On Hugging Face under <a href="https://huggingface.co/csc-unipd">csc-unipd</a>.
-          Downloads are the last-30-days figure the API reports.
+          Downloads are the rolling 30-day figure the API reports, not a lifetime total.
         </p>
         <div class="scroll" tabindex="0" role="region" aria-label="scrollable content">
           <table>
@@ -122,7 +136,7 @@ const fetched = footprint.sources.github?.fetchedAt?.slice(0, 10) ?? footprint.g
                   <td>
                     <a href={m.url ?? `https://huggingface.co/${m.id}`}>{m.id}</a>
                   </td>
-                  <td>{m.pipeline_tag ?? '—'}</td>
+                  <td>{m.pipelineTag ?? '—'}</td>
                   <td class="n">{m.downloads ?? '—'}</td>
                   <td class="n">{m.likes ?? '—'}</td>
                 </tr>

@@ -61,13 +61,8 @@ HF_AUTHOR = "csc-unipd"
 # (owner, name) tried in order; the first that resolves wins. `gh` follows
 # GitHub's redirect for transferred repos, so a personal-account miss can come
 # back wearing the organisation's name.
-REPO_CANDIDATES = [
-    ("matteospanio", "torchfx"),
-    ("matteospanio", "spam-analyzer"),
-    ("matteospanio", "sniper-go"),
-    ("matteospanio", "zillow-prize"),
-    ("matteospanio", "dotfiles"),
-    ("matteospanio", "tasty-musicgen-small"),
+# Extra repos outside the personal account that should still count.
+EXTRA_REPOS = [
     ("CSCPadova", "lilybert"),
     ("CSCPadova", "lilybench"),
     ("CSCPadova", "dei-blade-template"),
@@ -143,6 +138,7 @@ def parse_bib(text: str) -> list[dict]:
         brace = text.find("{", at)
         if brace == -1:
             break
+        entry_type = text[at + 1:brace].strip().lower()
 
         depth, cursor = 1, brace + 1
         while cursor < len(text) and depth:
@@ -176,7 +172,7 @@ def parse_bib(text: str) -> list[dict]:
             fields[name] = value
             pos = rest.find(",", pos) + 1 or len(rest)
 
-        entries.append({"key": key.strip(), "fields": fields})
+        entries.append({"key": key.strip(), "type": entry_type, "fields": fields})
     return entries
 
 
@@ -235,9 +231,17 @@ def load_coauthor_urls() -> dict[str, dict]:
     return table
 
 
+# Entry types that represent collaboration. `@misc` is excluded because the one
+# @misc entry is a published score reduction whose "author" is Louis Spohr
+# (1784-1859) — a composer credit, not a coauthor.
+COLLABORATIVE_TYPES = {"article", "inproceedings", "conference", "incollection", "book"}
+
+
 def build_coauthor_graph(entries: list[dict]) -> dict:
     raw_names, years = [], []
     for entry in entries:
+        if entry.get("type", "").lower() not in COLLABORATIVE_TYPES:
+            continue
         author = entry["fields"].get("author")
         if not author:
             continue
@@ -357,13 +361,44 @@ def layout(nodes: dict[str, dict], edges: dict[tuple[str, str], int]) -> dict[st
 # sources
 # --------------------------------------------------------------------------
 
+def list_owned_repos() -> list[tuple[str, str]]:
+    """Every public, non-fork repo on the personal account.
+
+    Enumerating rather than curating matters: the page claims these totals are
+    measured, and a hand-picked subset presented as a total is simply wrong. It
+    also stops the numbers going stale every time a new repo appears.
+    """
+    try:
+        result = subprocess.run(
+            ["gh", "api", "--paginate",
+             "users/matteospanio/repos?per_page=100&type=owner",
+             "--jq", ".[] | select(.fork == false) | .full_name"],
+            capture_output=True, text=True, timeout=60,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return []
+    if result.returncode != 0:
+        return []
+    out = []
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if "/" in line:
+            owner, _, name = line.partition("/")
+            out.append((owner, name))
+    return out
+
+
 def fetch_github() -> tuple[dict | None, str | None]:
-    """Curated repo list via `gh api`. Returns (payload, error)."""
+    """All owned public repos plus the research-org ones. Returns (payload, error)."""
     repos: list[dict] = []
     seen: set[str] = set()
     failures = 0
 
-    for owner, name in REPO_CANDIDATES:
+    candidates = list_owned_repos() + EXTRA_REPOS
+    if not candidates:
+        return None, "could not enumerate repositories"
+
+    for owner, name in candidates:
         try:
             result = subprocess.run(
                 ["gh", "api", f"repos/{owner}/{name}"],
@@ -468,6 +503,7 @@ def read_citations() -> tuple[dict, dict]:
 
     payload = json.loads(CITATIONS.read_text(encoding="utf-8"))
     papers = payload.get("papers", {})
+    upstream = payload.get("sources", {})
 
     per_year: dict[str, int] = {}
     covered = 0
@@ -509,8 +545,18 @@ def read_citations() -> tuple[dict, dict]:
             "cumulative": cumulative,
             "byPaper": by_paper,
         },
-        {"ok": True, "fetchedAt": payload.get("generatedAt"),
-         "note": "local file written by update_citations.py"},
+        {
+            "ok": True,
+            "fetchedAt": payload.get("generatedAt"),
+            # Most of these counts come from Google Scholar, which blocks
+            # datacenter IPs and therefore fails often. When its last fetch
+            # failed the numbers were carried forward from an earlier run, and
+            # saying so beats presenting stale data as freshly measured.
+            "scholarOk": bool(upstream.get("scholar", {}).get("ok")),
+            "openalexOk": bool(upstream.get("openalex", {}).get("ok")),
+            "stale": not bool(upstream.get("scholar", {}).get("ok")),
+            "note": "local file written by update_citations.py",
+        },
     )
 
 

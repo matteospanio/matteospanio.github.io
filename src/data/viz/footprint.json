@@ -5,15 +5,18 @@
     "citations": {
       "ok": true,
       "fetchedAt": "2026-08-09",
+      "scholarOk": false,
+      "openalexOk": true,
+      "stale": true,
       "note": "local file written by update_citations.py"
     },
     "github": {
       "ok": true,
-      "fetchedAt": "2026-08-09T22:10:13+00:00"
+      "fetchedAt": "2026-08-09T22:48:38+00:00"
     },
     "huggingface": {
       "ok": true,
-      "fetchedAt": "2026-08-09T22:10:13+00:00"
+      "fetchedAt": "2026-08-09T22:48:38+00:00"
     },
     "bibliography": {
       "ok": true,
@@ -24,9 +27,9 @@
   "headline": {
     "publications": 17,
     "citations": 31,
-    "coauthors": 22,
-    "repos": 12,
-    "stars": 143,
+    "coauthors": 21,
+    "repos": 66,
+    "stars": 166,
     "hfDownloads": 119
   },
   "citations": {
@@ -122,8 +125,8 @@
     ]
   },
   "github": {
-    "totalStars": 143,
-    "totalForks": 11,
+    "totalStars": 166,
+    "totalForks": 14,
     "repos": [
       {
         "name": "torchfx",
@@ -145,6 +148,51 @@
         "archived": false
       },
       {
+        "name": "aria",
+        "fullName": "matteospanio/aria",
+        "description": "Audio Runtime for Inference of Audio diffusion",
+        "stars": 8,
+        "forks": 0,
+        "language": "C",
+        "topics": [
+          "cpu",
+          "diffusion-transformer",
+          "gpu",
+          "quantization"
+        ],
+        "pushedAt": "2026-07-11T05:28:32Z",
+        "url": "https://github.com/matteospanio/aria",
+        "archived": false
+      },
+      {
+        "name": "mule-torch",
+        "fullName": "matteospanio/mule-torch",
+        "description": "Unofficial PyTorch port of MULE (SF-NFNet-F0), the music-audio embedding model.",
+        "stars": 4,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "embedding-models",
+          "music",
+          "torch"
+        ],
+        "pushedAt": "2026-06-06T21:34:36Z",
+        "url": "https://github.com/matteospanio/mule-torch",
+        "archived": false
+      },
+      {
+        "name": "solar-system",
+        "fullName": "matteospanio/solar-system",
+        "description": null,
+        "stars": 3,
+        "forks": 0,
+        "language": "JavaScript",
+        "topics": [],
+        "pushedAt": "2024-09-27T15:02:56Z",
+        "url": "https://github.com/matteospanio/solar-system",
+        "archived": false
+      },
+      {
         "name": "spam-analyzer",
         "fullName": "matteospanio/spam-analyzer",
         "description": "A program to detect spam https://pypi.org/project/spam-analyzer/",
@@ -154,6 +202,42 @@
         "topics": [],
         "pushedAt": "2024-08-20T16:34:50Z",
         "url": "https://github.com/matteospanio/spam-analyzer",
+        "archived": false
+      },
+      {
+        "name": "fluxion",
+        "fullName": "matteospanio/fluxion",
+        "description": "Differentiable framework-agnostic audio DSP with a functional graph API, a modern CLI, and a hard-real-time engine",
+        "stars": 2,
+        "forks": 0,
+        "language": "Rust",
+        "topics": [
+          "audio",
+          "cli",
+          "ddsp",
+          "dsp",
+          "real-time"
+        ],
+        "pushedAt": "2026-08-05T15:44:24Z",
+        "url": "https://github.com/matteospanio/fluxion",
+        "archived": false
+      },
+      {
+        "name": "slurmhub",
+        "fullName": "matteospanio/slurmhub",
+        "description": "A terminal UI for monitoring Slurm jobs in real-time over SSH",
+        "stars": 2,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "cluster",
+          "monitoring",
+          "slurm",
+          "ssh",
+          "tui"
+        ],
+        "pushedAt": "2026-05-31T19:21:15Z",
+        "url": "https://github.com/matteospanio/slurmhub",
         "archived": false
       },
       {
@@ -188,6 +272,71 @@
         ],
         "pushedAt": "2026-04-14T08:50:51Z",
         "url": "https://github.com/CSCPadova/lilybert",
+        "archived": false
+      },
+      {
+        "name": "SwingGame",
+        "fullName": "matteospanio/SwingGame",
+        "description": "a simple game written using swing",
+        "stars": 1,
+        "forks": 0,
+        "language": "Java",
+        "topics": [],
+        "pushedAt": "2021-08-03T10:12:34Z",
+        "url": "https://github.com/matteospanio/SwingGame",
+        "archived": false
+      },
+      {
+        "name": "cheshire-cat-cli",
+        "fullName": "matteospanio/cheshire-cat-cli",
+        "description": "A CLI tool to start you local AI cat server",
+        "stars": 1,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "chatbot",
+          "cheshire-cat",
+          "cli",
+          "python",
+          "sync"
+        ],
+        "pushedAt": "2025-10-31T22:22:43Z",
+        "url": "https://github.com/matteospanio/cheshire-cat-cli",
+        "archived": false
+      },
+      {
+        "name": "dynamic-flask-form-wtf",
+        "fullName": "matteospanio/dynamic-flask-form-wtf",
+        "description": "A template for dynamic creation of field for flask_wtf using flask, javascript and html",
+        "stars": 1,
+        "forks": 0,
+        "language": "Jinja",
+        "topics": [
+          "dynamic-forms",
+          "flask",
+          "flask-wtf",
+          "javascript",
+          "jquery",
+          "python",
+          "wtforms"
+        ],
+        "pushedAt": "2021-10-03T09:03:36Z",
+        "url": "https://github.com/matteospanio/dynamic-flask-form-wtf",
+        "archived": false
+      },
+      {
+        "name": "qrcode-logo-generator",
+        "fullName": "matteospanio/qrcode-logo-generator",
+        "description": "A CLI qr-code generator with logo support",
+        "stars": 1,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "logo",
+          "qrcode-generator"
+        ],
+        "pushedAt": "2025-08-24T19:53:55Z",
+        "url": "https://github.com/matteospanio/qrcode-logo-generator",
         "archived": false
       },
       {
@@ -288,6 +437,279 @@
         "archived": false
       },
       {
+        "name": ".github",
+        "fullName": "matteospanio/.github",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": null,
+        "topics": [],
+        "pushedAt": "2021-12-17T17:24:17Z",
+        "url": "https://github.com/matteospanio/.github",
+        "archived": false
+      },
+      {
+        "name": "ACM-skill",
+        "fullName": "matteospanio/ACM-skill",
+        "description": "A Claude skill that formats and reviews LaTeX manuscripts for ACM submission",
+        "stars": 0,
+        "forks": 0,
+        "language": "TeX",
+        "topics": [],
+        "pushedAt": "2026-05-20T08:54:08Z",
+        "url": "https://github.com/matteospanio/ACM-skill",
+        "archived": false
+      },
+      {
+        "name": "MIDI-synth",
+        "fullName": "matteospanio/MIDI-synth",
+        "description": "MIDI synthetizer realized in PureData",
+        "stars": 0,
+        "forks": 0,
+        "language": null,
+        "topics": [
+          "puredata",
+          "purrdata"
+        ],
+        "pushedAt": "2021-10-26T20:23:35Z",
+        "url": "https://github.com/matteospanio/MIDI-synth",
+        "archived": false
+      },
+      {
+        "name": "PasswordGenerator",
+        "fullName": "matteospanio/PasswordGenerator",
+        "description": "A password generator written in python with GTK interface",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2021-10-29T22:56:43Z",
+        "url": "https://github.com/matteospanio/PasswordGenerator",
+        "archived": false
+      },
+      {
+        "name": "Pd-tuner",
+        "fullName": "matteospanio/Pd-tuner",
+        "description": "A tuner realized in PureData based on comparing the input with MIDI sounds.",
+        "stars": 0,
+        "forks": 0,
+        "language": null,
+        "topics": [
+          "puredata",
+          "purr-data"
+        ],
+        "pushedAt": "2021-10-26T20:17:06Z",
+        "url": "https://github.com/matteospanio/Pd-tuner",
+        "archived": false
+      },
+      {
+        "name": "Progetto-BD-2021",
+        "fullName": "matteospanio/Progetto-BD-2021",
+        "description": "Progetto di gestione di DB con flask per il secondo modulo del corso di Basi di Dati alla facoltà di informatica di Ca'Foscari",
+        "stars": 0,
+        "forks": 1,
+        "language": "Python",
+        "topics": [
+          "bootstrap",
+          "database",
+          "flask",
+          "html",
+          "postgresql",
+          "sql",
+          "webapp"
+        ],
+        "pushedAt": "2021-08-29T20:15:29Z",
+        "url": "https://github.com/matteospanio/Progetto-BD-2021",
+        "archived": false
+      },
+      {
+        "name": "Progetto-C",
+        "fullName": "matteospanio/Progetto-C",
+        "description": "Progetto C 2018/2019",
+        "stars": 0,
+        "forks": 0,
+        "language": "C",
+        "topics": [],
+        "pushedAt": "2021-05-05T14:40:34Z",
+        "url": "https://github.com/matteospanio/Progetto-C",
+        "archived": false
+      },
+      {
+        "name": "Pylogger",
+        "fullName": "matteospanio/Pylogger",
+        "description": "A keylogger written in python",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2021-10-26T21:36:52Z",
+        "url": "https://github.com/matteospanio/Pylogger",
+        "archived": false
+      },
+      {
+        "name": "S4A-multimodal-experiment",
+        "fullName": "matteospanio/S4A-multimodal-experiment",
+        "description": "Science4All multimodal experiment web app",
+        "stars": 0,
+        "forks": 0,
+        "language": "PHP",
+        "topics": [],
+        "pushedAt": "2025-09-30T09:26:47Z",
+        "url": "https://github.com/matteospanio/S4A-multimodal-experiment",
+        "archived": false
+      },
+      {
+        "name": "SLURM-client",
+        "fullName": "matteospanio/SLURM-client",
+        "description": "A SLURM client that shows the queue status",
+        "stars": 0,
+        "forks": 0,
+        "language": "Dart",
+        "topics": [],
+        "pushedAt": "2025-09-16T17:31:26Z",
+        "url": "https://github.com/matteospanio/SLURM-client",
+        "archived": false
+      },
+      {
+        "name": "WeatherApp",
+        "fullName": "matteospanio/WeatherApp",
+        "description": "react-native app to look at weather status fetching weatherAPI",
+        "stars": 0,
+        "forks": 0,
+        "language": "JavaScript",
+        "topics": [],
+        "pushedAt": "2022-04-21T14:19:51Z",
+        "url": "https://github.com/matteospanio/WeatherApp",
+        "archived": false
+      },
+      {
+        "name": "WebAudio",
+        "fullName": "matteospanio/WebAudio",
+        "description": "A demonstration about Web Audio API",
+        "stars": 0,
+        "forks": 0,
+        "language": "HTML",
+        "topics": [],
+        "pushedAt": "2022-09-23T21:29:41Z",
+        "url": "https://github.com/matteospanio/WebAudio",
+        "archived": false
+      },
+      {
+        "name": "aoc-2024",
+        "fullName": "matteospanio/aoc-2024",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": "Rust",
+        "topics": [],
+        "pushedAt": "2024-12-08T17:49:57Z",
+        "url": "https://github.com/matteospanio/aoc-2024",
+        "archived": false
+      },
+      {
+        "name": "audiocraft-tutorial",
+        "fullName": "matteospanio/audiocraft-tutorial",
+        "description": "A simple audiocraft tutorial",
+        "stars": 0,
+        "forks": 0,
+        "language": "Jupyter Notebook",
+        "topics": [],
+        "pushedAt": "2026-01-10T18:00:08Z",
+        "url": "https://github.com/matteospanio/audiocraft-tutorial",
+        "archived": false
+      },
+      {
+        "name": "cadavid_khipu",
+        "fullName": "matteospanio/cadavid_khipu",
+        "description": "Patricia Cadavid repository for Khipu Instrument ",
+        "stars": 0,
+        "forks": 0,
+        "language": "C++",
+        "topics": [],
+        "pushedAt": "2025-02-03T19:58:20Z",
+        "url": "https://github.com/matteospanio/cadavid_khipu",
+        "archived": false
+      },
+      {
+        "name": "cdev-cli",
+        "fullName": "matteospanio/cdev-cli",
+        "description": "CLI application to easily handle docker for a C development environment.",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "c",
+          "docker",
+          "linux",
+          "unipd-dei"
+        ],
+        "pushedAt": "2024-03-08T09:21:19Z",
+        "url": "https://github.com/matteospanio/cdev-cli",
+        "archived": false
+      },
+      {
+        "name": "cdev-docker",
+        "fullName": "matteospanio/cdev-docker",
+        "description": "The docker files to reproduce the development environment used during Dati e Algoritmi lectures",
+        "stars": 0,
+        "forks": 0,
+        "language": "Vim Script",
+        "topics": [
+          "c",
+          "docker",
+          "unipd-dei"
+        ],
+        "pushedAt": "2024-03-08T08:40:15Z",
+        "url": "https://github.com/matteospanio/cdev-docker",
+        "archived": false
+      },
+      {
+        "name": "corso-c",
+        "fullName": "matteospanio/corso-c",
+        "description": "Materiali didattici per introduzione alla programmazione in C",
+        "stars": 0,
+        "forks": 0,
+        "language": "C",
+        "topics": [
+          "algorithms-and-data-structures",
+          "c-programming-language",
+          "teaching"
+        ],
+        "pushedAt": "2025-05-15T08:40:01Z",
+        "url": "https://github.com/matteospanio/corso-c",
+        "archived": false
+      },
+      {
+        "name": "csc-chatbot",
+        "fullName": "matteospanio/csc-chatbot",
+        "description": "A chatbot that tells you about the Centro di Sonologia Computazionale (CSC) of the University of Padova and its people.",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "chatbot",
+          "openai",
+          "poetry",
+          "python",
+          "rag"
+        ],
+        "pushedAt": "2024-05-12T22:06:18Z",
+        "url": "https://github.com/matteospanio/csc-chatbot",
+        "archived": false
+      },
+      {
+        "name": "data-analysis-template",
+        "fullName": "matteospanio/data-analysis-template",
+        "description": "A template repository for data-analysis projects",
+        "stars": 0,
+        "forks": 0,
+        "language": "Jinja",
+        "topics": [],
+        "pushedAt": "2023-11-24T18:10:44Z",
+        "url": "https://github.com/matteospanio/data-analysis-template",
+        "archived": false
+      },
+      {
         "name": "dotfiles",
         "fullName": "matteospanio/dotfiles",
         "description": "configurations files",
@@ -308,6 +730,288 @@
         "archived": false
       },
       {
+        "name": "firebase-react-todo",
+        "fullName": "matteospanio/firebase-react-todo",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": "JavaScript",
+        "topics": [],
+        "pushedAt": "2022-02-06T21:03:26Z",
+        "url": "https://github.com/matteospanio/firebase-react-todo",
+        "archived": false
+      },
+      {
+        "name": "flask_project_demo",
+        "fullName": "matteospanio/flask_project_demo",
+        "description": "A demo flask project for teaching purposes",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2024-04-16T08:18:45Z",
+        "url": "https://github.com/matteospanio/flask_project_demo",
+        "archived": false
+      },
+      {
+        "name": "haskell-playground",
+        "fullName": "matteospanio/haskell-playground",
+        "description": "A repo where I put my experiments and exercises while learning the Haskell language",
+        "stars": 0,
+        "forks": 0,
+        "language": "Haskell",
+        "topics": [],
+        "pushedAt": "2022-09-24T21:13:45Z",
+        "url": "https://github.com/matteospanio/haskell-playground",
+        "archived": false
+      },
+      {
+        "name": "linux-tools",
+        "fullName": "matteospanio/linux-tools",
+        "description": "A set of tools to automate linux system administration",
+        "stars": 0,
+        "forks": 0,
+        "language": "Shell",
+        "topics": [],
+        "pushedAt": "2025-01-06T17:34:10Z",
+        "url": "https://github.com/matteospanio/linux-tools",
+        "archived": false
+      },
+      {
+        "name": "lora-trainer",
+        "fullName": "matteospanio/lora-trainer",
+        "description": "A simple repository to do LoRA on an LLM using PEFT",
+        "stars": 0,
+        "forks": 1,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2025-11-24T15:59:18Z",
+        "url": "https://github.com/matteospanio/lora-trainer",
+        "archived": false
+      },
+      {
+        "name": "mailbag",
+        "fullName": "matteospanio/mailbag",
+        "description": "A step-by-step realization of a webapp for email sync. It follows the tutorial of chapters 8 and 9 from Modern Full-Stack Development: Using TypeScript, React, Node.js, Webpack, and Docker by Frank Zammetti",
+        "stars": 0,
+        "forks": 0,
+        "language": "TypeScript",
+        "topics": [
+          "express",
+          "fullstack",
+          "react",
+          "typescript"
+        ],
+        "pushedAt": "2021-10-24T09:01:45Z",
+        "url": "https://github.com/matteospanio/mailbag",
+        "archived": false
+      },
+      {
+        "name": "matteospanio",
+        "fullName": "matteospanio/matteospanio",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": null,
+        "topics": [],
+        "pushedAt": "2025-07-09T08:12:46Z",
+        "url": "https://github.com/matteospanio/matteospanio",
+        "archived": false
+      },
+      {
+        "name": "matteospanio.github.io",
+        "fullName": "matteospanio/matteospanio.github.io",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": "HTML",
+        "topics": [],
+        "pushedAt": "2026-08-09T20:06:13Z",
+        "url": "https://github.com/matteospanio/matteospanio.github.io",
+        "archived": false
+      },
+      {
+        "name": "mpai-audio-analyser",
+        "fullName": "matteospanio/mpai-audio-analyser",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2023-11-22T21:42:00Z",
+        "url": "https://github.com/matteospanio/mpai-audio-analyser",
+        "archived": false
+      },
+      {
+        "name": "multimodal-survey-analysis",
+        "fullName": "matteospanio/multimodal-survey-analysis",
+        "description": "Analysis of the cross-modal AI generated music perception across the world",
+        "stars": 0,
+        "forks": 0,
+        "language": "R",
+        "topics": [],
+        "pushedAt": "2026-08-04T10:09:41Z",
+        "url": "https://github.com/matteospanio/multimodal-survey-analysis",
+        "archived": false
+      },
+      {
+        "name": "multimodal-symphony-survey-analysis",
+        "fullName": "matteospanio/multimodal-symphony-survey-analysis",
+        "description": "Statistical analysis related to the article A Multimodal Symphony",
+        "stars": 0,
+        "forks": 0,
+        "language": "R",
+        "topics": [
+          "generative-ai",
+          "model-evaluation",
+          "music",
+          "perception",
+          "synesthesia"
+        ],
+        "pushedAt": "2025-03-05T13:09:49Z",
+        "url": "https://github.com/matteospanio/multimodal-symphony-survey-analysis",
+        "archived": false
+      },
+      {
+        "name": "panel",
+        "fullName": "matteospanio/panel",
+        "description": "A self-hosted framework for human evaluation of AI systems",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "django",
+          "evaluation-framework",
+          "llm"
+        ],
+        "pushedAt": "2026-07-24T16:58:24Z",
+        "url": "https://github.com/matteospanio/panel",
+        "archived": false
+      },
+      {
+        "name": "plos-one-skill",
+        "fullName": "matteospanio/plos-one-skill",
+        "description": "A skill that formats and reviews LaTeX manuscripts for PLOS ONE submission",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2026-06-23T14:51:59Z",
+        "url": "https://github.com/matteospanio/plos-one-skill",
+        "archived": false
+      },
+      {
+        "name": "professor-c",
+        "fullName": "matteospanio/professor-c",
+        "description": "Automatic C exercises corrector",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2026-01-08T10:46:44Z",
+        "url": "https://github.com/matteospanio/professor-c",
+        "archived": false
+      },
+      {
+        "name": "psytk-translate",
+        "fullName": "matteospanio/psytk-translate",
+        "description": "A tool to facilitate psytoolkit survey translation",
+        "stars": 0,
+        "forks": 0,
+        "language": "Jinja",
+        "topics": [],
+        "pushedAt": "2025-10-01T14:52:23Z",
+        "url": "https://github.com/matteospanio/psytk-translate",
+        "archived": false
+      },
+      {
+        "name": "pyBlog",
+        "fullName": "matteospanio/pyBlog",
+        "description": "blog flask template",
+        "stars": 0,
+        "forks": 0,
+        "language": "CSS",
+        "topics": [],
+        "pushedAt": "2026-02-20T22:20:04Z",
+        "url": "https://github.com/matteospanio/pyBlog",
+        "archived": false
+      },
+      {
+        "name": "secret-vault",
+        "fullName": "matteospanio/secret-vault",
+        "description": "A CLI app to store secrets",
+        "stars": 0,
+        "forks": 0,
+        "language": "Go",
+        "topics": [],
+        "pushedAt": "2026-02-07T17:03:40Z",
+        "url": "https://github.com/matteospanio/secret-vault",
+        "archived": false
+      },
+      {
+        "name": "simple-metronome-gtk",
+        "fullName": "matteospanio/simple-metronome-gtk",
+        "description": "A simple metronome wrote in C using GTK for GUI",
+        "stars": 0,
+        "forks": 0,
+        "language": "C",
+        "topics": [],
+        "pushedAt": "2020-10-09T17:12:52Z",
+        "url": "https://github.com/matteospanio/simple-metronome-gtk",
+        "archived": false
+      },
+      {
+        "name": "speed-analysis",
+        "fullName": "matteospanio/speed-analysis",
+        "description": "A project to analyze the internet speed",
+        "stars": 0,
+        "forks": 0,
+        "language": "Shell",
+        "topics": [
+          "bash-script",
+          "data-analysis"
+        ],
+        "pushedAt": "2022-11-09T23:54:48Z",
+        "url": "https://github.com/matteospanio/speed-analysis",
+        "archived": false
+      },
+      {
+        "name": "taste-music-dataset",
+        "fullName": "matteospanio/taste-music-dataset",
+        "description": "A multimodal dataset shaped to fine tune MusicGEN",
+        "stars": 0,
+        "forks": 1,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2025-08-05T12:20:36Z",
+        "url": "https://github.com/matteospanio/taste-music-dataset",
+        "archived": false
+      },
+      {
+        "name": "tasty-music-survey",
+        "fullName": "matteospanio/tasty-music-survey",
+        "description": "Website hosted on github pages of the psytoolkit cross cultural strudy about crossmodal interactions",
+        "stars": 0,
+        "forks": 0,
+        "language": "HTML",
+        "topics": [],
+        "pushedAt": "2026-01-13T11:56:11Z",
+        "url": "https://github.com/matteospanio/tasty-music-survey",
+        "archived": false
+      },
+      {
+        "name": "tasty-musicgen",
+        "fullName": "matteospanio/tasty-musicgen",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2025-07-27T09:14:43Z",
+        "url": "https://github.com/matteospanio/tasty-musicgen",
+        "archived": false
+      },
+      {
         "name": "tasty-musicgen-small",
         "fullName": "matteospanio/tasty-musicgen-small",
         "description": null,
@@ -317,6 +1021,42 @@
         "topics": [],
         "pushedAt": "2025-03-05T13:03:57Z",
         "url": "https://github.com/matteospanio/tasty-musicgen-small",
+        "archived": false
+      },
+      {
+        "name": "virtualia",
+        "fullName": "matteospanio/virtualia",
+        "description": "The virtualia installation web page",
+        "stars": 0,
+        "forks": 0,
+        "language": "HTML",
+        "topics": [],
+        "pushedAt": "2025-10-28T21:02:51Z",
+        "url": "https://github.com/matteospanio/virtualia",
+        "archived": false
+      },
+      {
+        "name": "wc-clone",
+        "fullName": "matteospanio/wc-clone",
+        "description": "A wc (from GNU coreutils) clone written in C",
+        "stars": 0,
+        "forks": 0,
+        "language": "C",
+        "topics": [],
+        "pushedAt": "2024-05-28T12:34:18Z",
+        "url": "https://github.com/matteospanio/wc-clone",
+        "archived": false
+      },
+      {
+        "name": "whatsapp-finder",
+        "fullName": "matteospanio/whatsapp-finder",
+        "description": "A simple script to query dumped whatsapp chats",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2021-05-05T13:38:12Z",
+        "url": "https://github.com/matteospanio/whatsapp-finder",
         "archived": false
       }
     ]
@@ -374,8 +1114,8 @@
         "papers": 7,
         "firstYear": 2024,
         "url": "https://www.dei.unipd.it/~canazza/",
-        "x": 0.018,
-        "y": 0.2341
+        "x": 0.3772,
+        "y": 0.3153
       },
       {
         "id": "roda-antonio",
@@ -383,8 +1123,8 @@
         "papers": 6,
         "firstYear": 2025,
         "url": "https://www.dei.unipd.it/~roda/",
-        "x": -0.4393,
-        "y": -0.1573
+        "x": -0.2387,
+        "y": -0.2119
       },
       {
         "id": "russo-alessandro",
@@ -392,8 +1132,8 @@
         "papers": 6,
         "firstYear": 2024,
         "url": "http://hit.psy.unipd.it/alessandro-russo",
-        "x": 0.0123,
-        "y": 0.161
+        "x": 0.3696,
+        "y": 0.2169
       },
       {
         "id": "pretto-niccolo",
@@ -401,8 +1141,8 @@
         "papers": 4,
         "firstYear": 2024,
         "url": "https://www.unibz.it/it/faculties/engineering/academic-staff/person/47860-niccolo-pretto",
-        "x": -0.0863,
-        "y": 0.1939
+        "x": 0.2368,
+        "y": 0.2612
       },
       {
         "id": "bosi-marina",
@@ -410,8 +1150,8 @@
         "papers": 2,
         "firstYear": 2024,
         "url": "https://ccrma.stanford.edu/people/marina-bosi",
-        "x": 0.2046,
-        "y": 0.0826
+        "x": 0.6286,
+        "y": 0.1113
       },
       {
         "id": "fiordelmondo-alessandro",
@@ -419,8 +1159,8 @@
         "papers": 2,
         "firstYear": 2025,
         "url": "https://orcid.org/0000-0002-4670-5298",
-        "x": -0.1349,
-        "y": 0.3626
+        "x": 0.1713,
+        "y": 0.4884
       },
       {
         "id": "cadavid-patricia",
@@ -428,8 +1168,8 @@
         "papers": 1,
         "firstYear": 2025,
         "url": null,
-        "x": 0.4759,
-        "y": 0.3436
+        "x": 0.994,
+        "y": 0.4628
       },
       {
         "id": "chen-xinran",
@@ -437,8 +1177,8 @@
         "papers": 1,
         "firstYear": 2025,
         "url": null,
-        "x": 0.385,
-        "y": 0.576
+        "x": 0.8716,
+        "y": 0.7759
       },
       {
         "id": "cinar-zafer",
@@ -446,8 +1186,8 @@
         "papers": 1,
         "firstYear": 2024,
         "url": null,
-        "x": 0.2146,
-        "y": 0.6695
+        "x": 0.642,
+        "y": 0.9019
       },
       {
         "id": "franceschini-andrea",
@@ -455,8 +1195,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.2943,
-        "y": 0.7068
+        "x": -0.0434,
+        "y": 0.9521
       },
       {
         "id": "frezzato-valentina",
@@ -464,8 +1204,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.9862,
-        "y": 0.1571
+        "x": -0.9754,
+        "y": 0.2116
       },
       {
         "id": "giuriati-sara",
@@ -473,8 +1213,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.4753,
-        "y": 0.2949
+        "x": -0.2872,
+        "y": 0.3972
       },
       {
         "id": "guler-ilay",
@@ -482,8 +1222,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -1.0,
-        "y": -0.1556
+        "x": -0.994,
+        "y": -0.2096
       },
       {
         "id": "masu-raul",
@@ -491,8 +1231,8 @@
         "papers": 1,
         "firstYear": 2025,
         "url": null,
-        "x": 0.0692,
-        "y": 0.7424
+        "x": 0.4462,
+        "y": 1.0
       },
       {
         "id": "paulon-cristina",
@@ -500,8 +1240,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.4296,
-        "y": 0.0958
+        "x": -0.2256,
+        "y": 0.129
       },
       {
         "id": "pierucci-franco",
@@ -509,8 +1249,8 @@
         "papers": 1,
         "firstYear": 2025,
         "url": null,
-        "x": -0.7532,
-        "y": -0.4786
+        "x": -0.6615,
+        "y": -0.6447
       },
       {
         "id": "poltronieri-andrea",
@@ -518,17 +1258,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.6545,
-        "y": -0.6453
-      },
-      {
-        "id": "spohr-louis",
-        "name": "Louis Spohr",
-        "papers": 1,
-        "firstYear": 2019,
-        "url": "https://en.wikipedia.org/wiki/Louis_Spohr",
-        "x": 1.0,
-        "y": 0.0
+        "x": -0.5285,
+        "y": -0.8692
       },
       {
         "id": "torabi-mohammad",
@@ -536,8 +1267,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.3427,
-        "y": -0.7424
+        "x": -0.1086,
+        "y": -1.0
       },
       {
         "id": "zampini-massimiliano",
@@ -545,8 +1276,8 @@
         "papers": 1,
         "firstYear": 2025,
         "url": "https://webapps.unitn.it/du/en/Persona/PER0000123/Curriculum",
-        "x": -0.2126,
-        "y": -0.6398
+        "x": 0.0667,
+        "y": -0.8619
       },
       {
         "id": "zanini-fabio",
@@ -554,8 +1285,8 @@
         "papers": 1,
         "firstYear": 2024,
         "url": null,
-        "x": 0.4726,
-        "y": -0.1085
+        "x": 0.9895,
+        "y": -0.1461
       },
       {
         "id": "zuccante-anna",
@@ -563,8 +1294,8 @@
         "papers": 1,
         "firstYear": 2026,
         "url": null,
-        "x": -0.1291,
-        "y": -0.162
+        "x": 0.1791,
+        "y": -0.2182
       }
     ],
     "edges": [
