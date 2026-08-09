@@ -19,3 +19,7 @@ vendor
 # Astro
 dist/
 .astro/
+
+# Generated post PDFs. Reproducible via scripts/build_post_pdf.mjs; commit one
+# deliberately only when a post is being given a DOI and needs citation_pdf_url.
+public/assets/pdf/posts/

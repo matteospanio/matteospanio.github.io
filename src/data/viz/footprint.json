@@ -1,0 +1,858 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-10",
+  "sources": {
+    "citations": {
+      "ok": true,
+      "fetchedAt": "2026-08-09",
+      "note": "local file written by update_citations.py"
+    },
+    "github": {
+      "ok": true,
+      "fetchedAt": "2026-08-09T22:10:13+00:00"
+    },
+    "huggingface": {
+      "ok": true,
+      "fetchedAt": "2026-08-09T22:10:13+00:00"
+    },
+    "bibliography": {
+      "ok": true,
+      "fetchedAt": "2026-08-10",
+      "note": "parsed 17 entries from papers.bib"
+    }
+  },
+  "headline": {
+    "publications": 17,
+    "citations": 31,
+    "coauthors": 22,
+    "repos": 12,
+    "stars": 143,
+    "hfDownloads": 119
+  },
+  "citations": {
+    "total": 31,
+    "papers": 13,
+    "yearlyCovered": 1,
+    "yearlyCitations": 1,
+    "perYear": {
+      "2024": 1
+    },
+    "cumulative": {
+      "2024": 1
+    },
+    "byPaper": [
+      {
+        "id": "ieeeaccess2024",
+        "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
+        "year": "2024",
+        "citations": 11
+      },
+      {
+        "id": "10.1007/978-3-031-51026-7_26",
+        "title": "Enhancing preservation and restoration of open reel audio tapes through computer vision",
+        "year": "2023",
+        "citations": 7
+      },
+      {
+        "id": "Spanio2024",
+        "title": "Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models",
+        "year": "2024",
+        "citations": 4
+      },
+      {
+        "id": "spanio_frontiers_2025",
+        "title": "A multimodal symphony: integrating taste and sound through generative AI",
+        "year": "2025",
+        "citations": 4
+      },
+      {
+        "id": "https://doi.org/10.13140/rg.2.2.36838.50247",
+        "title": "A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence",
+        "year": "2022",
+        "citations": 2
+      },
+      {
+        "id": "bosi2024a",
+        "title": "A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard",
+        "year": "2024",
+        "citations": 1
+      },
+      {
+        "id": "https://doi.org/10.13140/rg.2.2.17327.82088",
+        "title": "Tutti Quanti Voglion Fare Jazz: contaminazioni jazz nel repertorio clarinettistico del’900",
+        "year": "2021",
+        "citations": 1
+      },
+      {
+        "id": "spanio2026bmdataset",
+        "title": "BMdataset: A Musicologically Curated LilyPond Dataset",
+        "year": "2026",
+        "citations": 1
+      },
+      {
+        "id": "Cinar2024",
+        "title": "Filming the sound: Anomaly Detection on Audio Tape Recordings using Computer Vision Algorithms",
+        "year": "2024",
+        "citations": 0
+      },
+      {
+        "id": "https://doi.org/10.13140/rg.2.2.24143.56489",
+        "title": "IL CLARINETTO ALL’OPERA",
+        "year": "2019",
+        "citations": 0
+      },
+      {
+        "id": "spanio2025torchfx",
+        "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
+        "year": "2025",
+        "citations": 0
+      },
+      {
+        "id": "spanio2026lilypond",
+        "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
+        "year": "2026",
+        "citations": 0
+      },
+      {
+        "id": "spanio2026multimodal",
+        "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
+        "year": "2026",
+        "citations": 0
+      }
+    ]
+  },
+  "github": {
+    "totalStars": 143,
+    "totalForks": 11,
+    "repos": [
+      {
+        "name": "torchfx",
+        "fullName": "matteospanio/torchfx",
+        "description": "A GPU accelerated and torch based audio DSP library",
+        "stars": 136,
+        "forks": 10,
+        "language": "Python",
+        "topics": [
+          "audio",
+          "dsp",
+          "filters",
+          "gpu",
+          "gpu-acceleration",
+          "torch"
+        ],
+        "pushedAt": "2026-06-26T12:57:49Z",
+        "url": "https://github.com/matteospanio/torchfx",
+        "archived": false
+      },
+      {
+        "name": "spam-analyzer",
+        "fullName": "matteospanio/spam-analyzer",
+        "description": "A program to detect spam https://pypi.org/project/spam-analyzer/",
+        "stars": 3,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2024-08-20T16:34:50Z",
+        "url": "https://github.com/matteospanio/spam-analyzer",
+        "archived": false
+      },
+      {
+        "name": "sniper-go",
+        "fullName": "matteospanio/sniper-go",
+        "description": "A web interface over Sn1per",
+        "stars": 2,
+        "forks": 0,
+        "language": "Go",
+        "topics": [
+          "cybersecurity",
+          "penetration-testing",
+          "sn1per",
+          "webinterface"
+        ],
+        "pushedAt": "2023-08-30T21:42:44Z",
+        "url": "https://github.com/matteospanio/sniper-go",
+        "archived": false
+      },
+      {
+        "name": "lilybert",
+        "fullName": "CSCPadova/lilybert",
+        "description": "BERT-based MLM pretrained on LilyPond datasets",
+        "stars": 1,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "codebert",
+          "lilypond",
+          "llm",
+          "music-information-retrieval"
+        ],
+        "pushedAt": "2026-04-14T08:50:51Z",
+        "url": "https://github.com/CSCPadova/lilybert",
+        "archived": false
+      },
+      {
+        "name": "zillow-prize",
+        "fullName": "matteospanio/zillow-prize",
+        "description": "My personal analysis on Zillow Prize competition",
+        "stars": 1,
+        "forks": 0,
+        "language": "Jupyter Notebook",
+        "topics": [],
+        "pushedAt": "2023-11-22T23:17:01Z",
+        "url": "https://github.com/matteospanio/zillow-prize",
+        "archived": false
+      },
+      {
+        "name": "MTR-template",
+        "fullName": "CSCPadova/MTR-template",
+        "description": "The Music Technology Research Template",
+        "stars": 0,
+        "forks": 0,
+        "language": null,
+        "topics": [
+          "nime",
+          "replicability",
+          "reproducibility",
+          "template"
+        ],
+        "pushedAt": "2025-04-28T15:30:09Z",
+        "url": "https://github.com/CSCPadova/MTR-template",
+        "archived": false
+      },
+      {
+        "name": "dei-blade-template",
+        "fullName": "CSCPadova/dei-blade-template",
+        "description": "A project template to run experiments on the DEI's Blade cluster",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "cluster-computing",
+          "python",
+          "slurm",
+          "template"
+        ],
+        "pushedAt": "2025-12-19T10:35:41Z",
+        "url": "https://github.com/CSCPadova/dei-blade-template",
+        "archived": false
+      },
+      {
+        "name": "lilybench",
+        "fullName": "CSCPadova/lilybench",
+        "description": "LilyPond code-generation and understanding benchmark",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "benchmarking",
+          "generative-ai",
+          "lilypond",
+          "llm",
+          "music-information-retrieval"
+        ],
+        "pushedAt": "2026-06-17T21:59:16Z",
+        "url": "https://github.com/CSCPadova/lilybench",
+        "archived": false
+      },
+      {
+        "name": "music-flavor-analysis",
+        "fullName": "CSCPadova/music-flavor-analysis",
+        "description": "Multimodal dataset for Music-Taste correspondences",
+        "stars": 0,
+        "forks": 1,
+        "language": "R",
+        "topics": [
+          "dataset",
+          "multimodal",
+          "music-information-retrieval",
+          "sonic-seasoning"
+        ],
+        "pushedAt": "2026-04-14T08:52:32Z",
+        "url": "https://github.com/CSCPadova/music-flavor-analysis",
+        "archived": false
+      },
+      {
+        "name": "reverse-detection",
+        "fullName": "CSCPadova/reverse-detection",
+        "description": "Audio reverse playback anomaly detection with python",
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [
+          "anomaly-detection",
+          "audio",
+          "dsp"
+        ],
+        "pushedAt": "2025-12-17T11:29:14Z",
+        "url": "https://github.com/CSCPadova/reverse-detection",
+        "archived": false
+      },
+      {
+        "name": "dotfiles",
+        "fullName": "matteospanio/dotfiles",
+        "description": "configurations files",
+        "stars": 0,
+        "forks": 0,
+        "language": "Shell",
+        "topics": [
+          "bash",
+          "dotfiles",
+          "nvimrc",
+          "scripts",
+          "shell",
+          "tmux",
+          "vimrc"
+        ],
+        "pushedAt": "2025-02-16T11:17:01Z",
+        "url": "https://github.com/matteospanio/dotfiles",
+        "archived": false
+      },
+      {
+        "name": "tasty-musicgen-small",
+        "fullName": "matteospanio/tasty-musicgen-small",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "language": "Python",
+        "topics": [],
+        "pushedAt": "2025-03-05T13:03:57Z",
+        "url": "https://github.com/matteospanio/tasty-musicgen-small",
+        "archived": false
+      }
+    ]
+  },
+  "huggingface": {
+    "totalDownloads": 119,
+    "totalDownloadsAllTime": null,
+    "totalLikes": 6,
+    "models": [
+      {
+        "id": "csc-unipd/tasty-musicgen-small",
+        "downloads": 18,
+        "downloadsAllTime": null,
+        "likes": 2,
+        "lastModified": "2025-07-24T16:43:14.000Z",
+        "url": "https://huggingface.co/csc-unipd/tasty-musicgen-small",
+        "pipelineTag": "text-to-audio"
+      },
+      {
+        "id": "csc-unipd/lilybert",
+        "downloads": 9,
+        "downloadsAllTime": null,
+        "likes": 1,
+        "lastModified": "2026-07-05T22:08:25.000Z",
+        "url": "https://huggingface.co/csc-unipd/lilybert",
+        "pipelineTag": "fill-mask"
+      },
+      {
+        "id": "csc-unipd/wav2taste",
+        "downloads": 0,
+        "downloadsAllTime": null,
+        "likes": 2,
+        "lastModified": "2026-07-07T06:17:32.000Z",
+        "url": "https://huggingface.co/csc-unipd/wav2taste",
+        "pipelineTag": "audio-classification"
+      }
+    ],
+    "datasets": [
+      {
+        "id": "csc-unipd/sonic-seasoning",
+        "downloads": 92,
+        "downloadsAllTime": null,
+        "likes": 1,
+        "lastModified": "2026-07-07T06:18:59.000Z",
+        "url": "https://huggingface.co/datasets/csc-unipd/sonic-seasoning"
+      }
+    ]
+  },
+  "coauthors": {
+    "me": "spanio-matteo",
+    "nodes": [
+      {
+        "id": "canazza-sergio",
+        "name": "Sergio Canazza",
+        "papers": 7,
+        "firstYear": 2024,
+        "url": "https://www.dei.unipd.it/~canazza/",
+        "x": 0.018,
+        "y": 0.2341
+      },
+      {
+        "id": "roda-antonio",
+        "name": "Antonio Rodà",
+        "papers": 6,
+        "firstYear": 2025,
+        "url": "https://www.dei.unipd.it/~roda/",
+        "x": -0.4393,
+        "y": -0.1573
+      },
+      {
+        "id": "russo-alessandro",
+        "name": "Alessandro Russo",
+        "papers": 6,
+        "firstYear": 2024,
+        "url": "http://hit.psy.unipd.it/alessandro-russo",
+        "x": 0.0123,
+        "y": 0.161
+      },
+      {
+        "id": "pretto-niccolo",
+        "name": "Niccolò Pretto",
+        "papers": 4,
+        "firstYear": 2024,
+        "url": "https://www.unibz.it/it/faculties/engineering/academic-staff/person/47860-niccolo-pretto",
+        "x": -0.0863,
+        "y": 0.1939
+      },
+      {
+        "id": "bosi-marina",
+        "name": "Marina Bosi",
+        "papers": 2,
+        "firstYear": 2024,
+        "url": "https://ccrma.stanford.edu/people/marina-bosi",
+        "x": 0.2046,
+        "y": 0.0826
+      },
+      {
+        "id": "fiordelmondo-alessandro",
+        "name": "Alessandro Fiordelmondo",
+        "papers": 2,
+        "firstYear": 2025,
+        "url": "https://orcid.org/0000-0002-4670-5298",
+        "x": -0.1349,
+        "y": 0.3626
+      },
+      {
+        "id": "cadavid-patricia",
+        "name": "Patricia Cadavid",
+        "papers": 1,
+        "firstYear": 2025,
+        "url": null,
+        "x": 0.4759,
+        "y": 0.3436
+      },
+      {
+        "id": "chen-xinran",
+        "name": "Xinran Chen",
+        "papers": 1,
+        "firstYear": 2025,
+        "url": null,
+        "x": 0.385,
+        "y": 0.576
+      },
+      {
+        "id": "cinar-zafer",
+        "name": "Zafer Çınar",
+        "papers": 1,
+        "firstYear": 2024,
+        "url": null,
+        "x": 0.2146,
+        "y": 0.6695
+      },
+      {
+        "id": "franceschini-andrea",
+        "name": "Andrea Franceschini",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.2943,
+        "y": 0.7068
+      },
+      {
+        "id": "frezzato-valentina",
+        "name": "Valentina Frezzato",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.9862,
+        "y": 0.1571
+      },
+      {
+        "id": "giuriati-sara",
+        "name": "Sara Giuriati",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.4753,
+        "y": 0.2949
+      },
+      {
+        "id": "guler-ilay",
+        "name": "Ilay Guler",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -1.0,
+        "y": -0.1556
+      },
+      {
+        "id": "masu-raul",
+        "name": "Raul Masu",
+        "papers": 1,
+        "firstYear": 2025,
+        "url": null,
+        "x": 0.0692,
+        "y": 0.7424
+      },
+      {
+        "id": "paulon-cristina",
+        "name": "Cristina Paulon",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.4296,
+        "y": 0.0958
+      },
+      {
+        "id": "pierucci-franco",
+        "name": "Franco Pierucci",
+        "papers": 1,
+        "firstYear": 2025,
+        "url": null,
+        "x": -0.7532,
+        "y": -0.4786
+      },
+      {
+        "id": "poltronieri-andrea",
+        "name": "Andrea Poltronieri",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.6545,
+        "y": -0.6453
+      },
+      {
+        "id": "spohr-louis",
+        "name": "Louis Spohr",
+        "papers": 1,
+        "firstYear": 2019,
+        "url": "https://en.wikipedia.org/wiki/Louis_Spohr",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "id": "torabi-mohammad",
+        "name": "Mohammad Torabi",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.3427,
+        "y": -0.7424
+      },
+      {
+        "id": "zampini-massimiliano",
+        "name": "Massimiliano Zampini",
+        "papers": 1,
+        "firstYear": 2025,
+        "url": "https://webapps.unitn.it/du/en/Persona/PER0000123/Curriculum",
+        "x": -0.2126,
+        "y": -0.6398
+      },
+      {
+        "id": "zanini-fabio",
+        "name": "Fabio Zanini",
+        "papers": 1,
+        "firstYear": 2024,
+        "url": null,
+        "x": 0.4726,
+        "y": -0.1085
+      },
+      {
+        "id": "zuccante-anna",
+        "name": "Anna Zuccante",
+        "papers": 1,
+        "firstYear": 2026,
+        "url": null,
+        "x": -0.1291,
+        "y": -0.162
+      }
+    ],
+    "edges": [
+      {
+        "s": "canazza-sergio",
+        "t": "russo-alessandro",
+        "w": 6
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "pretto-niccolo",
+        "w": 4
+      },
+      {
+        "s": "pretto-niccolo",
+        "t": "russo-alessandro",
+        "w": 4
+      },
+      {
+        "s": "bosi-marina",
+        "t": "canazza-sergio",
+        "w": 2
+      },
+      {
+        "s": "bosi-marina",
+        "t": "russo-alessandro",
+        "w": 2
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "fiordelmondo-alessandro",
+        "w": 2
+      },
+      {
+        "s": "bosi-marina",
+        "t": "pretto-niccolo",
+        "w": 1
+      },
+      {
+        "s": "bosi-marina",
+        "t": "zanini-fabio",
+        "w": 1
+      },
+      {
+        "s": "cadavid-patricia",
+        "t": "canazza-sergio",
+        "w": 1
+      },
+      {
+        "s": "cadavid-patricia",
+        "t": "chen-xinran",
+        "w": 1
+      },
+      {
+        "s": "cadavid-patricia",
+        "t": "fiordelmondo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "cadavid-patricia",
+        "t": "masu-raul",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "chen-xinran",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "cinar-zafer",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "franceschini-andrea",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "giuriati-sara",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "masu-raul",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "paulon-cristina",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "zanini-fabio",
+        "w": 1
+      },
+      {
+        "s": "canazza-sergio",
+        "t": "zuccante-anna",
+        "w": 1
+      },
+      {
+        "s": "chen-xinran",
+        "t": "fiordelmondo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "chen-xinran",
+        "t": "masu-raul",
+        "w": 1
+      },
+      {
+        "s": "cinar-zafer",
+        "t": "pretto-niccolo",
+        "w": 1
+      },
+      {
+        "s": "cinar-zafer",
+        "t": "russo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "giuriati-sara",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "masu-raul",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "paulon-cristina",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "pretto-niccolo",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "russo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "fiordelmondo-alessandro",
+        "t": "zuccante-anna",
+        "w": 1
+      },
+      {
+        "s": "franceschini-andrea",
+        "t": "pretto-niccolo",
+        "w": 1
+      },
+      {
+        "s": "franceschini-andrea",
+        "t": "russo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "frezzato-valentina",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "giuriati-sara",
+        "t": "paulon-cristina",
+        "w": 1
+      },
+      {
+        "s": "giuriati-sara",
+        "t": "pretto-niccolo",
+        "w": 1
+      },
+      {
+        "s": "giuriati-sara",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "giuriati-sara",
+        "t": "russo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "giuriati-sara",
+        "t": "zuccante-anna",
+        "w": 1
+      },
+      {
+        "s": "guler-ilay",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "paulon-cristina",
+        "t": "pretto-niccolo",
+        "w": 1
+      },
+      {
+        "s": "paulon-cristina",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "paulon-cristina",
+        "t": "russo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "paulon-cristina",
+        "t": "zuccante-anna",
+        "w": 1
+      },
+      {
+        "s": "pierucci-franco",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "pierucci-franco",
+        "t": "zampini-massimiliano",
+        "w": 1
+      },
+      {
+        "s": "poltronieri-andrea",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "poltronieri-andrea",
+        "t": "torabi-mohammad",
+        "w": 1
+      },
+      {
+        "s": "pretto-niccolo",
+        "t": "roda-antonio",
+        "w": 1
+      },
+      {
+        "s": "pretto-niccolo",
+        "t": "zuccante-anna",
+        "w": 1
+      },
+      {
+        "s": "roda-antonio",
+        "t": "russo-alessandro",
+        "w": 1
+      },
+      {
+        "s": "roda-antonio",
+        "t": "torabi-mohammad",
+        "w": 1
+      },
+      {
+        "s": "roda-antonio",
+        "t": "zampini-massimiliano",
+        "w": 1
+      },
+      {
+        "s": "roda-antonio",
+        "t": "zuccante-anna",
+        "w": 1
+      },
+      {
+        "s": "russo-alessandro",
+        "t": "zanini-fabio",
+        "w": 1
+      },
+      {
+        "s": "russo-alessandro",
+        "t": "zuccante-anna",
+        "w": 1
+      }
+    ]
+  }
+}

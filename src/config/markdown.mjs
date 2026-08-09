@@ -29,7 +29,12 @@ export const markdownProcessor = unified({
       {
         behavior: 'append',
         properties: { class: 'heading-anchor', ariaHidden: 'true', tabIndex: -1 },
-        content: { type: 'text', value: '#' },
+        /*
+         * Empty on purpose. A text node here ends up inside the heading, and
+         * Astro's heading extraction then carries it into the table of contents
+         * as "Managing environments#". The glyph is drawn in CSS instead.
+         */
+        content: [],
       },
     ],
     [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],

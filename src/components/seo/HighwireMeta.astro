@@ -1,0 +1,12 @@
+---
+import { highwireTags, type CiteInput } from '@/lib/cite';
+
+interface Props {
+  cite: CiteInput & { pdf?: string; keywords?: string[] };
+}
+
+// Renders nothing unless a DOI exists — see the note in lib/cite.ts.
+const tags = highwireTags(Astro.props.cite);
+---
+
+{tags.map(([name, content]) => <meta name={name} content={content} />)}

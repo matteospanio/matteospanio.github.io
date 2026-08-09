@@ -6,6 +6,7 @@ import { site } from '@/config/site';
 import { graph, personSchema, websiteSchema } from '@/lib/schema';
 
 import '@/styles/base.css';
+import '@/styles/print.css';
 import '@/styles/tokens.css';
 
 interface Props {
@@ -55,6 +56,9 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
+    {/* Page-specific head content, e.g. Highwire citation tags on a post. */}
+    <slot name="head" />
+
     <Font cssVariable="--font-mono-src" preload />
     <Font cssVariable="--font-sans-src" />
 
@@ -72,6 +76,11 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
           t = localStorage.getItem('theme');
         } catch {}
         document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark';
+        // ?print=1 renders the print layout on screen for PDF generation.
+        if (location.search.includes('print=1')) {
+          document.documentElement.dataset.print = '';
+          document.documentElement.dataset.theme = 'light';
+        }
       })();
     </script>
   </head>

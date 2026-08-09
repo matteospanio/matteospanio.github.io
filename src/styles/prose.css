@@ -45,6 +45,11 @@
     transition: opacity var(--dur-fast) var(--ease-out);
   }
 
+  /* Drawn here rather than injected as a text node — see config/markdown.mjs. */
+  .heading-anchor::before {
+    content: '#';
+  }
+
   :is(h2, h3, h4):hover .heading-anchor,
   .heading-anchor:focus-visible {
     opacity: 1;
