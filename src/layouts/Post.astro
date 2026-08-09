@@ -2,6 +2,8 @@
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from './Base.astro';
+import { postSchema } from '@/lib/schema';
+import { site } from '@/config/site';
 import '@/styles/prose.css';
 
 interface Props {
@@ -11,6 +13,20 @@ interface Props {
 const { post } = Astro.props;
 const { data } = post;
 
+const url = new URL(Astro.url.pathname, site.url).href;
+const schema = [
+  postSchema({
+    title: data.title,
+    description: data.description,
+    date: data.date,
+    updated: data.updated,
+    url,
+    lang: data.lang,
+    tags: data.tags,
+    doi: data.citation?.doi,
+  }),
+];
+
 const iso = data.date.toISOString();
 const human = data.date.toLocaleDateString('en-GB', {
   year: 'numeric',
@@ -19,7 +35,13 @@ const human = data.date.toLocaleDateString('en-GB', {
 });
 ---
 
-<Base title={data.title} description={data.description} math={data.math}>
+<Base
+  title={data.title}
+  description={data.description}
+  math={data.math}
+  schema={schema}
+  ogType="article"
+>
   <article>
     <header>
       <p class="meta">

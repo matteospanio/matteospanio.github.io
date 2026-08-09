@@ -1,0 +1,188 @@
+---
+import Base from '@/layouts/Base.astro';
+import ContactForm from '@/components/ContactForm.astro';
+import { site } from '@/config/site';
+import socials from '@/data/socials.json';
+
+/**
+ * Rendered obfuscated and reassembled client-side. A determined scraper wins
+ * anyway; this just filters the lazy ones without hiding the address from a
+ * human reading the page.
+ */
+const [user, domain] = site.email.split('@');
+const emailB64 = Buffer.from(site.email).toString('base64');
+
+const LINKS = [
+  { label: 'ORCID', href: `https://orcid.org/${socials.orcid_id}`, note: socials.orcid_id },
+  {
+    label: 'Google Scholar',
+    href: `https://scholar.google.com/citations?user=${socials.scholar_userid}`,
+    note: 'citations and profile',
+  },
+  { label: 'GitHub', href: `https://github.com/${socials.github_username}`, note: `@${socials.github_username}` },
+  {
+    label: 'LinkedIn',
+    href: `https://www.linkedin.com/in/${socials.linkedin_username}`,
+    note: 'professional profile',
+  },
+  { label: 'Hugging Face', href: 'https://huggingface.co/csc-unipd', note: 'models and datasets' },
+  {
+    label: 'ResearchGate',
+    href: `https://www.researchgate.net/profile/${socials.research_gate_profile}`,
+    note: 'papers',
+  },
+];
+---
+
+<Base
+  title="contact"
+  description={`Get in touch with ${site.name} — email, contact form, and research profiles.`}
+>
+  <h1 class="label">contact</h1>
+  <p class="intro">
+    Happy to talk about audio, machine learning, cultural-heritage preservation, or anything on this
+    site. The form goes straight to my inbox.
+  </p>
+
+  <div class="cols">
+    <section>
+      <h2 class="sub">send a message</h2>
+      <ContactForm />
+    </section>
+
+    <section>
+      <h2 class="sub">or reach me directly</h2>
+
+      <p class="email">
+        <span class="k">email</span>
+        <span id="email-slot" data-email={emailB64}>
+          {user} <span class="at">[at]</span>
+          {domain.replace(/\./g, ' [dot] ')}
+        </span>
+      </p>
+      <noscript>
+        <p class="ns">{site.email}</p>
+      </noscript>
+
+      <p class="k where">based in Padua, Italy · {site.affiliation.name}</p>
+
+      <ul class="links">
+        {
+          LINKS.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+              <span class="note">{l.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  h1 {
+    margin-block-end: 0.8rem;
+  }
+
+  .intro {
+    font-family: var(--font-sans);
+    color: var(--fg-dim);
+    max-width: var(--measure);
+    margin-block-end: 3rem;
+  }
+
+  .cols {
+    display: grid;
+    gap: 3rem;
+  }
+
+  @media (min-width: 900px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .sub {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+    margin-block-end: 1.2rem;
+  }
+
+  .sub::before {
+    content: '## ';
+    color: var(--accent);
+  }
+
+  .email {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: baseline;
+    font-size: var(--step-0);
+  }
+
+  .k {
+    color: var(--fg-faint);
+    font-size: var(--step--1);
+  }
+
+  .at {
+    color: var(--accent);
+  }
+
+  .where {
+    margin-block-start: 0.8rem;
+  }
+
+  .ns {
+    margin-block-start: 0.4rem;
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin-block-start: 2rem;
+    display: grid;
+    gap: 0.7rem;
+    font-size: var(--step--1);
+  }
+
+  .links li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .links a {
+    color: var(--fg);
+    text-decoration: none;
+    border-block-end: 1px solid var(--rule-strong);
+    min-width: 9rem;
+  }
+
+  .links a:hover {
+    color: var(--accent);
+    border-block-end-color: var(--accent);
+  }
+
+  .note {
+    color: var(--fg-faint);
+  }
+</style>
+
+<script>
+  // Turn the obfuscated address into a real mailto once JS is available.
+  const slot = document.getElementById('email-slot');
+  const encoded = slot?.dataset.email;
+
+  if (slot && encoded) {
+    const address = atob(encoded);
+    const link = document.createElement('a');
+    link.href = `mailto:${address}`;
+    link.textContent = address;
+    slot.replaceWith(link);
+  }
+</script>

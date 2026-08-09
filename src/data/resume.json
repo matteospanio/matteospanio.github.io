@@ -6,7 +6,7 @@
     "email": "spanio@dei.unipd.it",
     "phone": "",
     "url": "https://matteospanio.github.io/",
-    "summary": "Hybrid musician and software engineer with a passion for music and technology. His fields of interest are artificial intelligence, cybersecurity and music production.",
+    "summary": "AI research engineer working on audio, music and multimodal generative models. PhD candidate in Brain, Mind and Computer Science at the University of Padua, based at the Centro di Sonologia Computazionale, where the work spans AI for audio cultural-heritage preservation, cross-modal generation between taste and sound, and symbolic music with language models. Clarinettist by first training.",
     "location": {
       "address": "Via Gradenigo 6/a",
       "postalCode": "35131",
@@ -16,14 +16,24 @@
     },
     "profiles": [
       {
-        "network": "Facebook",
-        "username": "matteo.spanio.user",
-        "url": "https://www.facebook.com/matteo.spanio.user"
-      },
-      {
         "network": "Linkedin",
         "username": "matteo-spanio",
         "url": "https://www.linkedin.com/in/matteo-spanio/"
+      },
+      {
+        "network": "ORCID",
+        "username": "0000-0002-2436-7208",
+        "url": "https://orcid.org/0000-0002-2436-7208"
+      },
+      {
+        "network": "GitHub",
+        "username": "matteospanio",
+        "url": "https://github.com/matteospanio"
+      },
+      {
+        "network": "Google Scholar",
+        "username": "CEWwcjUAAAAJ",
+        "url": "https://scholar.google.com/citations?user=CEWwcjUAAAAJ"
       }
     ]
   },
@@ -181,12 +191,62 @@
   ],
   "skills": [
     {
+      "name": "Machine learning",
+      "level": "Advanced",
+      "keywords": [
+        "PyTorch",
+        "Transformers",
+        "PyTorch Lightning",
+        "scikit-learn",
+        "Generative models",
+        "Language models",
+        "Computer vision"
+      ]
+    },
+    {
+      "name": "Audio and signal processing",
+      "level": "Advanced",
+      "keywords": [
+        "Digital signal processing",
+        "IIR/FIR filter design",
+        "Music information retrieval",
+        "Audio restoration",
+        "Psychoacoustics"
+      ]
+    },
+    {
+      "name": "Software engineering",
+      "level": "Advanced",
+      "keywords": [
+        "Python",
+        "C",
+        "C++",
+        "CUDA",
+        "Go",
+        "Docker",
+        "SLURM",
+        "CI/CD",
+        "Packaging"
+      ]
+    },
+    {
+      "name": "Research",
+      "level": "Advanced",
+      "keywords": [
+        "Experiment design",
+        "Perceptual studies",
+        "Dataset curation",
+        "Standardisation (MPAI/IEEE)"
+      ]
+    },
+    {
       "name": "Music",
       "level": "Master",
-      "icon": "fa-solid fa-hashtag",
       "keywords": [
-        "Arranger",
-        "Clarinet"
+        "Clarinet",
+        "Bass clarinet",
+        "Orchestral performance",
+        "Arranging"
       ]
     }
   ],

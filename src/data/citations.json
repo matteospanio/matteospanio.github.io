@@ -1,81 +1,106 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-09",
   "sources": {
     "scholar": {
-      "fetchedAt": "2026-06-17",
-      "ok": true
+      "fetchedAt": null,
+      "ok": false,
+      "matched": 0
+    },
+    "openalex": {
+      "fetchedAt": "2026-08-09",
+      "ok": true,
+      "matched": 3
     }
   },
+  "summary": {
+    "hIndex": 0,
+    "i10Index": 0
+  },
   "papers": {
-    "2osOgNQ5qMEC": {
-      "citations": 11,
-      "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
-      "year": "2024"
-    },
-    "9yKSN-GCB0IC": {
-      "citations": 7,
+    "10.1007/978-3-031-51026-7_26": {
       "title": "Enhancing preservation and restoration of open reel audio tapes through computer vision",
-      "year": "2023"
+      "year": "2023",
+      "citations": 7,
+      "source": "scholar",
+      "doi": "10.1007/978-3-031-51026-7_26",
+      "countsByYear": {
+        "2024": 1
+      }
     },
-    "HDshCWvjkbEC": {
-      "citations": 0,
-      "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
-      "year": "2026"
-    },
-    "LkGwnXOMwfcC": {
-      "citations": 0,
-      "title": "Toward a Repository Template for Music Technology Research",
-      "year": "2025"
-    },
-    "TQgYirikUcIC": {
-      "citations": 1,
-      "title": "BMdataset: A Musicologically Curated LilyPond Dataset",
-      "year": "2026"
-    },
-    "W7OEmFMy1HYC": {
-      "citations": 4,
-      "title": "Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models",
-      "year": "2024"
-    },
-    "WF5omc3nYNoC": {
-      "citations": 4,
-      "title": "A multimodal symphony: integrating taste and sound through generative AI",
-      "year": "2025"
-    },
-    "Y0pCki6q_DkC": {
-      "citations": 0,
+    "Cinar2024": {
       "title": "Filming the sound: Anomaly Detection on Audio Tape Recordings using Computer Vision Algorithms",
-      "year": "2024"
-    },
-    "_FxGoFyzp5QC": {
+      "year": "2024",
       "citations": 0,
-      "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
-      "year": "2025"
+      "source": "scholar"
     },
-    "_Qo2XoVZTnwC": {
-      "citations": 0,
-      "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
-      "year": "2026"
+    "Spanio2024": {
+      "title": "Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models",
+      "year": "2024",
+      "citations": 4,
+      "source": "scholar"
     },
-    "d1gkVwhDpl0C": {
-      "citations": 2,
-      "title": "A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence",
-      "year": "2022"
-    },
-    "qjMakFHDy7sC": {
-      "citations": 1,
+    "bosi2024a": {
       "title": "A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard",
-      "year": "2024"
-    },
-    "u-x6o8ySG0sC": {
+      "year": "2024",
       "citations": 1,
-      "title": "Tutti Quanti Voglion Fare Jazz: contaminazioni jazz nel repertorio clarinettistico del’900",
-      "year": "2021"
+      "source": "scholar"
     },
-    "u5HHmVD_uO8C": {
-      "citations": 0,
+    "https://doi.org/10.13140/rg.2.2.17327.82088": {
+      "title": "Tutti Quanti Voglion Fare Jazz: contaminazioni jazz nel repertorio clarinettistico del’900",
+      "year": "2021",
+      "citations": 1,
+      "source": "scholar"
+    },
+    "https://doi.org/10.13140/rg.2.2.24143.56489": {
       "title": "IL CLARINETTO ALL’OPERA",
-      "year": "2019"
+      "year": "2019",
+      "citations": 0,
+      "source": "scholar"
+    },
+    "https://doi.org/10.13140/rg.2.2.36838.50247": {
+      "title": "A study on Equalization Curve Detection in Audio Tape Digitization process using Artificial Intelligence",
+      "year": "2022",
+      "citations": 2,
+      "source": "scholar"
+    },
+    "ieeeaccess2024": {
+      "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
+      "year": "2024",
+      "citations": 11,
+      "source": "scholar"
+    },
+    "spanio2025torchfx": {
+      "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
+      "year": "2025",
+      "citations": 0,
+      "source": "openalex",
+      "doi": "10.48550/arxiv.2504.08624"
+    },
+    "spanio2026bmdataset": {
+      "title": "BMdataset: A Musicologically Curated LilyPond Dataset",
+      "year": "2026",
+      "citations": 1,
+      "source": "scholar"
+    },
+    "spanio2026lilypond": {
+      "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
+      "year": "2026",
+      "citations": 0,
+      "source": "openalex",
+      "doi": "10.5281/zenodo.20267078"
+    },
+    "spanio2026multimodal": {
+      "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
+      "year": "2026",
+      "citations": 0,
+      "source": "scholar"
+    },
+    "spanio_frontiers_2025": {
+      "title": "A multimodal symphony: integrating taste and sound through generative AI",
+      "year": "2025",
+      "citations": 4,
+      "source": "scholar"
     }
   }
 }

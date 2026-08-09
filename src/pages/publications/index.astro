@@ -3,7 +3,8 @@ import { getCollection } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import PublicationCard from '@/components/pub/PublicationCard.astro';
 import type { Publication } from '@/lib/bib';
-import { groupByYear } from '@/lib/bib';
+import { groupByYear, sortPublications } from '@/lib/bib';
+import { scholarlyArticleSchema } from '@/lib/schema';
 
 const entries = await getCollection('publications');
 const pubs = entries.map((e) => e.data as Publication);
@@ -11,9 +12,26 @@ const byYear = groupByYear(pubs);
 
 const withCitations = pubs.filter((p) => p.citations !== null);
 const totalCitations = withCitations.reduce((sum, p) => sum + (p.citations ?? 0), 0);
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Publications',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: pubs.length,
+      itemListElement: sortPublications(pubs).map((pub, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: scholarlyArticleSchema(pub),
+      })),
+    },
+  },
+];
 ---
 
 <Base
+  schema={schema}
   title="publications"
   description="Peer-reviewed work on AI for audio cultural-heritage preservation, multimodal generative models, symbolic music and audio DSP."
 >

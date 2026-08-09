@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 
 import { markdownProcessor } from './src/config/markdown.mjs';
+import { redirects } from './src/config/redirects.ts';
 
 export default defineConfig({
   site: 'https://matteospanio.github.io',
@@ -17,6 +18,8 @@ export default defineConfig({
     // Expressive Code owns highlighting; letting Shiki also run would double-wrap.
     syntaxHighlight: false,
   },
+
+  redirects,
 
   integrations: [
     // Must come before mdx() so .mdx code blocks get the same treatment.

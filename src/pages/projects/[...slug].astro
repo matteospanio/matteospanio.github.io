@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '@/layouts/Base.astro';
+import { softwareSchema } from '@/lib/schema';
+import { site } from '@/config/site';
 import '@/styles/prose.css';
 
 export async function getStaticPaths() {
@@ -24,9 +26,19 @@ const LINKS = [
 const links = LINKS.filter(([k]) => p[k]).map(([k, label]) => ({ label, href: p[k]! }));
 
 const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `${p.year}`;
+
+const schema = [
+  softwareSchema({
+    title: p.title,
+    description: p.description,
+    repo: p.repo,
+    stack: p.stack,
+    url: new URL(Astro.url.pathname, site.url).href,
+  }),
+];
 ---
 
-<Base title={p.title} description={p.description}>
+<Base title={p.title} description={p.description} schema={schema}>
   <article>
     <header>
       <p class="meta">

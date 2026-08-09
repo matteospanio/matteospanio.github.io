@@ -1,0 +1,205 @@
+---
+/**
+ * Web3Forms: the access key is designed to be public, which matters because
+ * GitHub Pages has no server-side environment to inject a secret from.
+ *
+ * Replace the placeholder with a real key from https://web3forms.com (it is
+ * bound to the destination inbox, so a leaked key can only mail Matteo).
+ */
+const ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY';
+const configured = !ACCESS_KEY.startsWith('REPLACE_');
+---
+
+<form
+  id="contact-form"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  novalidate={false}
+>
+  <input type="hidden" name="access_key" value={ACCESS_KEY} />
+  <input type="hidden" name="subject" value="matteospanio.github.io — new message" />
+  <input type="hidden" name="from_name" value="matteospanio.github.io" />
+  {/* Without JS the browser posts and follows this redirect. */}
+  <input type="hidden" name="redirect" value="https://matteospanio.github.io/contact/thanks/" />
+
+  {/* Honeypot: Web3Forms drops any submission where this is checked. */}
+  <input
+    type="checkbox"
+    name="botcheck"
+    class="hp"
+    tabindex="-1"
+    autocomplete="off"
+    aria-hidden="true"
+  />
+
+  <div class="field">
+    <label for="cf-name">name</label>
+    <input id="cf-name" name="name" type="text" required autocomplete="name" />
+  </div>
+
+  <div class="field">
+    <label for="cf-email">email</label>
+    <input id="cf-email" name="email" type="email" required autocomplete="email" />
+  </div>
+
+  <div class="field">
+    <label for="cf-message">message</label>
+    <textarea id="cf-message" name="message" rows="6" required minlength="10"></textarea>
+  </div>
+
+  <div class="actions">
+    <button type="submit" disabled={!configured}>send</button>
+    <p class="status" role="status" aria-live="polite"></p>
+  </div>
+
+  {
+    !configured && (
+      <p class="warn">
+        The form is not wired up yet: set <code>PUBLIC_WEB3FORMS_KEY</code> to a Web3Forms access
+        key. Until then, please use the email address below.
+      </p>
+    )
+  }
+</form>
+
+<style>
+  form {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 34rem;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  label {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+  }
+
+  label::before {
+    content: '> ';
+    color: var(--accent);
+  }
+
+  input[type='text'],
+  input[type='email'],
+  textarea {
+    background: var(--bg-inset);
+    border: 1px solid var(--rule-strong);
+    color: var(--fg);
+    padding: 0.55rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    width: 100%;
+    resize: vertical;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-wash);
+  }
+
+  input:user-invalid,
+  textarea:user-invalid {
+    border-color: var(--danger);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  button {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: 1px solid var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    padding: 0.4em 1.4em;
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) {
+    box-shadow: 0 0 0 3px var(--accent-wash);
+  }
+
+  button:disabled {
+    background: none;
+    color: var(--fg-faint);
+    border-color: var(--rule-strong);
+    cursor: not-allowed;
+  }
+
+  .status {
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+  }
+
+  .status[data-state='ok'] {
+    color: var(--accent);
+  }
+
+  .status[data-state='error'] {
+    color: var(--danger);
+  }
+
+  .warn {
+    font-size: var(--step--1);
+    color: var(--warn);
+    border-inline-start: 2px solid var(--warn);
+    padding-inline-start: 0.8rem;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = form?.querySelector<HTMLElement>('.status');
+  const button = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+  form?.addEventListener('submit', async (event) => {
+    if (!form.reportValidity()) return;
+
+    // Only take over the submit once we know we can: otherwise let the browser
+    // do its native POST-and-redirect, which works with JS disabled too.
+    event.preventDefault();
+
+    button!.disabled = true;
+    status!.textContent = 'sending…';
+    status!.removeAttribute('data-state');
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+
+      if (!response.ok) throw new Error(String(response.status));
+
+      status!.textContent = '> message transmitted · ack 200';
+      status!.dataset.state = 'ok';
+      form.reset();
+      // Light self-imposed rate limit so a stuck finger cannot spam the inbox.
+      setTimeout(() => (button!.disabled = false), 30_000);
+    } catch {
+      status!.textContent = 'could not send — please email instead';
+      status!.dataset.state = 'error';
+      button!.disabled = false;
+    }
+  });
+</script>

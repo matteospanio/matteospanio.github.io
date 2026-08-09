@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import Nav from '@/components/base/Nav.astro';
 import Footer from '@/components/base/Footer.astro';
 import { site } from '@/config/site';
+import { graph, personSchema, websiteSchema } from '@/lib/schema';
 
 import '@/styles/base.css';
 import '@/styles/tokens.css';
@@ -12,9 +13,14 @@ interface Props {
   description?: string;
   /** Gates the KaTeX stylesheet and its webfonts onto pages that need them. */
   math?: boolean;
+  /** Extra JSON-LD nodes merged into this page's @graph. */
+  schema?: object[];
+  ogType?: string;
 }
 
-const { title, description = site.tagline, math = false } = Astro.props;
+const { title, description = site.tagline, math = false, schema = [], ogType = 'website' } = Astro.props;
+
+const jsonLd = graph(personSchema(), websiteSchema(), ...schema);
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.jobTitle}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
@@ -39,11 +45,15 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <link rel="alternate" type="application/rss+xml" title={site.name} href="/feed.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title ?? site.name} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_GB" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
     <Font cssVariable="--font-mono-src" preload />
     <Font cssVariable="--font-sans-src" />

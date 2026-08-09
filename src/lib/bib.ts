@@ -99,7 +99,7 @@ function resolveAsset(value: unknown, base: string): string | undefined {
 }
 
 const citations = citationsData as {
-  papers: Record<string, { citations: number | null; title: string; year: string }>;
+  papers: Record<string, { citations?: number | null; title?: string; year?: string }>;
 };
 
 /** Titles differ in case and punctuation across sources; compare on letters and digits only. */
@@ -112,19 +112,28 @@ function titleKey(title: string): string {
 }
 
 const citationsByTitle = new Map(
-  Object.values(citations.papers).map((p) => [titleKey(p.title), p.citations]),
+  Object.values(citations.papers)
+    .filter((p) => p.title)
+    .map((p) => [titleKey(p.title!), p.citations]),
 );
 
 /**
- * Only 7 of 17 entries carry a `google_scholar_id`, so an id-only lookup silently
- * leaves ten papers — including every 2026 one — without a count. Fall back to a
- * normalised title match before giving up.
+ * citations.json is keyed by BibTeX entry key, so the id lookup is exact. The
+ * title fallback covers entries that predate that keying, and the scholar-id
+ * path covers any file still using the old Jekyll scheme.
+ *
+ * Returns null — not 0 — when there is simply no measurement, so the card can
+ * render an em dash instead of claiming zero citations.
  */
-function lookupCitations(scholarId: string | null, title: string): number | null {
+function lookupCitations(id: string, scholarId: string | null, title: string): number | null {
+  const direct = citations.papers[id];
+  if (direct && typeof direct.citations === 'number') return direct.citations;
+
   if (scholarId) {
-    const direct = citations.papers[scholarId];
-    if (direct && typeof direct.citations === 'number') return direct.citations;
+    const byScholar = citations.papers[scholarId];
+    if (byScholar && typeof byScholar.citations === 'number') return byScholar.citations;
   }
+
   const byTitle = citationsByTitle.get(titleKey(title));
   return typeof byTitle === 'number' ? byTitle : null;
 }
@@ -188,7 +197,7 @@ export function parseBib(text: string): Publication[] {
       lang: clean(f.language) || 'en',
       note,
       inPress: /accepted for publication/i.test(note ?? ''),
-      citations: lookupCitations(scholarId, title),
+      citations: lookupCitations(entry.key, scholarId, title),
       raw: entry.input ?? '',
     };
   });
