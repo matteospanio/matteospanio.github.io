@@ -79,7 +79,7 @@
   year = {2019},
 }
 
-@article{bosi2024a,
+@inproceedings{bosi2024a,
   language= {en},
   dimensions = {true},
   preview={aes2024.jpg},
@@ -92,7 +92,7 @@
     and Spanio, Matteo
     and Russo, Alessandro
     and Canazza Sergio},
-  journal={Journal of the Audio Engineering Society},
+  booktitle = {Proceedings of the 157th Audio Engineering Society Convention (AES)},
   title={A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard},
   year={2024},
   number={10190},
@@ -203,27 +203,29 @@
   doi          = {10.5281/zenodo.15698958},
   pdf          = {nime2025_81.pdf},
   url          = {https://doi.org/10.5281/zenodo.15698958},
+  google_scholar_id = {LkGwnXOMwfcC},
 }
 
-@conference{spanio2025torchfx,
+@inproceedings{spanio2025torchfx,
   language={en},
-  abbr = {DAFX},
-  arxiv = {2504.08624},
   poster = {dafx_poster_2025.pdf},
+  abbr = {DAFX},
+	iris={true},
   bibtex_show={true},
   altmetric = {true},
   website = {https://matteospanio.github.io/torchfx/},
+  arxiv = {2504.08624},
 	author = {Spanio, Matteo and Rodà, Antonio},
-  title={TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration},
+	title = {{TorchFX}: A Modern Approach to Audio {DSP} with {PyTorch} and {GPU} Acceleration},
 	year = {2025},
-	journal = {Proceedings of the International Conference on Digital Audio Effects, DAFx},
-	pages = {390 – 395},
+	booktitle = {Proceedings of the 28th International Conference on Digital Audio Effects (DAFx)},
+	pages = {390--395},
 	url = {https://www.scopus.com/inward/record.uri?eid=2-s2.0-105028935688&partnerID=40&md5=552e54afc1a074cbd1b7e8ed4ad1c010},
-	type = {Conference paper},
   pdf={https://dafx25.dii.univpm.it/wp-content/uploads/2025/07/DAFx25_paper_65.pdf},
+	abstract = {The increasing complexity and real-time processing demands of audio signals require optimized algorithms that utilize the computational power of Graphics Processing Units (GPUs). Existing Digital Signal Processing (DSP) libraries often do not provide the necessary efficiency and flexibility, particularly for integrating with Artificial Intelligence (AI) models. In response, we introduce TorchFX: a GPU-accelerated Python library for DSP, engineered to facilitate sophisticated audio signal processing. Built on the PyTorch framework, TorchFX offers an Object-Oriented interface similar to torchaudio but enhances functionality with a novel pipe operator for intuitive filter chaining. The library provides a comprehensive suite of Finite Impulse Response (FIR) and Infinite Impulse Response (IIR) filters, with a focus on multichannel audio, thereby facilitating the integration of DSP and AI-based approaches. Our benchmarking results demonstrate significant efficiency gains over traditional libraries like SciPy, particularly in multichannel contexts. While there are current limitations in GPU compatibility, ongoing developments promise broader support and real-time processing capabilities. TorchFX aims to become a useful tool for the community, contributing to innovation in GPU-accelerated DSP. TorchFX is publicly available on GitHub at https://github.com/matteospanio/torchfx. © 2025 Matteo Spanio et al.},
 }
 
-@article{spanio2026bmdataset,
+@inproceedings{spanio2026bmdataset,
   language={en},
   abbr = {SMC},
   code = {https://github.com/CSCPadova/lilybert},
@@ -232,8 +234,9 @@
   bibtex_show={true},
   title={BMdataset: A Musicologically Curated LilyPond Dataset},
   author={Spanio, Matteo and Guler, Ilay and Rod{\`a}, Antonio},
-  journal={arXiv preprint arXiv:2604.10628},
-  year={2026}
+  booktitle = {Proceedings of the 23rd Sound and Music Computing Conference (SMC)},
+  year={2026},
+  google_scholar_id={TQgYirikUcIC},
 }
 
 @article{spanio2026multimodal,
@@ -245,7 +248,8 @@
   title={Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences},
   author={Spanio, Matteo and Frezzato, Valentina and Rod{\`a}, Antonio},
   journal={arXiv preprint arXiv:2604.10632},
-  year={2026}
+  year={2026},
+  google_scholar_id={HDshCWvjkbEC},
 }
 
 @inproceedings{canazza2026preserving,
@@ -261,7 +265,6 @@
   booktitle = {Proceedings of the Italian Conference on Artificial Intelligence (Ital-IA 2026)},
   year      = {2026},
   publisher = {CEUR Workshop Proceedings},
-  note      = {Accepted for publication}
 }
 
 @inproceedings{spanio2026lilypond,
@@ -277,7 +280,6 @@
   year      = {2026},
   publisher = {CEUR Workshop Proceedings},
   address   = {Italy},
-  note       = {Accepted for publication},
 }
 
 @inproceedings{pretto2026advanced,
@@ -290,5 +292,65 @@
   booktitle = {Proceedings of the AVI-CH 2026 Workshop on Advanced Visual Interfaces for Cultural Heritage},
   year      = {2026},
   publisher = {CEUR Workshop Proceedings},
-  note      = {Accepted for publication},
+}
+
+@inproceedings{spanio2026cbmi,
+    abbr = {CBMI},
+    author = {Matteo Spanio and Antonio Rod{\'a}},
+    title = {Taste-aware music retrieval from audio embeddings},
+    year = {2026},
+    booktitle = {Proceedings of the  International Conference on Content-Based Multimedia Indexing (CBMI)},
+    google_scholar_id={j3f4tGmQtD8C},
+}
+
+@inproceedings{poltronieri2026notation,
+  abbr = {ISMIR},
+  author    = {Poltronieri, Andrea and Spanio, Matteo and Chieppa, Simone and Serra, Xavier and Rocamora, Mart\'{i}n},
+  title     = {Does Notation Matter? {MusicXML} Tokenisation for Symbolic Music Generation and Understanding},
+  booktitle = {Proceedings of the 27th International Society for Music Information Retrieval Conference (ISMIR)},
+  year      = {2026},
+  address   = {Abu Dhabi, United Arab Emirates},
+}
+
+%% SOTTOMESSO alla conferenza IEEE International Symposium on the Internet of Sounds (IS2) 2026, preprint arxiv
+@inproceedings{spanio2026quantizednativeruntimeondevice,
+      abbr = {IS2},
+      title={A Quantized Native Runtime for On-Device Semantic Audio Generation},
+      booktitle={Proceedings of the IEEE International Symposium on the Internet of Sounds (IS2)},
+      author={Matteo Spanio and Antonio Rodà},
+      year={2026},
+      eprint={2607.08526},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD},
+  keywords={preprint},
+      url={https://arxiv.org/abs/2607.08526},
+}
+
+%% SOTTOMESSO alla conferenza IEEE International Symposium on the Internet of Sounds (IS2) 2026
+@inproceedings{spanio2026fluxion,
+      title={Fluxion: A Differentiable DSP Runtime from Training GPU to Real-Time Edge},
+      author={Matteo Spanio and Antonio Rodà},
+      year={2026},
+      booktitle={Proceedings of the IEEE International Symposium on the Internet of Sounds (IS2)},
+      abbr = {IS2},
+}
+
+%% Sottomesso ad Artificial Intelligence Review
+@article{spanio2026review,
+  abbr = {AIR},
+  author = {Spanio, Matteo and Rodà, Antonio},
+  title = {Food and Flavor Representation Learning: A Systematic Mapping Study and Research Agenda},
+  journal = {Artificial Intelligence Review},
+  year = {2026},
+  note = {Under review},
+}
+
+%% Sottomesso a PLOS ONE
+@article{spanio2026,
+  abbr = {PLOS ONE},
+  title = {Cross-cultural evaluation of taste-sound correspondences in AI-generated music},
+  author = {Spanio, Matteo and Zampini, Massimiliano and Torri, Luisa and Migliavada, Riccardo and Mesz, Bruno and Ohno, Masaki and Yuji, Wada and Rodà, Antonio},
+  journal = {PLOS ONE},
+  year = {2026},
+  note = {Under review},
 }

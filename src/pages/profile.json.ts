@@ -16,15 +16,21 @@ export const GET: APIRoute = async () => {
   const tracked = pubs.filter((p) => p.citations !== null);
   const venues = [...new Set(pubs.map((p) => p.venue).filter(Boolean))];
 
+  // resume.json keeps the address — the generated CV PDF should carry it — but
+  // this endpoint is a public URL, so it ships the contact page instead.
+  const { email: _email, ...basics } = resume.basics as typeof resume.basics & { email?: string };
+
   const payload = {
     ...resume,
     basics: {
-      ...resume.basics,
+      ...basics,
       label: site.jobTitle,
       summary: site.tagline,
       url: site.url,
       profiles: sameAs().map((url) => ({ url })),
     },
+
+    'x-contact': abs('/contact/'),
 
     'x-generated': new Date().toISOString().slice(0, 10),
     'x-source': abs('/profile.json'),

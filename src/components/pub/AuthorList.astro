@@ -80,6 +80,9 @@ const label = (a: Author) => (a.given ? `${a.given} ${a.family}` : a.family);
 
   .more summary {
     display: inline;
+    /* Padding, not a min-height: this control sits inside the run of author
+       names, so growing the line box would break the sentence. */
+    padding-block: 0.45rem;
     cursor: pointer;
     color: var(--fg-faint);
     list-style: none;

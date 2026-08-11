@@ -33,7 +33,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "src" / "data" / "viz" / "wordcloud.json"
 
-PAPERS_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Scrivania" / "papers"
+PAPERS_DIR = (
+    Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Scrivania" / "papers"
+)
 
 # Not published work: excluded on purpose. Anything else in the directory that is
 # a .zip is treated as a published paper.
@@ -46,14 +48,14 @@ EXCLUDE = {
 # --- layout -----------------------------------------------------------------
 
 WORDS = 80
-NARROW_WORDS = 34   # what stays legible when the same cloud is 390px wide
+NARROW_WORDS = 34  # what stays legible when the same cloud is 390px wide
 UNIGRAMS, BIGRAMS = 62, 26
-PHRASE_WEIGHT = 2.4    # lifts phrases into the visible bands; tuned by eye
+PHRASE_WEIGHT = 2.4  # lifts phrases into the visible bands; tuned by eye
 SIZE_MIN, SIZE_MAX = 11.0, 62.0
-ADVANCE = 0.6          # JetBrains Mono advance width, in em
+ADVANCE = 0.6  # JetBrains Mono advance width, in em
 LINE_HEIGHT = 1.05
-PAD_X, PAD_Y = 0.42, 0.26   # gap between boxes, in em of the word's own size
-ASPECT = 2.05          # spiral is stretched horizontally so the cloud fills a wide box
+PAD_X, PAD_Y = 0.42, 0.26  # gap between boxes, in em of the word's own size
+ASPECT = 2.05  # spiral is stretched horizontally so the cloud fills a wide box
 
 # --- text extraction --------------------------------------------------------
 
@@ -61,21 +63,76 @@ SKIP_SUFFIXES = {".cls", ".sty", ".bst", ".bib", ".clo", ".def"}
 
 # Environments whose contents are not prose: numbers, file paths and code.
 DROP_ENVIRONMENTS = (
-    "figure", "figure*", "table", "table*", "tabular", "tabularx", "longtable",
-    "equation", "equation*", "align", "align*", "gather", "gather*", "eqnarray",
-    "displaymath", "math", "verbatim", "lstlisting", "minted", "algorithm",
-    "algorithmic", "thebibliography", "tikzpicture", "filecontents",
+    "figure",
+    "figure*",
+    "table",
+    "table*",
+    "tabular",
+    "tabularx",
+    "longtable",
+    "equation",
+    "equation*",
+    "align",
+    "align*",
+    "gather",
+    "gather*",
+    "eqnarray",
+    "displaymath",
+    "math",
+    "verbatim",
+    "lstlisting",
+    "minted",
+    "algorithm",
+    "algorithmic",
+    "thebibliography",
+    "tikzpicture",
+    "filecontents",
 )
 
 # Commands whose braced argument is a path, a key or a number — never words.
 DROP_WITH_ARG = (
-    "cite", "citep", "citet", "citeauthor", "citeyear", "autocite", "textcite",
-    "ref", "eqref", "autoref", "cref", "Cref", "pageref", "label",
-    "includegraphics", "input", "include", "bibliography", "bibliographystyle",
-    "usepackage", "documentclass", "newcommand", "renewcommand", "def",
-    "url", "hypersetup", "geometry", "setlength", "definecolor", "color",
-    "textcolor", "graphicspath", "orcid", "email", "affiliation", "institute",
-    "acmConference", "acmDOI", "acmISBN", "keywords", "ccsdesc", "pdfstring",
+    "cite",
+    "citep",
+    "citet",
+    "citeauthor",
+    "citeyear",
+    "autocite",
+    "textcite",
+    "ref",
+    "eqref",
+    "autoref",
+    "cref",
+    "Cref",
+    "pageref",
+    "label",
+    "includegraphics",
+    "input",
+    "include",
+    "bibliography",
+    "bibliographystyle",
+    "usepackage",
+    "documentclass",
+    "newcommand",
+    "renewcommand",
+    "def",
+    "url",
+    "hypersetup",
+    "geometry",
+    "setlength",
+    "definecolor",
+    "color",
+    "textcolor",
+    "graphicspath",
+    "orcid",
+    "email",
+    "affiliation",
+    "institute",
+    "acmConference",
+    "acmDOI",
+    "acmISBN",
+    "keywords",
+    "ccsdesc",
+    "pdfstring",
 )
 
 STOPWORDS = set("""
@@ -132,7 +189,7 @@ range rate ratio related report reported represent representation research respe
 role sample samples section select selected set sets significant significantly similar single
 specific standard state step steps studied studies study subject subjects summary support system
 systems table term terms test tested tests thesis time times total type types understanding unit
-units value values version way work works
+units value values version way work works file command document
 """.split())
 
 # Institutional and typesetting residue that survives on affiliation lines and in
@@ -160,6 +217,11 @@ SYNONYMS = {
     "musical instrument": "musical instruments",
     "sound design": "sound design",
     "signal processing": "signal processing",
+    "preservation audio": "preservation",
+    "magnetic tape": "tape",
+    "video analyzer": "video",
+    "audio signal": "signal",
+    "programming language": "language",
 }
 
 # Acronyms and proper nouns that should not be lowercased in the rendered cloud.
@@ -277,7 +339,11 @@ def singular(word: str) -> str:
     """Light plural folding. Deliberately conservative: 'analysis' must survive."""
     if len(word) > 4 and word.endswith("ies"):
         return word[:-3] + "y"
-    if len(word) > 4 and word.endswith("s") and not word.endswith(("ss", "us", "is", "as")):
+    if (
+        len(word) > 4
+        and word.endswith("s")
+        and not word.endswith(("ss", "us", "is", "as"))
+    ):
         return word[:-1]
     return word
 
@@ -293,7 +359,7 @@ def tokenize(text: str) -> list[str]:
         for raw in WORD_RE.findall(chunk):
             word = raw.lower().strip("-'")
             if len(word) < 3 or word in STOPWORDS:
-                out.append("")      # a stop word breaks a phrase too
+                out.append("")  # a stop word breaks a phrase too
                 continue
             out.append(singular(word))
         out.append("")
@@ -310,8 +376,12 @@ def people() -> set[str]:
     bib = ROOT / "src" / "data" / "papers.bib"
     if not bib.exists():
         return names
-    for field in re.findall(r"author\s*=\s*\{(.+?)\}\s*,\s*\n", bib.read_text("utf-8"), re.S):
-        cleaned = unicodedata.normalize("NFKD", field.replace("{", " ").replace("}", " "))
+    for field in re.findall(
+        r"author\s*=\s*\{(.+?)\}\s*,\s*\n", bib.read_text("utf-8"), re.S
+    ):
+        cleaned = unicodedata.normalize(
+            "NFKD", field.replace("{", " ").replace("}", " ")
+        )
         cleaned = "".join(c for c in cleaned if not unicodedata.combining(c))
         for part in re.split(r"\band\b|,", cleaned):
             for word in WORD_RE.findall(part):
@@ -459,7 +529,10 @@ def lay_out(
                 y + height / 2 + gap_y / 2,
             )
             if not any(
-                box[0] < other[2] and other[0] < box[2] and box[1] < other[3] and other[1] < box[3]
+                box[0] < other[2]
+                and other[0] < box[2]
+                and box[1] < other[3]
+                and other[1] < box[3]
                 for other in boxes
             ):
                 boxes.append(box)
@@ -490,7 +563,12 @@ def lay_out(
 
     return {
         "words": placed,
-        "viewBox": [round(left, 1), round(topmost, 1), round(right - left, 1), round(bottommost - topmost, 1)],
+        "viewBox": [
+            round(left, 1),
+            round(topmost, 1),
+            round(right - left, 1),
+            round(bottommost - topmost, 1),
+        ],
     }
 
 
@@ -500,8 +578,7 @@ def main() -> int:
         return 1
 
     paths = sorted(
-        p for p in PAPERS_DIR.iterdir()
-        if p.suffix == ".zip" and p.name not in EXCLUDE
+        p for p in PAPERS_DIR.iterdir() if p.suffix == ".zip" and p.name not in EXCLUDE
     )
     if not paths:
         print(f"no paper archives in {PAPERS_DIR}", file=sys.stderr)

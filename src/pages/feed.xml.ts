@@ -19,7 +19,8 @@ export async function GET(context: APIContext) {
       pubDate: post.data.date,
       link: `/blog/${post.data.date.getFullYear()}/${post.data.slug}/`,
       categories: [...post.data.tags, ...post.data.categories],
-      author: site.email,
+      // Name only: an <author> email is one more plain-text copy to harvest.
+      author: site.name,
     })),
     customData: `<language>en</language>`,
   });

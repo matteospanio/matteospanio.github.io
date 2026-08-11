@@ -36,7 +36,9 @@ export function personSchema() {
     jobTitle: site.jobTitle,
     description: site.tagline,
     url: site.url,
-    email: `mailto:${site.email}`,
+    // No `email` here on purpose. It would put the address in plain text in the
+    // <head> of every page, which makes obfuscating it on /contact/ pointless.
+    // Agents get `url` and `sameAs`; humans get the form.
     identifier: {
       '@type': 'PropertyValue',
       propertyID: 'ORCID',

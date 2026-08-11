@@ -54,6 +54,10 @@ const year = new Date().getFullYear();
   a {
     color: var(--fg-dim);
     text-decoration: none;
+    /* Standalone links, not prose: they need a thumb-sized box. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
   }
 
   a:hover {

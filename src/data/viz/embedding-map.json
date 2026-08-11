@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-10",
+  "generatedAt": "2026-08-12",
   "model": "intfloat/multilingual-e5-base",
   "projection": {
     "method": "umap",
@@ -11,37 +11,37 @@
     "note": "UMAP is fitted on chunk documents, chunk coordinates are averaged into one node per source item, then rotated onto principal axes and scaled uniformly (aspect preserved) into [-1, 1].",
     "extent": {
       "x": [
-        -0.6713,
+        -0.6343,
         1.0
       ],
       "y": [
-        -0.2758,
-        0.4539
+        -0.3855,
+        0.4819
       ]
     }
   },
-  "sourceHash": "c18b10f607782867d6ada84a25b2fecf27d0a8d9b4e1d99c1e2ac20fc722188d",
+  "sourceHash": "6b5cdf4639284cab3dd24dfad5873bf7b385ad95b6520a8c125ba5213272f055",
   "sanity": {
-    "n": 36,
-    "chunks": 81,
-    "silhouetteVsThemes": 0.1029,
-    "silhouetteVsThemesEmbedding": 0.1396,
-    "meanIntraTheme": 0.855,
-    "meanInterTheme": 0.8142,
-    "seedStability": 0.9659,
+    "n": 42,
+    "chunks": 88,
+    "silhouetteVsThemes": -0.0148,
+    "silhouetteVsThemesEmbedding": 0.1041,
+    "meanIntraTheme": 0.8522,
+    "meanInterTheme": 0.8186,
+    "seedStability": 0.9474,
     "edgeFloor": 0.72,
     "edgeFloorRejected": 0,
     "edgeWeightRange": [
-      0.8194,
+      0.8196,
       0.9541
     ],
-    "crossThemeEdges": 32
+    "crossThemeEdges": 40
   },
   "sources": {
     "bib": {
       "ok": true,
-      "entries": 17,
-      "used": 17
+      "entries": 23,
+      "used": 23
     },
     "blog": {
       "ok": true,
@@ -71,13 +71,13 @@
       "id": "multimodal",
       "label": "Multimodal and crossmodal AI",
       "color": "#c084fc",
-      "n": 6
+      "n": 9
     },
     {
       "id": "symbolic-music",
       "label": "Symbolic music and LilyPond",
       "color": "#fbbf24",
-      "n": 5
+      "n": 6
     },
     {
       "id": "dsp-tooling",
@@ -95,7 +95,7 @@
       "id": "engineering",
       "label": "Software and research engineering",
       "color": "#7dd3fc",
-      "n": 7
+      "n": 9
     }
   ],
   "nodes": [
@@ -109,8 +109,8 @@
       "venue": "ICIAP",
       "url": "/publications/#10.1007/978-3-031-51026-7_26",
       "chunks": 3,
-      "x": -0.626,
-      "y": 0.1543
+      "x": -0.3788,
+      "y": 0.4169
     },
     {
       "id": "https://doi.org/10.13140/rg.2.2.36838.50247",
@@ -122,8 +122,8 @@
       "venue": "Unpublished",
       "url": "/publications/#https://doi.org/10.13140/rg.2.2.36838.50247",
       "chunks": 2,
-      "x": -0.6713,
-      "y": 0.0963
+      "x": -0.4403,
+      "y": 0.4819
     },
     {
       "id": "https://doi.org/10.13140/rg.2.2.17327.82088",
@@ -135,8 +135,8 @@
       "venue": "Master's Thesis",
       "url": "/publications/#https://doi.org/10.13140/rg.2.2.17327.82088",
       "chunks": 1,
-      "x": -0.2452,
-      "y": -0.203
+      "x": -0.3944,
+      "y": -0.2005
     },
     {
       "id": "sphor:woo15",
@@ -148,8 +148,8 @@
       "venue": "Edizioni Eufonia",
       "url": "/publications/#sphor:woo15",
       "chunks": 1,
-      "x": -0.1934,
-      "y": -0.215
+      "x": -0.255,
+      "y": -0.1164
     },
     {
       "id": "https://doi.org/10.13140/rg.2.2.24143.56489",
@@ -161,8 +161,8 @@
       "venue": "Bachelor's Thesis",
       "url": "/publications/#https://doi.org/10.13140/rg.2.2.24143.56489",
       "chunks": 4,
-      "x": -0.379,
-      "y": -0.2728
+      "x": -0.522,
+      "y": -0.1903
     },
     {
       "id": "bosi2024a",
@@ -174,8 +174,8 @@
       "venue": "AES",
       "url": "/publications/#bosi2024a",
       "chunks": 2,
-      "x": -0.6479,
-      "y": 0.0635
+      "x": -0.5003,
+      "y": 0.3816
     },
     {
       "id": "ieeeaccess2024",
@@ -187,8 +187,8 @@
       "venue": "IEEEAccess",
       "url": "/publications/#ieeeaccess2024",
       "chunks": 2,
-      "x": -0.5746,
-      "y": 0.0668
+      "x": -0.4657,
+      "y": 0.3558
     },
     {
       "id": "Cinar2024",
@@ -200,8 +200,8 @@
       "venue": "IAI4CH",
       "url": "/publications/#Cinar2024",
       "chunks": 1,
-      "x": -0.5105,
-      "y": 0.0654
+      "x": -0.3907,
+      "y": 0.3304
     },
     {
       "id": "Spanio2024",
@@ -213,8 +213,8 @@
       "venue": "AIxIADC",
       "url": "/publications/#Spanio2024",
       "chunks": 2,
-      "x": -0.1948,
-      "y": -0.0075
+      "x": -0.1247,
+      "y": 0.2084
     },
     {
       "id": "spanio_frontiers_2025",
@@ -226,8 +226,8 @@
       "venue": "Frontiers in CS",
       "url": "/publications/#spanio_frontiers_2025",
       "chunks": 1,
-      "x": 0.0634,
-      "y": -0.1362
+      "x": -0.0031,
+      "y": 0.1579
     },
     {
       "id": "fiordelmondo_nime_2025",
@@ -239,21 +239,21 @@
       "venue": "NIME",
       "url": "/publications/#fiordelmondo_nime_2025",
       "chunks": 1,
-      "x": -0.1557,
-      "y": -0.1245
+      "x": -0.2028,
+      "y": -0.276
     },
     {
       "id": "spanio2025torchfx",
       "kind": "paper",
       "theme": "dsp-tooling",
-      "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
+      "title": "TorchFX: A Modern Approach to Audio DSP with PyTorch and GPU Acceleration",
       "short": "TorchFX",
       "year": 2025,
       "venue": "DAFX",
       "url": "/publications/#spanio2025torchfx",
-      "chunks": 1,
-      "x": 0.6773,
-      "y": -0.2758
+      "chunks": 2,
+      "x": 0.8232,
+      "y": 0.3099
     },
     {
       "id": "spanio2026bmdataset",
@@ -265,8 +265,8 @@
       "venue": "SMC",
       "url": "/publications/#spanio2026bmdataset",
       "chunks": 1,
-      "x": -0.0725,
-      "y": -0.1507
+      "x": -0.1206,
+      "y": -0.2201
     },
     {
       "id": "spanio2026multimodal",
@@ -278,8 +278,8 @@
       "venue": "arXiv preprint arXiv:2604.10632",
       "url": "/publications/#spanio2026multimodal",
       "chunks": 1,
-      "x": -0.0885,
-      "y": -0.0914
+      "x": -0.296,
+      "y": -0.1951
     },
     {
       "id": "canazza2026preserving",
@@ -291,8 +291,8 @@
       "venue": "Ital-IA",
       "url": "/publications/#canazza2026preserving",
       "chunks": 1,
-      "x": -0.2023,
-      "y": 0.0433
+      "x": -0.1789,
+      "y": -0.1026
     },
     {
       "id": "spanio2026lilypond",
@@ -304,8 +304,8 @@
       "venue": "Ital-IA",
       "url": "/publications/#spanio2026lilypond",
       "chunks": 1,
-      "x": -0.066,
-      "y": 0.0587
+      "x": -0.0441,
+      "y": -0.1396
     },
     {
       "id": "pretto2026advanced",
@@ -317,8 +317,86 @@
       "venue": "AVI-CH",
       "url": "/publications/#pretto2026advanced",
       "chunks": 1,
-      "x": -0.3431,
-      "y": -0.0286
+      "x": -0.3008,
+      "y": -0.3024
+    },
+    {
+      "id": "spanio2026cbmi",
+      "kind": "paper",
+      "theme": "multimodal",
+      "title": "Taste-aware music retrieval from audio embeddings",
+      "short": "Taste-aware music retrieval from…",
+      "year": 2026,
+      "venue": "CBMI",
+      "url": "/publications/#spanio2026cbmi",
+      "chunks": 1,
+      "x": -0.2247,
+      "y": -0.2509
+    },
+    {
+      "id": "poltronieri2026notation",
+      "kind": "paper",
+      "theme": "symbolic-music",
+      "title": "Does Notation Matter? MusicXML Tokenisation for Symbolic Music Generation and Understanding",
+      "short": "Does Notation Matter",
+      "year": 2026,
+      "venue": "ISMIR",
+      "url": "/publications/#poltronieri2026notation",
+      "chunks": 1,
+      "x": -0.12,
+      "y": -0.2574
+    },
+    {
+      "id": "spanio2026quantizednativeruntimeondevice",
+      "kind": "paper",
+      "theme": "engineering",
+      "title": "A Quantized Native Runtime for On-Device Semantic Audio Generation",
+      "short": "A Quantized Native Runtime for…",
+      "year": 2026,
+      "venue": "IS2",
+      "url": "/publications/#spanio2026quantizednativeruntimeondevice",
+      "chunks": 1,
+      "x": -0.1681,
+      "y": -0.3022
+    },
+    {
+      "id": "spanio2026fluxion",
+      "kind": "paper",
+      "theme": "engineering",
+      "title": "Fluxion: A Differentiable DSP Runtime from Training GPU to Real-Time Edge",
+      "short": "Fluxion",
+      "year": 2026,
+      "venue": "IS2",
+      "url": "/publications/#spanio2026fluxion",
+      "chunks": 1,
+      "x": -0.1553,
+      "y": -0.3643
+    },
+    {
+      "id": "spanio2026review",
+      "kind": "paper",
+      "theme": "multimodal",
+      "title": "Food and Flavor Representation Learning: A Systematic Mapping Study and Research Agenda",
+      "short": "Food and Flavor Representation…",
+      "year": 2026,
+      "venue": "AIR",
+      "url": "/publications/#spanio2026review",
+      "chunks": 1,
+      "x": -0.2418,
+      "y": -0.142
+    },
+    {
+      "id": "spanio2026",
+      "kind": "paper",
+      "theme": "multimodal",
+      "title": "Cross-cultural evaluation of taste-sound correspondences in AI-generated music",
+      "short": "Cross-cultural evaluation of…",
+      "year": 2026,
+      "venue": "PLOS ONE",
+      "url": "/publications/#spanio2026",
+      "chunks": 1,
+      "x": -0.3138,
+      "y": -0.1911
     },
     {
       "id": "post:DSP-il-suono-in-digitale",
@@ -330,8 +408,8 @@
       "venue": null,
       "url": "/blog/2021/DSP-il-suono-in-digitale/",
       "chunks": 4,
-      "x": -0.558,
-      "y": -0.2611
+      "x": -0.6343,
+      "y": -0.0512
     },
     {
       "id": "post:Principles-of-statistic",
@@ -343,8 +421,8 @@
       "venue": null,
       "url": "/blog/2022/Principles-of-statistic/",
       "chunks": 5,
-      "x": 0.768,
-      "y": 0.4539
+      "x": 0.5761,
+      "y": -0.3855
     },
     {
       "id": "post:python-environments",
@@ -356,8 +434,8 @@
       "venue": null,
       "url": "/blog/2024/python-environments/",
       "chunks": 7,
-      "x": 1.0,
-      "y": -0.0395
+      "x": 0.8267,
+      "y": -0.1656
     },
     {
       "id": "post:python-static-typing",
@@ -369,8 +447,8 @@
       "venue": null,
       "url": "/blog/2023/python-static-typing/",
       "chunks": 6,
-      "x": 0.9698,
-      "y": 0.2065
+      "x": 1.0,
+      "y": -0.3478
     },
     {
       "id": "post:slow-python",
@@ -382,8 +460,8 @@
       "venue": null,
       "url": "/blog/2025/slow-python/",
       "chunks": 4,
-      "x": 0.7398,
-      "y": -0.1047
+      "x": 0.9063,
+      "y": 0.1661
     },
     {
       "id": "project:lilybench",
@@ -395,8 +473,8 @@
       "venue": null,
       "url": "/projects/lilybench/",
       "chunks": 4,
-      "x": 0.1891,
-      "y": 0.1173
+      "x": 0.2586,
+      "y": 0.0103
     },
     {
       "id": "project:lilybert",
@@ -408,8 +486,8 @@
       "venue": null,
       "url": "/projects/lilybert/",
       "chunks": 3,
-      "x": 0.2208,
-      "y": 0.0654
+      "x": 0.2839,
+      "y": 0.0423
     },
     {
       "id": "project:ml-project-template",
@@ -421,8 +499,8 @@
       "venue": null,
       "url": "/projects/ml-project-template/",
       "chunks": 4,
-      "x": 0.5173,
-      "y": 0.0384
+      "x": 0.5393,
+      "y": 0.1037
     },
     {
       "id": "project:spam-analyzer",
@@ -434,8 +512,8 @@
       "venue": null,
       "url": "/projects/spam-analyzer/",
       "chunks": 3,
-      "x": 0.4301,
-      "y": 0.1951
+      "x": 0.4601,
+      "y": -0.056
     },
     {
       "id": "project:tasty-musicgen",
@@ -447,8 +525,8 @@
       "venue": null,
       "url": "/projects/tasty-musicgen/",
       "chunks": 3,
-      "x": 0.187,
-      "y": -0.0841
+      "x": 0.1036,
+      "y": 0.1339
     },
     {
       "id": "project:torchfx",
@@ -460,8 +538,8 @@
       "venue": null,
       "url": "/projects/torchfx/",
       "chunks": 4,
-      "x": 0.5828,
-      "y": -0.1448
+      "x": 0.7915,
+      "y": 0.2801
     },
     {
       "id": "news:2026-ItalIA",
@@ -473,8 +551,8 @@
       "venue": null,
       "url": "/news/#2026-ItalIA",
       "chunks": 1,
-      "x": -0.2261,
-      "y": 0.1604
+      "x": -0.0992,
+      "y": -0.0222
     },
     {
       "id": "news:aes2024NY",
@@ -486,8 +564,8 @@
       "venue": null,
       "url": "/news/#aes2024NY",
       "chunks": 1,
-      "x": -0.4566,
-      "y": 0.1583
+      "x": -0.3516,
+      "y": 0.2291
     },
     {
       "id": "news:aixia2024",
@@ -499,8 +577,8 @@
       "venue": null,
       "url": "/news/#aixia2024",
       "chunks": 1,
-      "x": -0.3303,
-      "y": 0.1211
+      "x": -0.2609,
+      "y": 0.177
     },
     {
       "id": "news:ann_4",
@@ -512,8 +590,8 @@
       "venue": null,
       "url": "/news/#ann_4",
       "chunks": 1,
-      "x": -0.162,
-      "y": 0.1739
+      "x": -0.1652,
+      "y": -0.0139
     },
     {
       "id": "news:announcement_2",
@@ -525,8 +603,8 @@
       "venue": null,
       "url": "/news/#announcement_2",
       "chunks": 1,
-      "x": -0.4103,
-      "y": 0.1321
+      "x": -0.2988,
+      "y": 0.2643
     },
     {
       "id": "news:dafx2025",
@@ -538,8 +616,8 @@
       "venue": null,
       "url": "/news/#dafx2025",
       "chunks": 1,
-      "x": 0.6394,
-      "y": -0.2315
+      "x": 0.937,
+      "y": 0.3499
     },
     {
       "id": "news:hf2025",
@@ -551,8 +629,8 @@
       "venue": null,
       "url": "/news/#hf2025",
       "chunks": 1,
-      "x": 0.0775,
-      "y": -0.0456
+      "x": 0.0335,
+      "y": -0.0374
     },
     {
       "id": "news:hf2026-lilybert",
@@ -564,8 +642,8 @@
       "venue": null,
       "url": "/news/#hf2026-lilybert",
       "chunks": 1,
-      "x": 0.0515,
-      "y": 0.0459
+      "x": 0.1121,
+      "y": -0.0693
     }
   ],
   "edges": [
@@ -577,7 +655,12 @@
     {
       "s": "bosi2024a",
       "t": "ieeeaccess2024",
-      "w": 0.9503
+      "w": 0.9475
+    },
+    {
+      "s": "project:torchfx",
+      "t": "spanio2025torchfx",
+      "w": 0.9427
     },
     {
       "s": "post:slow-python",
@@ -590,14 +673,19 @@
       "w": 0.9261
     },
     {
+      "s": "post:slow-python",
+      "t": "spanio2025torchfx",
+      "w": 0.9226
+    },
+    {
+      "s": "spanio2026bmdataset",
+      "t": "spanio2026lilypond",
+      "w": 0.921
+    },
+    {
       "s": "10.1007/978-3-031-51026-7_26",
       "t": "ieeeaccess2024",
       "w": 0.9184
-    },
-    {
-      "s": "project:lilybench",
-      "t": "spanio2026lilypond",
-      "w": 0.915
     },
     {
       "s": "10.1007/978-3-031-51026-7_26",
@@ -610,18 +698,23 @@
       "w": 0.9129
     },
     {
+      "s": "project:lilybench",
+      "t": "spanio2026lilypond",
+      "w": 0.912
+    },
+    {
       "s": "project:ml-project-template",
       "t": "project:torchfx",
       "w": 0.911
     },
     {
-      "s": "10.1007/978-3-031-51026-7_26",
-      "t": "Cinar2024",
-      "w": 0.9098
+      "s": "spanio2026bmdataset",
+      "t": "spanio2026cbmi",
+      "w": 0.9105
     },
     {
-      "s": "spanio2026bmdataset",
-      "t": "spanio2026lilypond",
+      "s": "10.1007/978-3-031-51026-7_26",
+      "t": "Cinar2024",
       "w": 0.9098
     },
     {
@@ -632,22 +725,12 @@
     {
       "s": "Cinar2024",
       "t": "bosi2024a",
-      "w": 0.9079
+      "w": 0.9082
     },
     {
       "s": "post:python-environments",
       "t": "post:python-static-typing",
       "w": 0.9078
-    },
-    {
-      "s": "canazza2026preserving",
-      "t": "news:2026-ItalIA",
-      "w": 0.9069
-    },
-    {
-      "s": "news:dafx2025",
-      "t": "spanio2025torchfx",
-      "w": 0.906
     },
     {
       "s": "news:dafx2025",
@@ -665,6 +748,16 @@
       "w": 0.9051
     },
     {
+      "s": "canazza2026preserving",
+      "t": "news:2026-ItalIA",
+      "w": 0.9047
+    },
+    {
+      "s": "spanio2026fluxion",
+      "t": "spanio2026quantizednativeruntimeondevice",
+      "w": 0.9044
+    },
+    {
       "s": "project:lilybench",
       "t": "project:ml-project-template",
       "w": 0.9042
@@ -680,9 +773,19 @@
       "w": 0.9037
     },
     {
+      "s": "poltronieri2026notation",
+      "t": "spanio2026lilypond",
+      "w": 0.9026
+    },
+    {
       "s": "news:hf2025",
       "t": "news:hf2026-lilybert",
       "w": 0.9023
+    },
+    {
+      "s": "poltronieri2026notation",
+      "t": "spanio2026bmdataset",
+      "w": 0.9019
     },
     {
       "s": "post:slow-python",
@@ -692,17 +795,22 @@
     {
       "s": "news:2026-ItalIA",
       "t": "spanio2026lilypond",
-      "w": 0.9003
-    },
-    {
-      "s": "project:torchfx",
-      "t": "spanio2025torchfx",
-      "w": 0.9
+      "w": 0.9006
     },
     {
       "s": "post:python-environments",
       "t": "post:slow-python",
       "w": 0.8988
+    },
+    {
+      "s": "spanio2026",
+      "t": "spanio2026cbmi",
+      "w": 0.8977
+    },
+    {
+      "s": "news:dafx2025",
+      "t": "spanio2025torchfx",
+      "w": 0.8974
     },
     {
       "s": "project:lilybench",
@@ -715,14 +823,24 @@
       "w": 0.8967
     },
     {
-      "s": "project:lilybert",
-      "t": "project:tasty-musicgen",
-      "w": 0.8951
+      "s": "spanio2026bmdataset",
+      "t": "spanio2026quantizednativeruntimeondevice",
+      "w": 0.8967
     },
     {
       "s": "bosi2024a",
       "t": "https://doi.org/10.13140/rg.2.2.36838.50247",
-      "w": 0.8948
+      "w": 0.8955
+    },
+    {
+      "s": "canazza2026preserving",
+      "t": "spanio2026lilypond",
+      "w": 0.8954
+    },
+    {
+      "s": "project:lilybert",
+      "t": "project:tasty-musicgen",
+      "w": 0.8951
     },
     {
       "s": "project:lilybert",
@@ -730,9 +848,9 @@
       "w": 0.8946
     },
     {
-      "s": "project:lilybert",
-      "t": "spanio2026bmdataset",
-      "w": 0.8942
+      "s": "spanio2026",
+      "t": "spanio2026multimodal",
+      "w": 0.8943
     },
     {
       "s": "news:aes2024NY",
@@ -745,6 +863,16 @@
       "w": 0.8937
     },
     {
+      "s": "spanio2026cbmi",
+      "t": "spanio2026quantizednativeruntimeondevice",
+      "w": 0.8928
+    },
+    {
+      "s": "poltronieri2026notation",
+      "t": "spanio2026quantizednativeruntimeondevice",
+      "w": 0.892
+    },
+    {
       "s": "project:lilybench",
       "t": "project:spam-analyzer",
       "w": 0.8918
@@ -755,9 +883,29 @@
       "w": 0.8898
     },
     {
+      "s": "spanio2026",
+      "t": "spanio2026lilypond",
+      "w": 0.8896
+    },
+    {
+      "s": "fiordelmondo_nime_2025",
+      "t": "poltronieri2026notation",
+      "w": 0.8894
+    },
+    {
+      "s": "spanio2026",
+      "t": "spanio2026review",
+      "w": 0.889
+    },
+    {
       "s": "post:python-static-typing",
       "t": "post:slow-python",
       "w": 0.889
+    },
+    {
+      "s": "fiordelmondo_nime_2025",
+      "t": "pretto2026advanced",
+      "w": 0.8884
     },
     {
       "s": "Spanio2024",
@@ -765,24 +913,9 @@
       "w": 0.8875
     },
     {
-      "s": "canazza2026preserving",
-      "t": "spanio2026lilypond",
-      "w": 0.8874
-    },
-    {
-      "s": "spanio2026bmdataset",
-      "t": "spanio2026multimodal",
-      "w": 0.8871
-    },
-    {
       "s": "news:hf2026-lilybert",
       "t": "project:lilybench",
       "w": 0.8864
-    },
-    {
-      "s": "fiordelmondo_nime_2025",
-      "t": "pretto2026advanced",
-      "w": 0.8857
     },
     {
       "s": "project:tasty-musicgen",
@@ -790,14 +923,24 @@
       "w": 0.8854
     },
     {
+      "s": "canazza2026preserving",
+      "t": "spanio2026review",
+      "w": 0.8847
+    },
+    {
       "s": "fiordelmondo_nime_2025",
       "t": "spanio2026multimodal",
       "w": 0.8847
     },
     {
-      "s": "post:slow-python",
-      "t": "spanio2025torchfx",
-      "w": 0.8826
+      "s": "spanio2026cbmi",
+      "t": "spanio2026review",
+      "w": 0.88
+    },
+    {
+      "s": "pretto2026advanced",
+      "t": "spanio2026cbmi",
+      "w": 0.8799
     },
     {
       "s": "news:2026-ItalIA",
@@ -805,9 +948,14 @@
       "w": 0.8777
     },
     {
-      "s": "fiordelmondo_nime_2025",
-      "t": "spanio2026bmdataset",
-      "w": 0.8768
+      "s": "pretto2026advanced",
+      "t": "spanio2026",
+      "w": 0.8762
+    },
+    {
+      "s": "project:torchfx",
+      "t": "spanio2026fluxion",
+      "w": 0.8746
     },
     {
       "s": "post:Principles-of-statistic",
@@ -825,14 +973,14 @@
       "w": 0.8722
     },
     {
-      "s": "pretto2026advanced",
-      "t": "spanio2026multimodal",
-      "w": 0.8716
-    },
-    {
       "s": "https://doi.org/10.13140/rg.2.2.24143.56489",
       "t": "post:DSP-il-suono-in-digitale",
       "w": 0.8703
+    },
+    {
+      "s": "bosi2024a",
+      "t": "news:aes2024NY",
+      "w": 0.8679
     },
     {
       "s": "Spanio2024",
@@ -845,24 +993,14 @@
       "w": 0.8668
     },
     {
-      "s": "10.1007/978-3-031-51026-7_26",
-      "t": "pretto2026advanced",
-      "w": 0.8666
-    },
-    {
-      "s": "bosi2024a",
-      "t": "news:aes2024NY",
-      "w": 0.8663
-    },
-    {
       "s": "ieeeaccess2024",
       "t": "news:announcement_2",
       "w": 0.8629
     },
     {
-      "s": "canazza2026preserving",
-      "t": "fiordelmondo_nime_2025",
-      "w": 0.86
+      "s": "spanio2026bmdataset",
+      "t": "spanio2026fluxion",
+      "w": 0.8601
     },
     {
       "s": "post:Principles-of-statistic",
@@ -910,19 +1048,29 @@
       "w": 0.84
     },
     {
+      "s": "https://doi.org/10.13140/rg.2.2.17327.82088",
+      "t": "spanio2026",
+      "w": 0.8379
+    },
+    {
       "s": "10.1007/978-3-031-51026-7_26",
       "t": "post:DSP-il-suono-in-digitale",
       "w": 0.8351
     },
     {
-      "s": "spanio2026bmdataset",
+      "s": "spanio2026",
       "t": "sphor:woo15",
-      "w": 0.8334
+      "w": 0.833
+    },
+    {
+      "s": "canazza2026preserving",
+      "t": "sphor:woo15",
+      "w": 0.8319
     },
     {
       "s": "https://doi.org/10.13140/rg.2.2.17327.82088",
-      "t": "spanio2026bmdataset",
-      "w": 0.8297
+      "t": "spanio2026review",
+      "w": 0.8315
     },
     {
       "s": "news:2026-ItalIA",
@@ -930,24 +1078,14 @@
       "w": 0.8287
     },
     {
-      "s": "https://doi.org/10.13140/rg.2.2.17327.82088",
-      "t": "spanio2026multimodal",
-      "w": 0.8286
-    },
-    {
-      "s": "canazza2026preserving",
-      "t": "sphor:woo15",
-      "w": 0.8271
+      "s": "news:ann_4",
+      "t": "spanio2026review",
+      "w": 0.822
     },
     {
       "s": "news:ann_4",
       "t": "news:dafx2025",
       "w": 0.8196
-    },
-    {
-      "s": "news:ann_4",
-      "t": "project:ml-project-template",
-      "w": 0.8194
     }
   ]
 }

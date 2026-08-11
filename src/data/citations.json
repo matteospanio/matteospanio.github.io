@@ -1,16 +1,16 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-09",
+  "generatedAt": "2026-08-12",
   "sources": {
     "scholar": {
-      "fetchedAt": null,
-      "ok": false,
-      "matched": 0
+      "fetchedAt": "2026-08-12",
+      "ok": true,
+      "matched": 33
     },
     "openalex": {
-      "fetchedAt": "2026-08-09",
+      "fetchedAt": "2026-08-12",
       "ok": true,
-      "matched": 3
+      "matched": 4
     }
   },
   "summary": {
@@ -37,13 +37,19 @@
     "Spanio2024": {
       "title": "Towards emotionally aware AI: challenges and opportunities in the evolution of multimodal generative models",
       "year": "2024",
-      "citations": 4,
+      "citations": 7,
       "source": "scholar"
     },
     "bosi2024a": {
       "title": "A novel derivative-based approach for the automatic detection of time-reversed audio in the MPAI/IEEE-CAE ARP international standard",
       "year": "2024",
       "citations": 1,
+      "source": "scholar"
+    },
+    "fiordelmondo_nime_2025": {
+      "title": "Towards a Repository Template for Music Technology Research",
+      "year": "2025",
+      "citations": 2,
       "source": "scholar"
     },
     "https://doi.org/10.13140/rg.2.2.17327.82088": {
@@ -77,8 +83,21 @@
       "source": "openalex",
       "doi": "10.48550/arxiv.2504.08624"
     },
+    "spanio2026": {
+      "title": "Cross-cultural evaluation of taste–sound correspondences in AI-generated music",
+      "year": "2026",
+      "citations": 0,
+      "source": "openalex",
+      "doi": "10.5281/zenodo.20841610"
+    },
     "spanio2026bmdataset": {
       "title": "BMdataset: A Musicologically Curated LilyPond Dataset",
+      "year": "2026",
+      "citations": 1,
+      "source": "scholar"
+    },
+    "spanio2026cbmi": {
+      "title": "Taste-aware music retrieval from audio embeddings",
       "year": "2026",
       "citations": 1,
       "source": "scholar"
@@ -93,13 +112,19 @@
     "spanio2026multimodal": {
       "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
       "year": "2026",
+      "citations": 1,
+      "source": "scholar"
+    },
+    "spanio2026quantizednativeruntimeondevice": {
+      "title": "A Quantized Native Runtime for On-Device Semantic Audio Generation",
+      "year": "2026",
       "citations": 0,
       "source": "scholar"
     },
     "spanio_frontiers_2025": {
       "title": "A multimodal symphony: integrating taste and sound through generative AI",
       "year": "2025",
-      "citations": 4,
+      "citations": 7,
       "source": "scholar"
     }
   }

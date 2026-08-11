@@ -151,6 +151,10 @@ const human = data.date.toLocaleDateString('en-GB', {
   .tag {
     color: var(--fg-dim);
     text-decoration: none;
+    /* A chip, not body text: give it a tappable box. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
   }
 
   .tag:hover {

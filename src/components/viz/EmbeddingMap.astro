@@ -107,10 +107,12 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
     {count('post')} posts, {count('news')} news{' '}— embedded with {map.model} over{' '}
     {sanity.chunks} text chunks and projected with UMAP; lines join the closest pairs.
     <br />
-    <strong>Read the geometry loosely.</strong> The silhouette score against my declared research
-    areas is {num(sanity.silhouetteVsThemes)} (within-area similarity {num(sanity.meanIntraTheme)},
-    between-area {num(sanity.meanInterTheme)}), because nearly everything here is audio, music and
-    machine learning. Neighbourhoods are informative; distances are not.
+    <strong>Read the geometry loosely.</strong> Scored against my declared research areas, the
+    projection's silhouette is {num(sanity.silhouetteVsThemes)} — the areas do not separate at all,
+    because nearly everything here is audio, music and machine learning (within-area similarity{' '}
+    {num(sanity.meanIntraTheme)}, between-area {num(sanity.meanInterTheme)}). The lines are computed
+    in the embedding rather than in this picture, so who sits next to whom still means something
+    even where the distances do not.
   </figcaption>
 
   {/*
@@ -348,7 +350,7 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
   }
 
   .card-kind {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--card-accent, var(--accent));
@@ -403,7 +405,7 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
     position: absolute;
     bottom: 0.5rem;
     right: 0.7rem;
-    font-size: 0.68rem;
+    font-size: var(--step--1);
     color: var(--fg-faint);
     pointer-events: none;
     transition: opacity var(--dur) var(--ease-out);

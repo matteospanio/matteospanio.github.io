@@ -84,6 +84,15 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     text-decoration: none;
   }
 
+  /* Padding, not margin: this is the tap target, and 17px of text alone is far
+     under the 24px WCAG floor, never mind a comfortable thumb. */
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.15rem;
+  }
+
   nav a::before {
     content: '[';
     color: var(--fg-faint);
@@ -106,11 +115,32 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
 
   @media (max-width: 640px) {
     .bar {
-      padding-block: 0.6rem;
+      padding-block: 0.4rem 0.2rem;
+      min-height: 0;
     }
+
     nav {
       order: 3;
       width: 100%;
+    }
+
+    nav ul {
+      gap: 0 0.9rem;
+    }
+
+    nav a {
+      min-height: 2.5rem;
+    }
+
+    /*
+     * Not sticky on a phone. Seven links with real tap targets wrap to two rows,
+     * and pinning ~120px of chrome to the top costs a sixth of the viewport on
+     * every scroll. The links stay visible at the top of the page instead of
+     * being hidden behind a menu button.
+     */
+    header {
+      position: static;
+      backdrop-filter: none;
     }
   }
 </style>

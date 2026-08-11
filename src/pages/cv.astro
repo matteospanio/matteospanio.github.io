@@ -143,7 +143,7 @@ const schema = [
   <section>
     <h2>publications</h2>
     <p class="detail">
-      {pubs.length} entries, {pubs.filter((p) => p.year >= 2024).length} since 2024.
+      {pubs.length} entries, {pubs.filter((p) => p.year >= 2024).length} since 2024.{' '}
       <a href="/publications/">Full list with abstracts, PDFs and BibTeX →</a>
     </p>
   </section>
@@ -228,6 +228,7 @@ const schema = [
   }
 
   h3 a {
+    padding-block: 0.3rem;
     color: inherit;
     text-decoration: none;
     border-block-end: 1px solid var(--rule-strong);

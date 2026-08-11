@@ -1,32 +1,50 @@
 ---
 import Base from '@/layouts/Base.astro';
 import ContactForm from '@/components/ContactForm.astro';
+import BrandIcon from '@/components/BrandIcon.astro';
 import { site } from '@/config/site';
 import socials from '@/data/socials.json';
 
 /**
- * Rendered obfuscated and reassembled client-side. A determined scraper wins
- * anyway; this just filters the lazy ones without hiding the address from a
- * human reading the page.
+ * The address is never written out in the served HTML — not here, not in the
+ * JSON-LD, not in the feed, not in profile.json. What ships is the spelled-out
+ * form a human reads, plus the same string in base64 for the mailto link and
+ * the copy button, which only exist once JavaScript has run.
+ *
+ * A scraper that executes JavaScript still wins. This stops the ones that just
+ * regex the response body, which is nearly all of them.
  */
 const [user, domain] = site.email.split('@');
 const emailB64 = Buffer.from(site.email).toString('base64');
 
 const LINKS = [
-  { label: 'ORCID', href: `https://orcid.org/${socials.orcid_id}`, note: socials.orcid_id },
+  { icon: 'orcid', label: 'ORCID', href: `https://orcid.org/${socials.orcid_id}`, note: socials.orcid_id },
   {
+    icon: 'googlescholar',
     label: 'Google Scholar',
     href: `https://scholar.google.com/citations?user=${socials.scholar_userid}`,
     note: 'citations and profile',
   },
-  { label: 'GitHub', href: `https://github.com/${socials.github_username}`, note: `@${socials.github_username}` },
   {
+    icon: 'github',
+    label: 'GitHub',
+    href: `https://github.com/${socials.github_username}`,
+    note: `@${socials.github_username}`,
+  },
+  {
+    icon: 'linkedin',
     label: 'LinkedIn',
     href: `https://www.linkedin.com/in/${socials.linkedin_username}`,
     note: 'professional profile',
   },
-  { label: 'Hugging Face', href: 'https://huggingface.co/csc-unipd', note: 'models and datasets' },
   {
+    icon: 'huggingface',
+    label: 'Hugging Face',
+    href: 'https://huggingface.co/csc-unipd',
+    note: 'models and datasets',
+  },
+  {
+    icon: 'researchgate',
     label: 'ResearchGate',
     href: `https://www.researchgate.net/profile/${socials.research_gate_profile}`,
     note: 'papers',
@@ -36,7 +54,7 @@ const LINKS = [
 
 <Base
   title="contact"
-  description={`Get in touch with ${site.name} — email, contact form, and research profiles.`}
+  description={`Get in touch with ${site.name} — contact form and research profiles.`}
 >
   <h1 class="label">contact</h1>
   <p class="intro">
@@ -55,14 +73,11 @@ const LINKS = [
 
       <p class="email">
         <span class="k">email</span>
-        <span id="email-slot" data-email={emailB64}>
-          {user} <span class="at">[at]</span>
-          {domain.replace(/\./g, ' [dot] ')}
+        <span id="email-slot" class="addr" data-email={emailB64}>
+          {user} <span class="at">&lt;at&gt;</span>{' '}{domain}
         </span>
+        <button type="button" id="email-copy" class="copy" hidden>copy</button>
       </p>
-      <noscript>
-        <p class="ns">{site.email}</p>
-      </noscript>
 
       <p class="k where">based in Padua, Italy · {site.affiliation.name}</p>
 
@@ -70,7 +85,10 @@ const LINKS = [
         {
           LINKS.map((l) => (
             <li>
-              <a href={l.href}>{l.label}</a>
+              <a href={l.href}>
+                <BrandIcon name={l.icon} />
+                <span>{l.label}</span>
+              </a>
               <span class="note">{l.note}</span>
             </li>
           ))
@@ -118,9 +136,14 @@ const LINKS = [
   .email {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    align-items: baseline;
+    gap: 0.5rem 0.7rem;
+    align-items: center;
     font-size: var(--step-0);
+  }
+
+  .addr {
+    /* The spelled-out form is long; never let it push the page sideways. */
+    overflow-wrap: anywhere;
   }
 
   .k {
@@ -132,12 +155,26 @@ const LINKS = [
     color: var(--accent);
   }
 
-  .where {
-    margin-block-start: 0.8rem;
+  .copy {
+    font-size: var(--step--1);
+    font-family: var(--font-mono);
+    background: none;
+    border: 1px solid var(--rule-strong);
+    color: var(--fg-dim);
+    padding: 0.3em 0.7em;
+    min-height: 2.25rem;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out);
   }
 
-  .ns {
-    margin-block-start: 0.4rem;
+  .copy:hover,
+  .copy[data-done] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .where {
+    margin-block-start: 0.9rem;
   }
 
   .links {
@@ -145,44 +182,100 @@ const LINKS = [
     padding: 0;
     margin-block-start: 2rem;
     display: grid;
-    gap: 0.7rem;
+    gap: 0.2rem;
     font-size: var(--step--1);
   }
 
   .links li {
     display: flex;
     gap: 0.75rem;
-    align-items: baseline;
+    align-items: center;
     flex-wrap: wrap;
   }
 
   .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     color: var(--fg);
     text-decoration: none;
+    /* Padding rather than margin: it is the tap target. */
+    padding-block: 0.55rem;
+    min-width: 10.5rem;
+  }
+
+  .links a span {
     border-block-end: 1px solid var(--rule-strong);
-    min-width: 9rem;
   }
 
   .links a:hover {
     color: var(--accent);
+  }
+
+  .links a:hover span {
     border-block-end-color: var(--accent);
   }
 
   .note {
     color: var(--fg-faint);
+    overflow-wrap: anywhere;
   }
+
+  /*
+    The min-width on the link is what lines the notes up into a second column.
+    Below it, flex-wrap drops the note onto its own line by itself.
+  */
 </style>
 
 <script>
-  // Turn the obfuscated address into a real mailto once JS is available.
+  /*
+    Progressive enhancement only: the page already reads correctly without any
+    of this, and the address never appears in the HTML that was served.
+  */
   const slot = document.getElementById('email-slot');
   const encoded = slot?.dataset.email;
 
   if (slot && encoded) {
     const address = atob(encoded);
+
+    // Keep the obfuscated text; give it a working mailto underneath.
     const link = document.createElement('a');
     link.href = `mailto:${address}`;
-    link.textContent = address;
+    link.className = 'addr';
+    link.innerHTML = slot.innerHTML;
+    link.id = slot.id;
     slot.replaceWith(link);
+
+    const button = document.getElementById('email-copy') as HTMLButtonElement | null;
+    if (button && navigator.clipboard) {
+      button.hidden = false;
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(address);
+        } catch {
+          return; // Insecure context or denied permission.
+        }
+        button.textContent = 'copied';
+        button.dataset.done = '';
+        setTimeout(() => {
+          button.textContent = 'copy';
+          delete button.dataset.done;
+        }, 1600);
+      });
+    }
   }
 </script>
+
+<style is:global>
+  /* The mailto swapped in above is created by script, so scoped styles miss it. */
+  a.addr {
+    color: var(--fg);
+    text-decoration: none;
+    border-block-end: 1px solid var(--rule-strong);
+  }
+
+  a.addr:hover {
+    color: var(--accent);
+    border-block-end-color: var(--accent);
+  }
+</style>

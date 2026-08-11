@@ -58,12 +58,24 @@ K_NEIGHBOURS = 3
 EDGE_MIN_WEIGHT = 0.72
 
 THEMES: list[dict[str, str]] = [
-    {"id": "cultural-heritage", "label": "AI for audio cultural heritage", "color": "#5eead4"},
+    {
+        "id": "cultural-heritage",
+        "label": "AI for audio cultural heritage",
+        "color": "#5eead4",
+    },
     {"id": "multimodal", "label": "Multimodal and crossmodal AI", "color": "#c084fc"},
-    {"id": "symbolic-music", "label": "Symbolic music and LilyPond", "color": "#fbbf24"},
+    {
+        "id": "symbolic-music",
+        "label": "Symbolic music and LilyPond",
+        "color": "#fbbf24",
+    },
     {"id": "dsp-tooling", "label": "Audio DSP tooling", "color": "#4ade80"},
     {"id": "musicology", "label": "Musicology and performance", "color": "#f87171"},
-    {"id": "engineering", "label": "Software and research engineering", "color": "#7dd3fc"},
+    {
+        "id": "engineering",
+        "label": "Software and research engineering",
+        "color": "#7dd3fc",
+    },
 ]
 THEME_IDS = {t["id"] for t in THEMES}
 
@@ -90,6 +102,12 @@ PAPER_THEMES: dict[str, str] = {
     "canazza2026preserving": "cultural-heritage",
     "spanio2026lilypond": "symbolic-music",
     "pretto2026advanced": "cultural-heritage",
+    "spanio2026cbmi": "multimodal",
+    "poltronieri2026notation": "symbolic-music",
+    "spanio2026quantizednativeruntimeondevice": "engineering",
+    "spanio2026fluxion": "engineering",
+    "spanio2026review": "multimodal",
+    "spanio2026": "multimodal",
 }
 
 # News items inherit the theme of what they announce. Two of them announce one
@@ -111,6 +129,7 @@ NEWS_THEMES: dict[str, str] = {
 # --------------------------------------------------------------------------- #
 # text handling
 # --------------------------------------------------------------------------- #
+
 
 def squeeze(text: str) -> str:
     return re.sub(r"[ \t]+", " ", re.sub(r"\n{3,}", "\n\n", text)).strip()
@@ -135,11 +154,11 @@ def strip_markdown(text: str) -> str:
     text = re.sub(r"^(import|export)\s.+$", " ", text, flags=re.M)
     text = re.sub(r"\$\$.*?\$\$", " ", text, flags=re.S)
     text = re.sub(r"\$[^$\n]*\$", " ", text)
-    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", text)          # images
-    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)        # links -> label
-    text = re.sub(r"\[\^[^\]]*\]:?", " ", text)                 # footnotes
-    text = re.sub(r"^:::.*$", " ", text, flags=re.M)            # ::: directives
-    text = re.sub(r"<[^>\n]{1,200}>", " ", text)                # JSX / HTML tags
+    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", text)  # images
+    text = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", text)  # links -> label
+    text = re.sub(r"\[\^[^\]]*\]:?", " ", text)  # footnotes
+    text = re.sub(r"^:::.*$", " ", text, flags=re.M)  # ::: directives
+    text = re.sub(r"<[^>\n]{1,200}>", " ", text)  # JSX / HTML tags
     text = re.sub(r"[`*_>|]", " ", text)
     return squeeze(text)
 
@@ -184,7 +203,11 @@ def chunk_prose(body: str, target: int, max_chunks: int) -> list[str]:
 
     parts: list[str] = []
     for section in sections:
-        parts.extend(split_words(section, target) if len(words(section)) > target * 1.6 else [section])
+        parts.extend(
+            split_words(section, target)
+            if len(words(section)) > target * 1.6
+            else [section]
+        )
 
     # A part shorter than 40 words is a caption, not a topic: fold it forward.
     merged: list[str] = []
@@ -212,6 +235,7 @@ def short_title(title: str, limit: int = 38) -> str:
 # sources
 # --------------------------------------------------------------------------- #
 
+
 def parse_bib(text: str) -> list[dict[str, str]]:
     """Brace-aware BibTeX reader. Abstracts contain braces, so regex-per-field
     without balancing truncates them."""
@@ -229,7 +253,10 @@ def parse_bib(text: str) -> list[dict[str, str]]:
             i += 1
         body = text[start + 1 : i]
         key, _, rest = body.partition(",")
-        fields: dict[str, str] = {"__type__": match.group(1).lower(), "__key__": key.strip()}
+        fields: dict[str, str] = {
+            "__type__": match.group(1).lower(),
+            "__key__": key.strip(),
+        }
 
         pos = 0
         while True:
@@ -290,7 +317,9 @@ def collect_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
             key = entry["__key__"]
             theme = PAPER_THEMES.get(key)
             if theme is None:
-                print(f"  ! no declared theme for bib key {key}; skipped", file=sys.stderr)
+                print(
+                    f"  ! no declared theme for bib key {key}; skipped", file=sys.stderr
+                )
                 continue
             title = entry.get("title", "")
             venue = (
@@ -306,7 +335,13 @@ def collect_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
             # falls under the minimum, disappearing from the map entirely.
             base = " ".join(
                 x
-                for x in (title, venue or "", entry.get("abbr", ""), entry.get("note", ""), abstract)
+                for x in (
+                    title,
+                    venue or "",
+                    entry.get("abbr", ""),
+                    entry.get("note", ""),
+                    abstract,
+                )
                 if x
             )
             docs = [base]
@@ -339,7 +374,10 @@ def collect_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
                 continue
             theme = data.get("theme")
             if theme not in THEME_IDS:
-                print(f"  ! post {path.parent.name} has no declared theme; skipped", file=sys.stderr)
+                print(
+                    f"  ! post {path.parent.name} has no declared theme; skipped",
+                    file=sys.stderr,
+                )
                 continue
             prose = strip_markdown(body)
             budget = min(6, max(2, round(len(words(prose)) / 150)))
@@ -374,7 +412,10 @@ def collect_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
                 continue
             theme = data.get("theme")
             if theme not in THEME_IDS:
-                print(f"  ! project {path.parent.name} has no declared theme; skipped", file=sys.stderr)
+                print(
+                    f"  ! project {path.parent.name} has no declared theme; skipped",
+                    file=sys.stderr,
+                )
                 continue
             prose = strip_markdown(body)
             budget = min(6, max(2, round(len(words(prose)) / 150)))
@@ -409,7 +450,9 @@ def collect_items() -> tuple[list[dict[str, Any]], dict[str, Any]]:
             slug = path.stem
             theme = NEWS_THEMES.get(slug)
             if theme is None:
-                print(f"  ! no declared theme for news {slug}; skipped", file=sys.stderr)
+                print(
+                    f"  ! no declared theme for news {slug}; skipped", file=sys.stderr
+                )
                 continue
             title = str(data.get("title", slug))
             items.append(
@@ -455,6 +498,7 @@ def source_hash(items: Iterable[dict[str, Any]]) -> str:
 # geometry
 # --------------------------------------------------------------------------- #
 
+
 def principal_frame(coords):
     """Rotate onto principal axes with a fixed sign convention.
 
@@ -477,7 +521,9 @@ def principal_frame(coords):
     return rotated / scale if scale > 0 else rotated
 
 
-def seed_stability(chunk_vectors, owners_array, n_items: int, n_neighbors: int, coords) -> float | None:
+def seed_stability(
+    chunk_vectors, owners_array, n_items: int, n_neighbors: int, coords
+) -> float | None:
     """How much of the layout survives changing the random seed.
 
     This is the number that decides whether the map may be shown at all. At n=36
@@ -498,16 +544,24 @@ def seed_stability(chunk_vectors, owners_array, n_items: int, n_neighbors: int, 
     for seed in (7, 1234, 2024):
         try:
             other = umap.UMAP(
-                n_neighbors=n_neighbors, min_dist=0.30, metric="cosine",
-                n_components=2, random_state=seed, init="pca",
+                n_neighbors=n_neighbors,
+                min_dist=0.30,
+                metric="cosine",
+                n_components=2,
+                random_state=seed,
+                init="pca",
             ).fit_transform(chunk_vectors)
         except Exception as error:  # noqa: BLE001
-            print(f"  ! stability check at seed {seed} failed: {error}", file=sys.stderr)
+            print(
+                f"  ! stability check at seed {seed} failed: {error}", file=sys.stderr
+            )
             continue
         folded = np.vstack(
             [other[owners_array == index].mean(axis=0) for index in range(n_items)]
         )
-        scores.append(float(spearmanr(reference, pdist(principal_frame(folded))).correlation))
+        scores.append(
+            float(spearmanr(reference, pdist(principal_frame(folded))).correlation)
+        )
     return round(sum(scores) / len(scores), 4) if scores else None
 
 
@@ -525,7 +579,9 @@ def build_edges(embeddings, ids: list[str]):
             if weight < EDGE_MIN_WEIGHT:
                 rejected += 1
                 continue
-            pair = (ids[i], ids[int(j)]) if ids[i] < ids[int(j)] else (ids[int(j)], ids[i])
+            pair = (
+                (ids[i], ids[int(j)]) if ids[i] < ids[int(j)] else (ids[int(j)], ids[i])
+            )
             seen[pair] = max(seen.get(pair, 0.0), weight)
     edges = [
         {"s": s, "t": t, "w": round(w, 4)}
@@ -536,7 +592,9 @@ def build_edges(embeddings, ids: list[str]):
 
 def write(payload: dict[str, Any]) -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    OUT.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
 
 def main() -> int:
@@ -597,7 +655,9 @@ def main() -> int:
                 "edges": [],
             }
         )
-        print(f"wrote {OUT.relative_to(ROOT)}: 0 nodes (model unavailable — no coordinates faked)")
+        print(
+            f"wrote {OUT.relative_to(ROOT)}: 0 nodes (model unavailable — no coordinates faked)"
+        )
         return 1
 
     documents = [f"passage: {doc}" for item in items for doc in item["docs"]]
@@ -605,24 +665,37 @@ def main() -> int:
 
     with torch.no_grad():
         chunk_vectors = model.encode(
-            documents, batch_size=16, normalize_embeddings=True,
-            convert_to_numpy=True, show_progress_bar=False,
+            documents,
+            batch_size=16,
+            normalize_embeddings=True,
+            convert_to_numpy=True,
+            show_progress_bar=False,
         )
 
     owners_array = np.asarray(owners)
     item_vectors = np.vstack(
-        [chunk_vectors[owners_array == index].mean(axis=0) for index in range(len(items))]
+        [
+            chunk_vectors[owners_array == index].mean(axis=0)
+            for index in range(len(items))
+        ]
     )
     item_vectors /= np.linalg.norm(item_vectors, axis=1, keepdims=True)
 
     n_neighbors = min(10, len(documents) - 1)
     reducer = umap.UMAP(
-        n_neighbors=n_neighbors, min_dist=0.30, metric="cosine",
-        n_components=2, random_state=SEED, init="pca",
+        n_neighbors=n_neighbors,
+        min_dist=0.30,
+        metric="cosine",
+        n_components=2,
+        random_state=SEED,
+        init="pca",
     )
     chunk_coords = reducer.fit_transform(chunk_vectors)
     item_coords = np.vstack(
-        [chunk_coords[owners_array == index].mean(axis=0) for index in range(len(items))]
+        [
+            chunk_coords[owners_array == index].mean(axis=0)
+            for index in range(len(items))
+        ]
     )
     item_coords = principal_frame(item_coords)
 
@@ -652,13 +725,20 @@ def main() -> int:
     # is published so the canvas can size itself to the real shape; stretching the
     # short axis to fill a square would manufacture separation that is not there.
     extent = {
-        "x": [round(float(item_coords[:, 0].min()), 4), round(float(item_coords[:, 0].max()), 4)],
-        "y": [round(float(item_coords[:, 1].min()), 4), round(float(item_coords[:, 1].max()), 4)],
+        "x": [
+            round(float(item_coords[:, 0].min()), 4),
+            round(float(item_coords[:, 0].max()), 4),
+        ],
+        "y": [
+            round(float(item_coords[:, 1].min()), 4),
+            round(float(item_coords[:, 1].max()), 4),
+        ],
     }
 
     theme_counts = {theme: labels.count(theme) for theme in THEME_IDS}
     payload = skeleton | {
-        "projection": skeleton["projection"] | {"n_neighbors": n_neighbors, "extent": extent},
+        "projection": skeleton["projection"]
+        | {"n_neighbors": n_neighbors, "extent": extent},
         "sanity": {
             "n": len(items),
             "chunks": len(documents),
@@ -674,7 +754,9 @@ def main() -> int:
             "edgeFloor": EDGE_MIN_WEIGHT,
             "edgeFloorRejected": floor_rejected,
             "edgeWeightRange": (
-                [min(e["w"] for e in edges), max(e["w"] for e in edges)] if edges else None
+                [min(e["w"] for e in edges), max(e["w"] for e in edges)]
+                if edges
+                else None
             ),
             "crossThemeEdges": sum(
                 1

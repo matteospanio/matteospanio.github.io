@@ -1,0 +1,39 @@
+---
+import { brandIcons } from '@/data/brand-icons';
+
+interface Props {
+  /** Key in brandIcons — orcid, googlescholar, github, linkedin, huggingface, researchgate. */
+  name: string;
+  size?: number;
+}
+
+const { name, size = 16 } = Astro.props;
+const d = brandIcons[name];
+---
+
+{
+  /*
+    Decorative: every icon sits beside its own text label, so announcing it
+    again would just make a screen reader say the name twice.
+  */
+  d && (
+    <svg
+      class="brand"
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={d} fill="currentColor" />
+    </svg>
+  )
+}
+
+<style>
+  .brand {
+    flex-shrink: 0;
+    /* Optical alignment with the cap height of the mono face beside it. */
+    vertical-align: -0.18em;
+  }
+</style>

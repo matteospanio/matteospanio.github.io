@@ -187,6 +187,10 @@ const bibId = `bib-${pub.id.replace(/[^a-zA-Z0-9]/g, '-')}`;
     text-decoration: none;
     border: 1px solid var(--rule-strong);
     padding: 0.05em 0.55em;
+    /* Comfortably past the 24px minimum on a touch screen. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
   }
 
   .links a:hover {
@@ -200,6 +204,9 @@ const bibId = `bib-${pub.id.replace(/[^a-zA-Z0-9]/g, '-')}`;
   }
 
   .disclosure summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
     cursor: pointer;
     color: var(--fg-faint);
     width: fit-content;

@@ -107,6 +107,8 @@ const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `$
   }
 
   h2 a {
+    display: inline-block;
+    padding-block: 0.2rem;
     color: var(--fg);
     text-decoration: none;
   }
@@ -163,6 +165,9 @@ const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `$
 
   /* Sits above the card-wide link overlay so these stay clickable. */
   .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
     position: relative;
     z-index: 1;
     font-size: var(--step--1);

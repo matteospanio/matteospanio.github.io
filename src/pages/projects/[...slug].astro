@@ -171,4 +171,12 @@ const schema = [
   dd a {
     color: var(--link);
   }
+
+  /* Standalone links on this page get a tappable box; prose links do not. */
+  .meta a,
+  .facts dd a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+  }
 </style>
