@@ -3,50 +3,17 @@ title: About
 description: AI research engineer working on audio, music and multimodal generative models, based at the Centro di Sonologia Computazionale in Padua.
 ---
 
-I'm Matteo Spanio, an AI research engineer working on audio, music and multimodal generative
-models. I'm a PhD candidate in Brain, Mind and Computer Science at the University of Padua, based
-at the [Centro di Sonologia Computazionale](https://csc.dei.unipd.it/) in the Department of
-Information Engineering. In the winter of 2025 I spent six months as a visiting PhD student at the
-Music Technology Group of Universitat Pompeu Fabra in Barcelona.
+I'm an AI research engineer working on audio, music and multimodal generative models, and a PhD
+candidate in Brain, Mind and Computer Science at the University of Padua, based at the
+[Centro di Sonologia Computazionale](https://csc.dei.unipd.it/). In 2025 I spent six months as a
+visiting PhD student at the Music Technology Group of Universitat Pompeu Fabra in Barcelona.
 
-Three threads run through the work.
+Three threads run through the work: recovering audio cultural heritage from degraded magnetic tape,
+as part of the IEEE 3302-2022 standard I help develop at [MPAI](https://mpai.community); teaching
+generative models the correspondences between taste and sound; and asking what language models
+actually understand about music notation.
 
-## Audio cultural heritage
-
-Magnetic tape degrades, and digitising it is itself error-prone: the wrong equalisation curve, the
-wrong playback speed, a section spliced back in reversed. I work on detecting and correcting those
-errors automatically, as part of the MPAI/IEEE-CAE Audio Recording Preservation standard adopted
-by the IEEE as 3302-2022. In practice that means computer vision on the video of the tape running
-across the playback head, locating splices and surface irregularities frame by frame, and signal
-processing on the audio itself, including an envelope-derivative method for finding time-reversed
-segments. Much of it was built with Audio Innova, the CSC spin-off, and I'm a member of
-[MPAI](https://mpai.community), the non-profit body that develops the standards.
-
-## Cross-modal generation
-
-Taste and hearing are linked perceptually, and there is a body of neuroscientific work describing
-how. The second thread asks whether a generative model can be taught those correspondences. In a
-paper published in _Frontiers in Computer Science_ I fine-tuned MusicGEN on music paired with
-detailed taste descriptions; in the listening study that followed, 111 participants judged the
-fine-tuned model's output to reflect the intended taste more coherently than the base model.
-The follow-up work is concerned with the less glamorous prerequisite: normalising the scattered
-multimodal datasets the field depends on, and validating them perceptually.
-
-## Symbolic music and LLMs
-
-Notation is a language, and LilyPond is a textual one, which makes it an unusually clean probe for
-what language models actually know about music. I build datasets and benchmarks in that direction:
-a musicologically curated LilyPond corpus, and a benchmark for symbolic music generation and
-understanding that asks whether an LLM can read and write notation rather than merely autocomplete
-it.
-
-Alongside the research I maintain [TorchFX](https://matteospanio.github.io/torchfx/), an audio DSP
-library that swaps the NumPy and SciPy stack for PyTorch, so filters run on the GPU and slot
-directly into a neural network. It was presented at DAFx 2025.
-
-Before the computer science there was the clarinet, and it never stopped. I hold a master's from
-the Conservatorio Cesare Pollini in Padua, 110/110 cum laude, and I play regularly with the
-[Orchestra di Padova e del Veneto](https://www.orchestrapadova.it/) on clarinet, bass clarinet and
-piccolo clarinet, as well as with several other orchestras and ensembles. The overlap is not
-incidental: the problems I work on are musical problems, and playing is how I keep testing whether
-the answers hold.
+Alongside it I maintain [TorchFX](https://matteospanio.github.io/torchfx/), an audio DSP library
+that runs on the GPU, and I play clarinet with the
+[Orchestra di Padova e del Veneto](https://www.orchestrapadova.it/). The long version is in the
+[CV](/cv/).

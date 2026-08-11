@@ -28,7 +28,8 @@ const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `$
     {p.theme && <span class="theme">{p.theme.replace(/-/g, ' ')}</span>}
   </p>
 
-  <h3><a href={href}>{p.title}</a></h3>
+  {/* h2, not h3: the only page using this card puts it directly under its h1. */}
+  <h2><a href={href}>{p.title}</a></h2>
   <p class="tagline">{p.tagline}</p>
   <p class="desc">{p.description}</p>
 
@@ -101,17 +102,17 @@ const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `$
     margin-inline-start: auto;
   }
 
-  h3 {
+  h2 {
     font-size: var(--step-1);
   }
 
-  h3 a {
+  h2 a {
     color: var(--fg);
     text-decoration: none;
   }
 
   /* Whole card is the hit area, but the accessible name stays on the link. */
-  h3 a::after {
+  h2 a::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -121,7 +122,7 @@ const span = p.endYear && p.endYear !== p.year ? `${p.year}–${p.endYear}` : `$
     position: relative;
   }
 
-  h3 a:hover {
+  h2 a:hover {
     color: var(--accent);
   }
 

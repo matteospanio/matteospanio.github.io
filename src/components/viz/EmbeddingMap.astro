@@ -2,30 +2,49 @@
 import map from '@/data/viz/embedding-map.json';
 
 /**
- * Canvas 2D, no library.
+ * The research corpus as a living constellation.
  *
- * The layout is precomputed in Python, so d3 would only be supplying scale and
- * zoom helpers — about 30 KB gzipped for what a single affine transform does in
- * a dozen lines. regl and deck.gl are shader plumbing for 36 circles.
+ * Canvas 2D, no library. The layout is precomputed in Python, so a plotting
+ * library would only be supplying a scale and a zoom behaviour — a single affine
+ * transform, in a few lines. What the budget is spent on instead is motion:
+ * everything eases, nothing snaps, and the map keeps breathing when idle so that
+ * it reads as something to touch rather than a picture of a graph.
  *
- * Positions come from the embedding; colours come from declared research
- * themes. Colouring by a clustering run on 36 documents would invent structure
- * that the sanity numbers say is not there.
+ * Positions come from the embedding; colours come from declared research themes.
+ * Colouring by a clustering run over 36 documents would invent structure that the
+ * sanity numbers say is not there.
  */
 const { nodes, edges, themes, sanity } = map;
 
-/*
- * build_embedding_map.py deliberately writes nulls and empty arrays when the
- * model cannot be loaded, rather than faking coordinates. Read the numbers
- * defensively so that payload renders as "unavailable" instead of throwing
- * during the build.
- */
 const num = (v: unknown, digits = 2) => (typeof v === 'number' ? v.toFixed(digits) : 'n/a');
-const hasMap = nodes.length > 0;
+
+/** Theme colours resolve through the palette so they follow the light/dark switch. */
+const TOKEN: Record<string, string> = {
+  'cultural-heritage': 'heritage',
+  multimodal: 'multimodal',
+  'symbolic-music': 'symbolic',
+  'dsp-tooling': 'dsp',
+  musicology: 'musicology',
+  engineering: 'engineering',
+};
 
 const byTheme = themes
   .map((t) => ({ ...t, items: nodes.filter((n) => n.theme === t.id) }))
   .filter((t) => t.items.length > 0);
+
+const palette = byTheme
+  .map((t) => `--c-${t.id}: var(--theme-${TOKEN[t.id] ?? 'dsp'}, ${t.color})`)
+  .join(';');
+
+/** Phone-width legend labels: six full ones stack into a quarter of the screen. */
+const SHORT: Record<string, string> = {
+  'cultural-heritage': 'heritage',
+  multimodal: 'multimodal',
+  'symbolic-music': 'symbolic',
+  'dsp-tooling': 'DSP',
+  musicology: 'musicology',
+  engineering: 'engineering',
+};
 
 const KIND_LABEL: Record<string, string> = {
   paper: 'paper',
@@ -33,61 +52,83 @@ const KIND_LABEL: Record<string, string> = {
   project: 'project',
   news: 'news',
 };
+
+const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
 ---
 
-<figure class="map">
-  <div class="chrome">
-    <p class="legend">
-      {
-        byTheme.map((t) => (
-          <span class="key">
-            <span class="swatch" style={`background:${t.color}`} />
-            {t.label}
-            <span class="n">{t.items.length}</span>
-          </span>
-        ))
-      }
+<figure class="map" data-emap style={palette}>
+  <div class="legend" role="group" aria-label="Highlight one research area">
+    <button type="button" class="key key--all" data-filter="all" aria-pressed="true">
+      all {nodes.length}
+    </button>
+    {
+      byTheme.map((t) => (
+        <button
+          type="button"
+          class="key"
+          data-filter={t.id}
+          aria-pressed="false"
+          style={`--c: var(--c-${t.id})`}
+        >
+          <span class="swatch" />
+          {/* Only one of these is ever displayed, so the accessible name stays
+              a single label rather than both concatenated. */}
+          <span class="full">{t.label}</span>
+          <span class="abbr">{SHORT[t.id] ?? t.label}</span>
+          <span class="n">{t.items.length}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="stage">
+    <canvas id="emap" aria-hidden="true"></canvas>
+
+    <div id="emap-tip" class="tip" aria-hidden="true" hidden>
+      <strong></strong><span></span>
+    </div>
+
+    <aside id="emap-card" class="card" hidden>
+      <p class="card-kind"></p>
+      <h3 class="card-title"></h3>
+      <p class="card-meta"></p>
+      <a class="card-link" href="/">open</a>
+      <button type="button" class="card-close" aria-label="Close">×</button>
+    </aside>
+
+    <p class="hint" id="emap-hint" aria-hidden="true">
+      <span class="fine">drag to pan · scroll to zoom · click a node</span>
+      <span class="coarse">drag to pan · tap a node</span>
     </p>
   </div>
 
-  {/* The canvas is decoration layered over the list below, which is the real content. */}
-  <div class="canvas-wrap" aria-hidden="true">
-    <canvas id="emap"></canvas>
-    <div id="emap-tip" class="tip" hidden></div>
-    <p class="hint">scroll to zoom · drag to pan · double-click to reset</p>
-  </div>
-
   <figcaption>
-    {nodes.length} items — {nodes.filter((n) => n.kind === 'paper').length} papers, {
-      nodes.filter((n) => n.kind === 'project').length
-    } projects, {nodes.filter((n) => n.kind === 'post').length} posts, {
-      nodes.filter((n) => n.kind === 'news').length
-    } news — embedded with {map.model} over {sanity.chunks} text chunks and projected with UMAP.
+    {nodes.length} items{' '}— {count('paper')} papers, {count('project')} projects,{' '}
+    {count('post')} posts, {count('news')} news{' '}— embedded with {map.model} over{' '}
+    {sanity.chunks} text chunks and projected with UMAP; lines join the closest pairs.
     <br />
-    <strong>Read the geometry loosely.</strong> The silhouette score of the projection against my
-    declared research areas is {num(sanity.silhouetteVsThemes)}, and mean within-area
-    similarity ({num(sanity.meanIntraTheme)}) barely exceeds between-area similarity ({
-      num(sanity.meanInterTheme)
-    }). That is the honest result for a corpus this size and this topically narrow: nearly
-    everything here is audio, music and machine learning, so the model finds them all similar.
-    Neighbourhoods are informative; distances across the map are not.
+    <strong>Read the geometry loosely.</strong> The silhouette score against my declared research
+    areas is {num(sanity.silhouetteVsThemes)} (within-area similarity {num(sanity.meanIntraTheme)},
+    between-area {num(sanity.meanInterTheme)}), because nearly everything here is audio, music and
+    machine learning. Neighbourhoods are informative; distances are not.
   </figcaption>
 
   {/*
-    Always server-rendered. Visually hidden once JS boots (see the script), but it
-    stays in the DOM and the accessibility tree — so screen readers, keyboard
-    users, no-JS visitors and crawlers all get the full contents.
+    Always server-rendered. Visually hidden once the canvas is live, but it stays
+    in the DOM and the accessibility tree — so screen readers, keyboard users,
+    no-JS visitors and crawlers all get the full contents. The legend filters it
+    too, so those buttons do something for everyone.
   */}
   <div class="fallback" id="emap-list">
     {
       byTheme.map((t) => (
-        <section>
-          <h3 style={`--c:${t.color}`}>{t.label}</h3>
+        <section data-theme-section={t.id}>
+          <h3 style={`--c: var(--c-${t.id})`}>{t.label}</h3>
           <ul>
             {t.items.map((n) => (
               <li>
-                {/* Astro lowercases collection ids, so the news anchors the
-                    build script derived from filenames must be folded too. */}
+                {/* Astro lowercases collection ids, so the news anchors the build
+                    script derived from filenames must be folded too. */}
                 <a href={n.url.startsWith('/news/#') ? n.url.toLowerCase() : n.url} data-node={n.id}>
                   {n.title}
                 </a>
@@ -117,94 +158,262 @@ const KIND_LABEL: Record<string, string> = {
     margin: 0;
   }
 
-  .chrome {
-    margin-block-end: 0.7rem;
-  }
-
+  /* --- legend ---------------------------------------------------------- */
   .legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem 1rem;
-    font-size: var(--step--1);
-    color: var(--fg-dim);
+    gap: 0.4rem;
+    margin-block-end: 0.8rem;
   }
 
   .key {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 0.25em 0.7em;
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+
+  .key:hover {
+    color: var(--fg);
+    border-color: var(--rule-strong);
+  }
+
+  .key[aria-pressed='true'] {
+    color: var(--c, var(--fg));
+    border-color: currentColor;
+    background: color-mix(in oklab, var(--c, var(--accent)) 10%, transparent);
+  }
+
+  .key--all[aria-pressed='true'] {
+    --c: var(--accent);
+  }
+
+  .key:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   .swatch {
-    width: 0.6rem;
-    height: 0.6rem;
-    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--c);
+    flex-shrink: 0;
   }
 
   .n {
     color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
   }
 
-  .canvas-wrap {
+  /* --- stage ----------------------------------------------------------- */
+  .stage {
     position: relative;
     border: 1px solid var(--rule);
-    background: var(--bg-1);
+    background:
+      radial-gradient(
+        120% 90% at 50% 45%,
+        color-mix(in oklab, var(--accent) 5%, transparent),
+        transparent 70%
+      ),
+      var(--bg-1);
+    /* width first: aspect-ratio combined with a min-height would let the box
+       compute a width wider than the viewport and scroll the whole page. */
+    width: 100%;
     aspect-ratio: 16 / 9;
     max-height: 34rem;
     overflow: hidden;
-    /* Only meaningful with JS; hidden until the script says otherwise. */
+    /* Only meaningful with JS; the script reveals it. */
     display: none;
   }
 
-  :global(html.js) .canvas-wrap {
+  :global(html.js) .stage {
     display: block;
+  }
+
+  .abbr {
+    display: none;
+  }
+
+  @media (max-width: 700px) {
+    /* The projection is about 2.3:1, so a taller box only adds empty margin.
+       Stay close to the data's own shape and let panning do the rest. */
+    .stage {
+      aspect-ratio: 3 / 2;
+    }
+
+    .full {
+      display: none;
+    }
+
+    .abbr {
+      display: inline;
+    }
   }
 
   canvas {
     width: 100%;
     height: 100%;
     display: block;
-    touch-action: none;
+    /* pan-y, not none: the map is a large target on a phone, and swallowing
+       vertical touch would trap anyone trying to scroll past it. A mouse is
+       unaffected, so dragging still pans in both axes on a desktop. */
+    touch-action: pan-y;
     cursor: grab;
   }
 
-  canvas:active {
+  .coarse {
+    display: none;
+  }
+
+  @media (pointer: coarse) {
+    .fine {
+      display: none;
+    }
+
+    .coarse {
+      display: inline;
+    }
+  }
+
+  canvas.dragging {
     cursor: grabbing;
   }
 
+  canvas.over {
+    cursor: pointer;
+  }
+
+  /* --- hover tooltip --------------------------------------------------- */
   .tip {
     position: absolute;
     pointer-events: none;
-    background: var(--bg-2);
+    background: color-mix(in oklab, var(--bg) 88%, transparent);
+    backdrop-filter: blur(6px);
     border: 1px solid var(--rule-strong);
-    padding: 0.4rem 0.6rem;
+    border-inline-start: 2px solid var(--tip-accent, var(--accent));
+    padding: 0.4rem 0.65rem;
     font-size: var(--step--1);
-    max-width: 22rem;
+    max-width: 20rem;
     z-index: 2;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
-  .tip :global(strong) {
+  .tip strong {
     display: block;
     color: var(--fg);
     font-weight: 500;
-    margin-block-end: 0.15rem;
   }
 
-  .tip :global(span) {
+  .tip span {
     display: block;
     color: var(--fg-faint);
+  }
+
+  /* --- detail card ----------------------------------------------------- */
+  .card {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    width: min(24rem, calc(100% - 1.5rem));
+    background: color-mix(in oklab, var(--bg) 90%, transparent);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--rule-strong);
+    border-inline-start: 2px solid var(--card-accent, var(--accent));
+    padding: 0.85rem 1rem;
+    z-index: 3;
+    animation: rise var(--dur) var(--ease-out);
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      animation: none;
+    }
+  }
+
+  .card-kind {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--card-accent, var(--accent));
+  }
+
+  .card-title {
+    font-size: var(--step-0);
+    color: var(--fg);
+    margin-block: 0.25rem 0.3rem;
+    line-height: 1.35;
+  }
+
+  .card-meta {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+  }
+
+  .card-link {
+    display: inline-block;
+    margin-block-start: 0.6rem;
+    font-size: var(--step--1);
+    color: var(--card-accent, var(--accent));
+    text-decoration: none;
+  }
+
+  .card-link::after {
+    content: ' →';
+  }
+
+  .card-link:hover {
+    text-decoration: underline;
+  }
+
+  .card-close {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.4rem;
+    background: none;
+    border: 0;
+    color: var(--fg-faint);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.3rem;
+  }
+
+  .card-close:hover {
+    color: var(--fg);
   }
 
   .hint {
     position: absolute;
-    bottom: 0.4rem;
-    right: 0.6rem;
+    bottom: 0.5rem;
+    right: 0.7rem;
     font-size: 0.68rem;
     color: var(--fg-faint);
     pointer-events: none;
+    transition: opacity var(--dur) var(--ease-out);
   }
 
+  .hint[data-gone] {
+    opacity: 0;
+  }
+
+  /* --- caption and fallback -------------------------------------------- */
   figcaption {
     font-size: var(--step--1);
     color: var(--fg-faint);
@@ -257,6 +466,12 @@ const KIND_LABEL: Record<string, string> = {
     margin-inline-start: 0.5rem;
   }
 
+  /* A legend filter applies to the list as well, so the buttons work without
+     the canvas — which is what a screen reader gets. */
+  .map[data-filter] .fallback section {
+    display: none;
+  }
+
   /* Once the canvas is live the list becomes the accessible layer, not a duplicate. */
   :global(html.js) .fallback {
     position: absolute;
@@ -292,59 +507,85 @@ const KIND_LABEL: Record<string, string> = {
     y: number;
   }
 
+  interface Edge {
+    s: string;
+    t: string;
+    w: number;
+  }
+
+  // Addressed by data attribute, not by class: the theme colours are read off
+  // this element, and a page that happens to wrap it in its own .map section
+  // would otherwise resolve every colour to the fallback.
+  const figure = document.querySelector<HTMLElement>('[data-emap]');
   const dataEl = document.getElementById('emap-data');
   const canvas = document.getElementById('emap') as HTMLCanvasElement | null;
   const tip = document.getElementById('emap-tip');
+  const card = document.getElementById('emap-card');
+  const hint = document.getElementById('emap-hint');
   const list = document.getElementById('emap-list');
 
-  if (dataEl && canvas && tip) {
+  if (figure && dataEl && canvas && tip && card) {
     document.documentElement.classList.add('js');
 
-    const { nodes, edges, themes } = JSON.parse(dataEl.textContent!) as {
-      nodes: Node[];
-      edges: { s: string; t: string; w: number }[];
-      themes: { id: string; color: string }[];
-    };
-
-    const colour = new Map(themes.map((t) => [t.id, t.color]));
-    const index = new Map(nodes.map((n, i) => [n.id, i]));
+    const { nodes, edges } = JSON.parse(dataEl.textContent!) as { nodes: Node[]; edges: Edge[] };
     const ctx = canvas.getContext('2d')!;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const index = new Map(nodes.map((n, i) => [n.id, i]));
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
-    // view transform
-    let k = 1;
-    let tx = 0;
-    let ty = 0;
-    let w = 0;
-    let h = 0;
-    let dpr = 1;
-    let hover = -1;
-    let dirty = true;
-    let running = false;
-    let start = 0;
+    /* ---- palette, re-read whenever the theme flips --------------------- */
+    let colours = new Map<string, string>();
+    let ink = { fg: '#d7dee5', dim: '#8b98a5', rule: '#2a353f', accent: '#4ade80' };
+    let fontFamily = 'ui-monospace, monospace';
 
-    const R = 5;
+    function readPalette() {
+      const style = getComputedStyle(figure!);
+      fontFamily = style.fontFamily || fontFamily;
+      colours = new Map(
+        nodes.map((n) => [n.theme, style.getPropertyValue(`--c-${n.theme}`).trim() || '#4ade80']),
+      );
+      const root = getComputedStyle(document.documentElement);
+      ink = {
+        fg: root.getPropertyValue('--fg').trim() || ink.fg,
+        dim: root.getPropertyValue('--fg-dim').trim() || ink.dim,
+        rule: root.getPropertyValue('--rule-strong').trim() || ink.rule,
+        accent: root.getPropertyValue('--accent').trim() || ink.accent,
+      };
+      haloCache.clear();
+    }
 
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = rect.width;
-      h = rect.height;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      refit();
-      dirty = true;
-      request();
-    };
-
-    /*
-     * The projection preserves aspect, so its extent is not square — mapping it
-     * onto [-1,1] in both axes left the cloud in a thin band with most of the
-     * canvas empty. Fit the real bounding box instead, still with one uniform
-     * scale so relative distances survive.
+    /* ---- halo sprites --------------------------------------------------
+     * shadowBlur costs a full-canvas blur per draw. A radial-gradient sprite
+     * per colour, drawn scaled, is the same picture for a fraction of the
+     * frame budget — which is what lets this animate continuously.
      */
-    const pad = 46;
+    const HALO = 64;
+    const haloCache = new Map<string, HTMLCanvasElement>();
+
+    function halo(colour: string): HTMLCanvasElement {
+      let sprite = haloCache.get(colour);
+      if (sprite) return sprite;
+
+      sprite = document.createElement('canvas');
+      sprite.width = sprite.height = HALO;
+      const c = sprite.getContext('2d')!;
+      const g = c.createRadialGradient(HALO / 2, HALO / 2, 0, HALO / 2, HALO / 2, HALO / 2);
+      g.addColorStop(0, colour);
+      g.addColorStop(0.18, colour);
+      g.addColorStop(1, 'transparent');
+      c.fillStyle = g;
+      c.globalAlpha = 0.55;
+      c.beginPath();
+      c.arc(HALO / 2, HALO / 2, HALO / 2, 0, Math.PI * 2);
+      c.fill();
+
+      haloCache.set(colour, sprite);
+      return sprite;
+    }
+
+    /* ---- fitted layout -------------------------------------------------
+     * The projection preserves aspect, so its extent is not square. Fit the
+     * real bounding box, with one uniform scale, so relative distances survive.
+     */
     const xs = nodes.map((n) => n.x);
     const ys = nodes.map((n) => n.y);
     const minX = Math.min(...xs);
@@ -354,104 +595,349 @@ const KIND_LABEL: Record<string, string> = {
     const spanX = maxX - minX || 1;
     const spanY = maxY - minY || 1;
 
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
     let fit = 1;
     let offX = 0;
     let offY = 0;
 
-    const refit = () => {
+    /* ---- per-node runtime state ---------------------------------------- */
+    const KIND_SCALE: Record<string, number> = { paper: 1, project: 0.94, post: 0.88, news: 0.7 };
+
+    const state = nodes.map((n, i) => ({
+      // Screen-space position, filled by layout()
+      bx: 0,
+      by: 0,
+      // Drift phase, deterministic so the map looks the same on every load
+      phase: (i * 2.399963) % (Math.PI * 2),
+      speed: 0.00022 + ((i * 37) % 11) * 0.000018,
+      ampX: 3 + ((i * 13) % 7),
+      ampY: 2.5 + ((i * 7) % 5),
+      // Eased 0..1 interaction weights
+      glow: 0,
+      lit: 0,
+      // Entrance
+      appear: 0,
+      delay: i * 26,
+      sx: 0,
+      sy: 0,
+      r: 5 * (KIND_SCALE[n.kind] ?? 0.85),
+    }));
+
+    function layout() {
+      // Proportional, so a phone-sized canvas does not spend a third of itself
+      // on margin.
+      const pad = Math.max(20, Math.min(54, w * 0.055));
       fit = Math.min((w - pad * 2) / spanX, (h - pad * 2) / spanY);
       offX = (w - spanX * fit) / 2;
       offY = (h - spanY * fit) / 2;
-    };
+      for (let i = 0; i < nodes.length; i++) {
+        state[i].bx = offX + (nodes[i].x - minX) * fit;
+        state[i].by = offY + (nodes[i].y - minY) * fit;
+      }
+    }
 
-    const sx = (x: number) => (offX + (x - minX) * fit) * k + tx;
-    const sy = (y: number) => (offY + (y - minY) * fit) * k + ty;
+    /* ---- camera --------------------------------------------------------- */
+    let k = 1;
+    let kT = 1;
+    let tx = 0;
+    let ty = 0;
+    let txT = 0;
+    let tyT = 0;
+    let vx = 0;
+    let vy = 0;
 
-    function draw(now: number) {
-      running = false;
-      if (!start) start = now;
-      const t = reduced ? 1 : Math.min(1, (now - start) / 700);
-      // cubic-bezier(.16,1,.3,1)-ish ease-out
-      const e = 1 - Math.pow(1 - t, 3);
+    const toScreenX = (x: number) => x * k + tx;
+    const toScreenY = (y: number) => y * k + ty;
+
+    /* ---- interaction state ---------------------------------------------- */
+    let hover = -1;
+    let picked = -1;
+    let filter = 'all';
+    let pointerX = -1e6;
+    let pointerY = -1e6;
+    let pointerIn = false;
+    let dragging = false;
+
+    const neighbours = new Map<string, Set<string>>();
+    for (const e of edges) {
+      if (!neighbours.has(e.s)) neighbours.set(e.s, new Set());
+      if (!neighbours.has(e.t)) neighbours.set(e.t, new Set());
+      neighbours.get(e.s)!.add(e.t);
+      neighbours.get(e.t)!.add(e.s);
+    }
+
+    /* ---- travelling pulses ----------------------------------------------
+     * A slow signal running along an edge every so often. It is the whole
+     * reason the map reads as alive rather than as a screenshot.
+     */
+    const pulses: { edge: number; p: number; speed: number }[] = [];
+    let nextPulse = 900;
+
+    /* ---- the frame ------------------------------------------------------ */
+    let raf = 0;
+    let last = 0;
+    let clock = 0;
+    let visible = true;
+
+    function frame(now: number) {
+      raf = 0;
+      const dt = Math.min(now - last || 16, 48);
+      last = now;
+      clock += dt;
+
+      const still = reduced.matches;
+
+      // Camera easing. Dragging writes k/tx/ty directly, so this only smooths
+      // wheel and focus moves.
+      k += (kT - k) * 0.16;
+      if (!dragging) {
+        tx += (txT - tx) * 0.16 + vx;
+        ty += (tyT - ty) * 0.16 + vy;
+        txT += vx;
+        tyT += vy;
+        vx *= 0.9;
+        vy *= 0.9;
+        if (Math.abs(vx) < 0.01) vx = 0;
+        if (Math.abs(vy) < 0.01) vy = 0;
+      }
 
       ctx.clearRect(0, 0, w, h);
 
-      const styles = getComputedStyle(document.documentElement);
-      const ruleColour = styles.getPropertyValue('--rule-strong').trim() || '#2a353f';
-      const fg = styles.getPropertyValue('--fg-dim').trim() || '#8b98a5';
+      const hoveredId = hover >= 0 ? nodes[hover].id : picked >= 0 ? nodes[picked].id : null;
+      const near = hoveredId ? neighbours.get(hoveredId) : undefined;
 
-      const hovered = hover >= 0 ? nodes[hover] : null;
-      const neighbours = new Set<string>();
-      if (hovered) {
-        for (const edge of edges) {
-          if (edge.s === hovered.id) neighbours.add(edge.t);
-          if (edge.t === hovered.id) neighbours.add(edge.s);
+      // --- positions
+      for (let i = 0; i < nodes.length; i++) {
+        const s = state[i];
+
+        const p = still ? 1 : Math.min(1, Math.max(0, (clock - s.delay) / 900));
+        s.appear += (p - s.appear) * 0.25;
+        const ease = 1 - Math.pow(1 - s.appear, 3);
+
+        let dx = 0;
+        let dy = 0;
+        if (!still) {
+          dx = Math.sin(clock * s.speed + s.phase) * s.ampX;
+          dy = Math.cos(clock * s.speed * 0.82 + s.phase * 1.3) * s.ampY;
         }
+
+        let x = toScreenX(s.bx) + dx;
+        let y = toScreenY(s.by) + dy;
+
+        // Cursor makes room for itself. Deliberately small, and switched off for
+        // whatever is being hovered: a stronger shove pushes a node out of its
+        // own hit radius, and then the map plays keep-away with the pointer
+        // instead of letting anyone click it.
+        if (pointerIn && !still) {
+          const px = x - pointerX;
+          const py = y - pointerY;
+          const d2 = px * px + py * py;
+          const R = 80;
+          if (d2 < R * R && d2 > 0.01) {
+            const d = Math.sqrt(d2);
+            const push = ((R - d) / R) ** 2 * 6 * (1 - s.glow);
+            x += (px / d) * push;
+            y += (py / d) * push;
+          }
+        }
+
+        // Entrance: fly in from a ring around the centre.
+        if (ease < 1) {
+          const cx = w / 2;
+          const cy = h / 2;
+          const a = s.phase;
+          const sx0 = cx + Math.cos(a) * Math.max(w, h) * 0.55;
+          const sy0 = cy + Math.sin(a) * Math.max(w, h) * 0.55;
+          x = sx0 + (x - sx0) * ease;
+          y = sy0 + (y - sy0) * ease;
+        }
+
+        s.sx = x;
+        s.sy = y;
+
+        // Interaction weights, eased rather than switched.
+        const isHot = i === hover || i === picked;
+        const isNear = near?.has(nodes[i].id) ?? false;
+        s.glow += ((isHot ? 1 : 0) - s.glow) * 0.2;
+        s.lit += ((isHot || isNear ? 1 : 0) - s.lit) * 0.2;
       }
 
-      // edges first, dimmed
-      ctx.lineWidth = 1;
-      for (const edge of edges) {
-        const a = nodes[index.get(edge.s)!];
-        const b = nodes[index.get(edge.t)!];
+      // --- edges
+      for (let i = 0; i < edges.length; i++) {
+        const e = edges[i];
+        const a = state[index.get(e.s)!];
+        const b = state[index.get(e.t)!];
         if (!a || !b) continue;
-        const lit = hovered && (edge.s === hovered.id || edge.t === hovered.id);
-        ctx.globalAlpha = (lit ? 0.6 : 0.16) * e;
-        ctx.strokeStyle = lit ? colour.get(hovered!.theme) || fg : ruleColour;
-        ctx.beginPath();
-        ctx.moveTo(sx(a.x), sy(a.y));
-        ctx.lineTo(sx(b.x), sy(b.y));
+
+        const na = nodes[index.get(e.s)!];
+        const nb = nodes[index.get(e.t)!];
+        const show = Math.min(a.appear, b.appear);
+        if (show < 0.02) continue;
+
+        const lit = Math.max(
+          hoveredId === e.s || hoveredId === e.t ? 1 : 0,
+          Math.max(a.glow, b.glow),
+        );
+        const dim = dimFor(na) * dimFor(nb);
+
+        // While a highlight eases out, hover/picked may already be gone; fall
+        // back to the edge's own colour rather than indexing nodes[-1].
+        const hot = hover >= 0 ? hover : picked;
+        const litColour = (hot >= 0 ? colours.get(nodes[hot].theme) : colours.get(na.theme)) ?? ink.rule;
+
+        // Resting edges take the source node's colour rather than a neutral grey:
+        // at this alpha it reads as a faint coloured web instead of disappearing
+        // into the background, which is what a dark-on-dark grey line does.
+        const base = colours.get(na.theme) ?? ink.rule;
+
+        ctx.globalAlpha = show * dim * (0.2 + lit * 0.62);
+        ctx.strokeStyle = lit > 0.05 ? litColour : base;
+        ctx.lineWidth = 1 + lit * 0.8;
+        curve(a.sx, a.sy, b.sx, b.sy, i);
         ctx.stroke();
       }
 
-      // nodes
+      // --- pulses
+      if (!still) {
+        nextPulse -= dt;
+        if (nextPulse <= 0 && pulses.length < 5 && edges.length) {
+          // Deterministic-ish rotation through the edge list: no Math.random,
+          // so nothing flickers differently on a reload.
+          pulses.push({
+            edge: Math.floor(clock / 137) % edges.length,
+            p: 0,
+            speed: 0.00042 + (pulses.length % 3) * 0.00008,
+          });
+          nextPulse = 620;
+        }
+
+        for (let i = pulses.length - 1; i >= 0; i--) {
+          const pulse = pulses[i];
+          pulse.p += pulse.speed * dt;
+          if (pulse.p >= 1) {
+            pulses.splice(i, 1);
+            continue;
+          }
+          const e = edges[pulse.edge];
+          const a = state[index.get(e.s)!];
+          const b = state[index.get(e.t)!];
+          if (!a || !b) continue;
+          const na = nodes[index.get(e.s)!];
+          const [px, py] = along(a.sx, a.sy, b.sx, b.sy, pulse.edge, pulse.p);
+          const fade = Math.sin(pulse.p * Math.PI);
+          ctx.globalAlpha = fade * 0.75 * dimFor(na);
+          ctx.fillStyle = colours.get(na.theme) ?? ink.accent;
+          ctx.beginPath();
+          ctx.arc(px, py, 1.9, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // --- nodes
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
-        // Ease outward from the centre of the fitted extent on entry.
-        const cx0 = (minX + maxX) / 2;
-        const cy0 = (minY + maxY) / 2;
-        const px = sx(cx0 + (n.x - cx0) * e);
-        const py = sy(cy0 + (n.y - cy0) * e);
-        const isHover = i === hover;
-        const isNeighbour = neighbours.has(n.id);
-        const c = colour.get(n.theme) || fg;
+        const s = state[i];
+        if (s.appear < 0.02) continue;
 
-        ctx.globalAlpha = hovered && !isHover && !isNeighbour ? 0.3 * e : e;
+        const colour = colours.get(n.theme) ?? ink.accent;
+        const alpha = s.appear * dimFor(n) * (hoveredId ? 0.42 + s.lit * 0.58 : 1);
+        const r = (s.r + s.glow * 2.6) * Math.min(k, 1.6);
 
-        // shadowBlur is expensive; only the hovered node pays for it.
-        if (isHover) {
-          ctx.shadowColor = c;
-          ctx.shadowBlur = 16;
-        }
+        // halo
+        const size = (r + 9 + s.glow * 16) * 2;
+        ctx.globalAlpha = alpha * (0.42 + s.glow * 0.58);
+        ctx.drawImage(halo(colour), s.sx - size / 2, s.sy - size / 2, size, size);
 
+        // core
+        ctx.globalAlpha = alpha;
         ctx.beginPath();
-        ctx.arc(px, py, isHover ? R + 2.5 : R, 0, Math.PI * 2);
-        ctx.fillStyle = isHover || isNeighbour ? c : 'transparent';
-        ctx.strokeStyle = c;
-        ctx.lineWidth = 1.6;
-        if (isHover || isNeighbour) ctx.fill();
+        ctx.arc(s.sx, s.sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = colour;
+        ctx.globalAlpha = alpha * (0.25 + s.lit * 0.75);
+        ctx.fill();
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = colour;
         ctx.stroke();
-        ctx.shadowBlur = 0;
+
+        // label: on demand, or everywhere once zoomed in
+        const wantLabel = Math.max(s.glow, k > 1.7 ? Math.min(1, (k - 1.7) * 1.6) : 0);
+        if (wantLabel > 0.03) {
+          ctx.globalAlpha = alpha * wantLabel;
+          ctx.fillStyle = s.glow > 0.4 ? ink.fg : ink.dim;
+          ctx.font = `${11 + s.glow * 1.5}px ${fontFamily}`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(n.short, s.sx, s.sy + r + 6);
+        }
       }
 
       ctx.globalAlpha = 1;
 
-      if (t < 1) request();
+      if (visible) raf = requestAnimationFrame(frame);
     }
 
-    function request() {
-      if (running) return;
-      running = true;
-      requestAnimationFrame(draw);
+    /** Dim anything outside the active filter, without hiding it. */
+    function dimFor(n: Node) {
+      return filter === 'all' || n.theme === filter ? 1 : 0.12;
     }
 
-    /** Linear scan is fine below a few hundred nodes; a quadtree would be noise. */
-    function pick(mx: number, my: number): number {
+    /** A slight arc reads as a network; straight lines read as a chart. */
+    function bend(ax: number, ay: number, bx: number, by: number, seed: number) {
+      const mx = (ax + bx) / 2;
+      const my = (ay + by) / 2;
+      const dx = bx - ax;
+      const dy = by - ay;
+      const side = seed % 2 ? 0.08 : -0.08;
+      return [mx - dy * side, my + dx * side] as const;
+    }
+
+    function curve(ax: number, ay: number, bx: number, by: number, seed: number) {
+      const [cx, cy] = bend(ax, ay, bx, by, seed);
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.quadraticCurveTo(cx, cy, bx, by);
+    }
+
+    function along(ax: number, ay: number, bx: number, by: number, seed: number, t: number) {
+      const [cx, cy] = bend(ax, ay, bx, by, seed);
+      const u = 1 - t;
+      return [
+        u * u * ax + 2 * u * t * cx + t * t * bx,
+        u * u * ay + 2 * u * t * cy + t * t * by,
+      ] as const;
+    }
+
+    function start() {
+      if (!raf && visible) {
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    }
+
+    /* ---- sizing ---------------------------------------------------------- */
+    function resize() {
+      const rect = canvas!.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = rect.width;
+      h = rect.height;
+      canvas!.width = Math.round(w * dpr);
+      canvas!.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      layout();
+    }
+
+    /* ---- picking --------------------------------------------------------- */
+    function pick(mx: number, my: number) {
       let best = -1;
-      let bestDist = 14 * 14;
+      let bestDist = 21 * 21;
       for (let i = 0; i < nodes.length; i++) {
-        const dx = sx(nodes[i].x) - mx;
-        const dy = sy(nodes[i].y) - my;
+        if (filter !== 'all' && nodes[i].theme !== filter) continue;
+        const dx = state[i].sx - mx;
+        const dy = state[i].sy - my;
         const d = dx * dx + dy * dy;
         if (d < bestDist) {
           bestDist = d;
@@ -461,113 +947,249 @@ const KIND_LABEL: Record<string, string> = {
       return best;
     }
 
-    let pending = false;
-    canvas.addEventListener('pointermove', (event) => {
-      if (dragging) return;
-      const rect = canvas.getBoundingClientRect();
-      const mx = event.clientX - rect.left;
-      const my = event.clientY - rect.top;
-      if (pending) return;
-      pending = true;
-      requestAnimationFrame(() => {
-        pending = false;
-        const hit = pick(mx, my);
-        if (hit !== hover) {
-          hover = hit;
-          canvas.style.cursor = hit >= 0 ? 'pointer' : 'grab';
-          if (hit >= 0) {
-            const n = nodes[hit];
-            tip.innerHTML = '';
-            const strong = document.createElement('strong');
-            strong.textContent = n.title;
-            const meta = document.createElement('span');
-            meta.textContent = [n.kind, n.year, n.venue].filter(Boolean).join(' · ');
-            tip.append(strong, meta);
-            tip.hidden = false;
-            tip.style.left = `${Math.min(mx + 14, rect.width - 240)}px`;
-            tip.style.top = `${my + 14}px`;
-          } else {
-            tip.hidden = true;
-          }
-          request();
-        } else if (hit >= 0) {
-          tip.style.left = `${Math.min(mx + 14, rect.width - 240)}px`;
-          tip.style.top = `${my + 14}px`;
-        }
-      });
-    });
+    function showTip(i: number, mx: number, my: number) {
+      const n = nodes[i];
+      tip!.style.setProperty('--tip-accent', colours.get(n.theme) ?? ink.accent);
+      tip!.querySelector('strong')!.textContent = n.title;
+      tip!.querySelector('span')!.textContent = [n.kind, n.year, n.venue].filter(Boolean).join(' · ');
+      tip!.hidden = false;
+      const box = tip!.getBoundingClientRect();
+      tip!.style.left = `${Math.max(4, Math.min(mx + 16, w - box.width - 8))}px`;
+      tip!.style.top = `${Math.max(4, Math.min(my + 16, h - box.height - 8))}px`;
+    }
 
-    canvas.addEventListener('pointerleave', () => {
-      hover = -1;
-      tip.hidden = true;
-      request();
-    });
+    function openCard(i: number) {
+      const n = nodes[i];
+      picked = i;
+      const colour = colours.get(n.theme) ?? ink.accent;
+      card!.style.setProperty('--card-accent', colour);
+      card!.querySelector('.card-kind')!.textContent = n.kind;
+      card!.querySelector('.card-title')!.textContent = n.title;
+      card!.querySelector('.card-meta')!.textContent = [n.year, n.venue].filter(Boolean).join(' · ');
+      const link = card!.querySelector<HTMLAnchorElement>('.card-link')!;
+      link.href = n.url.startsWith('/news/#') ? n.url.toLowerCase() : n.url;
+      card!.hidden = false;
 
-    canvas.addEventListener('click', () => {
-      if (hover >= 0) location.href = nodes[hover].url;
-    });
+      // Ease the camera so the chosen node is centred and a little closer in.
+      kT = Math.max(k, 1.55);
+      txT = w / 2 - state[i].bx * kT;
+      tyT = h / 2 - state[i].by * kT;
+      vx = vy = 0;
+    }
 
-    // pan
-    let dragging = false;
+    function closeCard() {
+      picked = -1;
+      card!.hidden = true;
+    }
+
+    /* ---- pointer --------------------------------------------------------- */
     let lastX = 0;
     let lastY = 0;
+    let moved = 0;
 
     canvas.addEventListener('pointerdown', (event) => {
       dragging = true;
+      moved = 0;
       lastX = event.clientX;
       lastY = event.clientY;
-      canvas.setPointerCapture(event.pointerId);
-      tip.hidden = true;
+      canvas!.setPointerCapture(event.pointerId);
+      canvas!.classList.add('dragging');
+      tip!.hidden = true;
+      hint?.setAttribute('data-gone', '');
+      vx = vy = 0;
     });
-
-    canvas.addEventListener('pointerup', () => (dragging = false));
 
     canvas.addEventListener('pointermove', (event) => {
-      if (!dragging) return;
-      tx += event.clientX - lastX;
-      ty += event.clientY - lastY;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      request();
+      const rect = canvas!.getBoundingClientRect();
+      pointerX = event.clientX - rect.left;
+      pointerY = event.clientY - rect.top;
+      pointerIn = true;
+
+      if (dragging) {
+        const dx = event.clientX - lastX;
+        const dy = event.clientY - lastY;
+        tx += dx;
+        ty += dy;
+        txT = tx;
+        tyT = ty;
+        vx = dx * 0.35;
+        vy = dy * 0.35;
+        lastX = event.clientX;
+        lastY = event.clientY;
+        moved += Math.abs(dx) + Math.abs(dy);
+        return;
+      }
+
+      const hit = pick(pointerX, pointerY);
+      if (hit !== hover) {
+        hover = hit;
+        canvas!.classList.toggle('over', hit >= 0);
+        if (hit < 0) tip!.hidden = true;
+      }
+      if (hit >= 0) showTip(hit, pointerX, pointerY);
     });
 
-    // zoom about the cursor
+    const release = () => {
+      dragging = false;
+      canvas!.classList.remove('dragging');
+    };
+
+    canvas.addEventListener('pointerup', (event) => {
+      release();
+      // A drag is not a click. 5px of slop covers a shaky hand.
+      if (moved < 6) {
+        const rect = canvas!.getBoundingClientRect();
+        const hit = pick(event.clientX - rect.left, event.clientY - rect.top);
+        if (hit >= 0) openCard(hit);
+        else closeCard();
+      }
+    });
+
+    canvas.addEventListener('pointercancel', release);
+
+    canvas.addEventListener('pointerleave', () => {
+      pointerIn = false;
+      pointerX = pointerY = -1e6;
+      hover = -1;
+      tip!.hidden = true;
+      canvas!.classList.remove('over');
+    });
+
     canvas.addEventListener(
       'wheel',
       (event) => {
         event.preventDefault();
-        const rect = canvas.getBoundingClientRect();
+        const rect = canvas!.getBoundingClientRect();
         const mx = event.clientX - rect.left;
         const my = event.clientY - rect.top;
-        const factor = Math.exp(-event.deltaY * 0.0016);
-        const next = Math.min(6, Math.max(0.6, k * factor));
-        const ratio = next / k;
-        tx = mx - (mx - tx) * ratio;
-        ty = my - (my - ty) * ratio;
-        k = next;
-        request();
+        const next = Math.min(6, Math.max(0.55, kT * Math.exp(-event.deltaY * 0.0014)));
+        const ratio = next / kT;
+        txT = mx - (mx - txT) * ratio;
+        tyT = my - (my - tyT) * ratio;
+        kT = next;
+        hint?.setAttribute('data-gone', '');
       },
       { passive: false },
     );
 
-    canvas.addEventListener('dblclick', () => {
-      k = 1;
-      tx = 0;
-      ty = 0;
-      request();
+    canvas.addEventListener('dblclick', reset);
+
+    function reset() {
+      kT = 1;
+      txT = 0;
+      tyT = 0;
+      vx = vy = 0;
+      closeCard();
+    }
+
+    /** Ease the camera until the given nodes fill the stage. */
+    function frameNodes(picks: number[]) {
+      if (!picks.length) return reset();
+
+      let x0 = Infinity;
+      let y0 = Infinity;
+      let x1 = -Infinity;
+      let y1 = -Infinity;
+      for (const i of picks) {
+        x0 = Math.min(x0, state[i].bx);
+        y0 = Math.min(y0, state[i].by);
+        x1 = Math.max(x1, state[i].bx);
+        y1 = Math.max(y1, state[i].by);
+      }
+
+      const pad = 90;
+      kT = Math.min(Math.max((w - pad * 2) / Math.max(x1 - x0, 1), 0.6), 2.6);
+      kT = Math.min(kT, Math.max((h - pad * 2) / Math.max(y1 - y0, 1), 0.6));
+      txT = w / 2 - ((x0 + x1) / 2) * kT;
+      tyT = h / 2 - ((y0 + y1) / 2) * kT;
+      vx = vy = 0;
+    }
+
+    card.querySelector('.card-close')!.addEventListener('click', () => {
+      closeCard();
+      reset();
     });
 
-    // Keyboard users tab the list; focusing an entry highlights its node.
+    /* ---- legend ----------------------------------------------------------- */
+    figure.querySelectorAll<HTMLButtonElement>('.key').forEach((button) => {
+      button.addEventListener('click', () => {
+        const value = button.dataset.filter!;
+        filter = filter === value ? 'all' : value;
+
+        figure.querySelectorAll<HTMLButtonElement>('.key').forEach((other) => {
+          other.setAttribute('aria-pressed', String(other.dataset.filter === filter));
+        });
+
+        // Mirror the filter onto the server-rendered list, so the buttons do
+        // something for anyone who is not looking at the canvas.
+        if (filter === 'all') {
+          figure.removeAttribute('data-filter');
+          figure.querySelectorAll<HTMLElement>('.fallback section').forEach((s) => {
+            s.style.display = '';
+          });
+        } else {
+          figure.setAttribute('data-filter', filter);
+          figure.querySelectorAll<HTMLElement>('.fallback section').forEach((s) => {
+            s.style.display = s.dataset.themeSection === filter ? 'block' : '';
+          });
+        }
+
+        closeCard();
+        hint?.setAttribute('data-gone', '');
+
+        // Choosing an area flies the camera to it. Leaving the view wherever it
+        // happened to be would often frame nothing at all.
+        if (filter === 'all') reset();
+        else frameNodes(nodes.map((n, i) => (n.theme === filter ? i : -1)).filter((i) => i >= 0));
+      });
+    });
+
+    /* ---- keyboard users tab the list; focusing an entry lights its node ---- */
     list?.addEventListener('focusin', (event) => {
       const id = (event.target as HTMLElement)?.dataset?.node;
       if (!id) return;
       const i = index.get(id);
-      if (i === undefined) return;
-      hover = i;
-      request();
+      if (i !== undefined) hover = i;
     });
 
+    list?.addEventListener('focusout', () => {
+      hover = -1;
+    });
+
+    /* ---- lifecycle --------------------------------------------------------- */
     new ResizeObserver(resize).observe(canvas);
+
+    // Off-screen or backgrounded, the loop stops dead: no idle CPU burn.
+    new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting && !document.hidden;
+        if (visible) start();
+        else if (raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      },
+      { threshold: 0.01 },
+    ).observe(canvas);
+
+    document.addEventListener('visibilitychange', () => {
+      visible = !document.hidden;
+      if (visible) start();
+      else if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    });
+
+    new MutationObserver(readPalette).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    reduced.addEventListener('change', start);
+
+    readPalette();
     resize();
+    start();
   }
 </script>

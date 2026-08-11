@@ -28,6 +28,12 @@ jobs:
       - uses: withastro/action@v6
         with:
           node-version: 22
+        env:
+          # A repository variable, not a secret: Web3Forms access keys are meant
+          # to be public and end up in the page source either way. Without it the
+          # contact form ships disabled, so it has to be set for CI as well as
+          # for the local .env.
+          PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
 
       # The build artifact is already uploaded by the action above; assert the
       # legacy URL contract against it before anything gets published.

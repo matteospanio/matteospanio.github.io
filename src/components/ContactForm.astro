@@ -6,7 +6,10 @@
  * Replace the placeholder with a real key from https://web3forms.com (it is
  * bound to the destination inbox, so a leaked key can only mail Matteo).
  */
-const ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY';
+const ACCESS_KEY =
+  import.meta.env.PUBLIC_WEB3FORMS_KEY ??
+  import.meta.env.WEB3FORMS_PUBLIC_KEY ??
+  'REPLACE_WITH_WEB3FORMS_ACCESS_KEY';
 const configured = !ACCESS_KEY.startsWith('REPLACE_');
 ---
 

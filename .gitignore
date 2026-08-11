@@ -23,3 +23,8 @@ dist/
 # Generated post PDFs. Reproducible via scripts/build_post_pdf.mjs; commit one
 # deliberately only when a post is being given a DOI and needs citation_pdf_url.
 public/assets/pdf/posts/
+
+# Local environment. The Web3Forms key is public by design and lives in a
+# repository variable for CI, so nothing here ever needs to be committed.
+.env
+.env.*

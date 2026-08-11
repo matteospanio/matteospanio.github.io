@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import PublicationCard from '@/components/pub/PublicationCard.astro';
+import WordCloud from '@/components/viz/WordCloud.astro';
 import type { Publication } from '@/lib/bib';
 import { groupByYear, sortPublications } from '@/lib/bib';
 import { scholarlyArticleSchema } from '@/lib/schema';
@@ -47,6 +48,8 @@ const schema = [
       )
     }
   </p>
+
+  <WordCloud />
 
   {
     byYear.map(([year, list]) => (

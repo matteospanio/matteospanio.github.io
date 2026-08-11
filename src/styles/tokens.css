@@ -30,6 +30,7 @@
     --theme-symbolic: #fbbf24;
     --theme-dsp: #4ade80;
     --theme-musicology: #f87171;
+    --theme-engineering: #7dd3fc;
 
     /* --- type ---------------------------------------------------------- */
     --font-mono: var(--font-mono-src), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -83,6 +84,7 @@
     --theme-symbolic: #a16207;
     --theme-dsp: #15803d;
     --theme-musicology: #b91c1c;
+    --theme-engineering: #0369a1;
 
     color-scheme: light;
   }

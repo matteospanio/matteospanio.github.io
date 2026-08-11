@@ -1,0 +1,153 @@
+---
+import cloud from '@/data/viz/wordcloud.json';
+
+/**
+ * Static SVG. The packing is solved in scripts/build_wordcloud.py, which can do
+ * it exactly because the cloud is set in a monospace face: a word's box follows
+ * from its character count, so nothing has to be measured in a browser and no
+ * layout runs at page load.
+ *
+ * `textLength` pins each word to the width the packer assumed. If the mono
+ * webfont has not arrived yet, the fallback face is rendered to that same width
+ * instead of overlapping its neighbours.
+ *
+ * Two packs are shipped and swapped by media query rather than one being scaled:
+ * a wide cloud reduced to phone width puts its smallest terms at four pixels.
+ */
+const { words, viewBox, narrow, papers, terms } = cloud;
+
+const top = words.slice(0, 8).map((w) => w.text);
+const label = `Word cloud of the ${terms} terms most characteristic of ${papers} papers. The largest are ${top.join(', ')}.`;
+
+// `display: none` already keeps the inactive pack out of the accessibility
+// tree; an aria-hidden here would leave a phone with no labelled figure at all.
+const packs = [
+  { key: 'wide', words, viewBox },
+  { key: 'narrow', words: narrow.words, viewBox: narrow.viewBox },
+];
+---
+
+<figure class="cloud">
+  {
+    packs.map((pack) => (
+      <svg
+        class={pack.key}
+        viewBox={pack.viewBox.join(' ')}
+        role="img"
+        aria-label={label}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        {pack.words.map((w) => (
+          <text
+            x={w.x}
+            y={w.y}
+            font-size={w.size}
+            textLength={w.w}
+            lengthAdjust="spacingAndGlyphs"
+            text-anchor="middle"
+            dominant-baseline="central"
+            data-tier={w.tier}
+          >
+            {w.text}
+            <title>
+              {w.text} — {w.tf} occurrences across {w.df} of {papers} papers
+            </title>
+          </text>
+        ))}
+      </svg>
+    ))
+  }
+
+  <figcaption>
+    The <span class="wide-n">{terms}</span><span class="narrow-n">{narrow.words.length}</span> terms
+    most characteristic of the LaTeX sources of {papers} published papers. Size follows
+    how heavily a term is used by the papers that use it, damped by how many of them do — which ranks
+    subject matter above the vocabulary every paper shares.
+  </figcaption>
+</figure>
+
+<style>
+  .cloud {
+    margin: 0 0 3rem;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* Tall enough to read, never taller than the fold on a desktop. */
+    max-height: 30rem;
+    font-family: var(--font-mono);
+    overflow: visible;
+  }
+
+  /* Only one pack is ever in the accessibility tree, so the label is not read twice. */
+  .narrow {
+    display: none;
+  }
+
+  /* The caption counts what is actually on screen, not what was computed. */
+  .narrow-n {
+    display: none;
+  }
+
+  @media (max-width: 700px) {
+    .wide,
+    .wide-n {
+      display: none;
+    }
+
+    .narrow {
+      display: block;
+      max-height: none;
+    }
+
+    .narrow-n {
+      display: inline;
+    }
+  }
+
+  text {
+    fill: var(--fg-faint);
+    transition:
+      fill var(--dur) var(--ease-out),
+      opacity var(--dur) var(--ease-out);
+  }
+
+  text[data-tier='1'] {
+    fill: var(--fg-dim);
+  }
+
+  text[data-tier='2'] {
+    fill: var(--fg);
+  }
+
+  text[data-tier='3'] {
+    fill: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Pure CSS focus effect: everything recedes, the word under the cursor does not. */
+  svg:hover text {
+    opacity: 0.28;
+  }
+
+  svg text:hover {
+    opacity: 1;
+    fill: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    text {
+      transition: none;
+    }
+  }
+
+  figcaption {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    max-width: var(--measure);
+    margin-block-start: 1rem;
+    line-height: 1.55;
+  }
+</style>

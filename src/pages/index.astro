@@ -8,7 +8,7 @@ import '@/styles/prose.css';
 
 // A single standalone page, so a direct MDX import beats defining a collection for it.
 import About from '@/content/about.mdx';
-import StatRow from '@/components/viz/StatRow.astro';
+import EmbeddingMap from '@/components/viz/EmbeddingMap.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -33,12 +33,13 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
     <p class="role">{site.jobTitle} · {site.affiliation.parent}</p>
   </section>
 
-  <section class="about prose">
-    <About />
+  <section class="research">
+    <h2 class="label">research map</h2>
+    <EmbeddingMap />
   </section>
 
-  <section class="numbers">
-    <StatRow href="/impact/" />
+  <section class="about prose">
+    <About />
   </section>
 
   <div class="columns">
@@ -115,12 +116,16 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
     color: var(--fg-dim);
   }
 
-  .about {
+  .research {
     margin-block-start: 2.5rem;
   }
 
-  .numbers {
-    margin-block-start: 3rem;
+  .research .label {
+    margin-block-end: 1rem;
+  }
+
+  .about {
+    margin-block-start: 3.5rem;
   }
 
   /* The about copy sets its own h2s; keep them from shouting over the section labels. */

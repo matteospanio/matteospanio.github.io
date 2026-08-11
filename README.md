@@ -48,18 +48,29 @@ Body text.
 
 ## Generated data
 
-Three datasets are precomputed and committed, never fetched at page load:
+Every dataset is precomputed and committed, never fetched at page load:
 
 | File | Built by | Refreshed |
 |---|---|---|
 | `src/data/citations.json` | `scripts/update_citations.py` | Mon/Wed/Fri via `update-citations.yml` |
-| `src/data/viz/footprint.json` | `scripts/build_footprint.py` | Sundays via `update-footprint.yml` |
-| `src/data/viz/timeline.json` | `scripts/build_timeline.py` | Sundays, same workflow |
 | `src/data/viz/embedding-map.json` | `scripts/build_embedding_map.py` | **Manually** — `gh workflow run update-embeddings.yml` |
+| `src/data/viz/wordcloud.json` | `scripts/build_wordcloud.py` | **Manually**, from local paper sources |
 
 The embedding map is manual because it downloads a ~1 GB model. CI fails the build when the
 corpus changes without it being rebuilt, so you get told rather than silently shipping a map with
 a missing paper.
+
+The word cloud is manual because it reads the LaTeX sources of the published papers, which live
+outside the repository:
+
+```bash
+python scripts/build_wordcloud.py [~/Scrivania/papers]
+```
+
+It takes every `.zip` in that directory except the ones named in `EXCLUDE` — unpublished work has
+to be listed there or it ends up in a public figure. It ships two packs, one for desktop and a
+shorter one for phones, because a wide cloud scaled to 390px renders its smallest terms at about
+four pixels.
 
 Citation counts come from Google Scholar first, with OpenAlex as a supplement. Scholar blocks
 datacentre addresses and fails often, so the merge takes the maximum per paper: a failed fetch can
@@ -99,7 +110,13 @@ deployment → Source). With the legacy branch source it will build and then ref
 
 ## Contact form
 
-`src/components/ContactForm.astro` posts to [Web3Forms](https://web3forms.com). Set
-`PUBLIC_WEB3FORMS_KEY` to an access key; the key is designed to be public and is bound to the
-destination inbox. Until it is set, the form is disabled and the page points at the email address
-instead. The form works without JavaScript.
+`src/components/ContactForm.astro` posts to [Web3Forms](https://web3forms.com). The access key is
+designed to be public and is bound to the destination inbox, so it is not a secret — but it does
+have to be present at build time in **two** places, because `.env` is git-ignored:
+
+- locally, `PUBLIC_WEB3FORMS_KEY` (or `WEB3FORMS_PUBLIC_KEY`) in `.env`
+- in CI, the repository **variable** `PUBLIC_WEB3FORMS_KEY`, passed to the build in `deploy.yml`
+
+Set the second with `gh variable set PUBLIC_WEB3FORMS_KEY --body <key>`. Without it the deployed
+form ships disabled with a notice pointing at the email address, even though it works locally. The
+form works without JavaScript.

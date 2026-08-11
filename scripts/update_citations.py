@@ -13,8 +13,7 @@ Source priority, and why:
   being the more principled API, has this author fragmented across five author
   records — the ORCID-linked one lists 9 works and 4 citations. Treating OpenAlex
   as primary silently deleted two thirds of the real numbers, so it is a
-  supplement: it fills papers Scholar misses and supplies counts_by_year for the
-  footprint chart.
+  supplement: it fills papers Scholar misses.
 
   Scholar is also the fragile one: it blocks datacenter IPs, so a run that fails
   must leave the existing data untouched rather than zeroing it. The merge takes

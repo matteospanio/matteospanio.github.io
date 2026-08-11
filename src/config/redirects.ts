@@ -29,6 +29,11 @@ export const redirects: Record<string, string> = {
   '/repositories/': '/projects/',
   '/plugins/': '/',
 
+  // The footprint dashboard: charts of citation counts, coauthors and repository
+  // stars said less about the work than the work does. The research map it also
+  // carried is now on the homepage.
+  '/impact/': '/',
+
   // Teaching folds into the CV rather than carrying a section for one course.
   '/teaching/': '/cv/',
   '/teaching/dati_e_algoritmi/': '/cv/',
