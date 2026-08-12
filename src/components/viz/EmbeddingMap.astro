@@ -133,6 +133,32 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
 
   {/* JS-only controls; everything here is an enhancement over the canvas. */}
   <div class="tools">
+    {/*
+      Search runs entirely in the visitor's browser: a ~23 MB quantised
+      encoder behind an explicit gate, ranking against int8 vectors baked at
+      build time. The gate is the disclosure — nothing downloads until asked.
+    */}
+    <div class="search">
+      <p class="search-title" id="emap-search-title">search the corpus</p>
+      <button type="button" id="emap-search-load" class="tool-btn">
+        ⇣ load semantic search · ~23 MB
+      </button>
+      <p class="search-fine">
+        an encoder runs in your browser — nothing you type leaves this page. English works best.
+      </p>
+      <div class="search-live" id="emap-search-live" hidden>
+        <input
+          type="search"
+          id="emap-search-input"
+          placeholder="try: restoring damaged tape recordings"
+          aria-labelledby="emap-search-title"
+          autocomplete="off"
+        />
+        <ol class="search-results" id="emap-search-results"></ol>
+      </div>
+      <p class="search-status" id="emap-search-status" role="status" hidden></p>
+    </div>
+
     <button type="button" id="emap-listen" class="tool-btn" aria-pressed="false">
       <span class="off">▶ listen to the map</span>
       <span class="on">■ mute</span>
@@ -439,6 +465,93 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
 
   .tool-btn[aria-pressed='true'] .off {
     display: none;
+  }
+
+  /* --- semantic search --------------------------------------------------- */
+  .search {
+    display: grid;
+    gap: 0.45rem;
+    justify-items: start;
+    width: 100%;
+    max-width: 22rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .search-title {
+    color: var(--fg-dim);
+  }
+
+  .search-fine,
+  .search-status {
+    color: var(--fg-faint);
+    line-height: 1.45;
+  }
+
+  .search-live {
+    display: grid;
+    gap: 0.45rem;
+    width: 100%;
+  }
+
+  .search-live[hidden] {
+    display: none;
+  }
+
+  .search input {
+    width: 100%;
+    background: var(--bg-inset);
+    border: 1px solid var(--rule);
+    color: var(--fg);
+    font: inherit;
+    padding: 0.5em 0.7em;
+  }
+
+  .search input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  .search-results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.15rem;
+    width: 100%;
+  }
+
+  /* The result rows are script-created, so Astro's scoping attribute never
+     lands on them — these must be :global (contained by the scoped parent). */
+  .search-results :global(button) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    width: 100%;
+    min-height: 2rem;
+    background: none;
+    border: 0;
+    padding: 0.2rem 0.1rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .search-results :global(button:hover),
+  .search-results :global(button:focus-visible) {
+    color: var(--accent);
+  }
+
+  .search-results :global(.r-num) {
+    margin-inline-start: auto;
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .search-results :global(.r-none) {
+    color: var(--fg-faint);
   }
 
   /* --- projection scrubber --------------------------------------------- */
@@ -1231,8 +1344,9 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         const isHot = i === hover || i === picked;
         const isNear = near?.has(nodes[i].id) ?? false;
         const onPath = pathActive && pathNodeSet.has(i);
+        const onSearch = searchSet.has(i);
         s.glow += ((isHot ? 1 : 0) - s.glow) * 0.2;
-        s.lit += ((isHot || isNear || onPath ? 1 : 0) - s.lit) * 0.2;
+        s.lit += ((isHot || isNear || onPath || onSearch ? 1 : 0) - s.lit) * 0.2;
       }
 
       // --- edges
@@ -1383,9 +1497,10 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       if (visible) raf = requestAnimationFrame(frame);
     }
 
-    /** Dim anything outside the active filter or the traced path, without hiding it. */
+    /** Dim anything outside the traced path, search results or filter — never hide. */
     function dimFor(n: Node, i: number) {
       if (pathActive) return pathNodeSet.has(i) ? 1 : 0.1;
+      if (searchSet.size) return searchSet.has(i) ? 1 : 0.15;
       return filter === 'all' || n.theme === filter ? 1 : 0.12;
     }
 
@@ -1711,6 +1826,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         }
 
         closeCard();
+        clearSearch();
         hint?.setAttribute('data-gone', '');
 
         // Choosing an area flies the camera to it. Leaving the view wherever it
@@ -1745,6 +1861,143 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     variantInput?.addEventListener('input', () => applyVariant(Number(variantInput.value)));
     // Seed the readout; the targets equal the current positions, so nothing moves.
     if (variantInput) applyVariant(0);
+
+    /* ---- semantic search --------------------------------------------------
+     * Everything happens on this machine: the int8 document vectors were baked
+     * at build time, the query encoder is a ~23 MB quantised MiniLM fetched
+     * only when the visitor asks for it, and ranking is 42 dot products.
+     */
+    const searchLoad = document.getElementById('emap-search-load') as HTMLButtonElement | null;
+    const searchLive = document.getElementById('emap-search-live');
+    const searchInput = document.getElementById('emap-search-input') as HTMLInputElement | null;
+    const searchResults = document.getElementById('emap-search-results');
+    const searchStatus = document.getElementById('emap-search-status');
+
+    let searchIds: string[] = [];
+    let docVectors: Float32Array | null = null;
+    let dims = 0;
+    let embedQuery: ((q: string) => Promise<Float32Array>) | null = null;
+    let searchSet = new Set<number>();
+    let searchTimer = 0;
+    let searchSeq = 0;
+
+    function setStatus(text: string | null) {
+      if (!searchStatus) return;
+      searchStatus.hidden = !text;
+      searchStatus.textContent = text ?? '';
+    }
+
+    function clearSearch() {
+      searchSet = new Set();
+      if (searchResults) searchResults.innerHTML = '';
+    }
+
+    async function loadSearch() {
+      if (!searchLoad) return;
+      searchLoad.disabled = true;
+      try {
+        setStatus('fetching the index…');
+        const res = await fetch('/search-index.json');
+        if (!res.ok) throw new Error(`index HTTP ${res.status}`);
+        const idx = (await res.json()) as {
+          dims: number;
+          ids: string[];
+          scales: number[];
+          vectors: string;
+        };
+        dims = idx.dims;
+        searchIds = idx.ids;
+        const raw = atob(idx.vectors);
+        docVectors = new Float32Array(raw.length);
+        for (let r = 0; r < idx.ids.length; r++) {
+          const scale = idx.scales[r] / 127;
+          for (let c = 0; c < dims; c++) {
+            const byte = raw.charCodeAt(r * dims + c);
+            docVectors[r * dims + c] = (byte > 127 ? byte - 256 : byte) * scale;
+          }
+        }
+
+        setStatus('loading the encoder — a one-off download, cached by the browser…');
+        const { pipeline } = await import('@huggingface/transformers');
+        const extract = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+          dtype: 'q8',
+          progress_callback: (p: { status?: string; progress?: number; file?: string }) => {
+            if (p.status === 'progress' && p.file?.endsWith('.onnx'))
+              setStatus(`downloading the encoder — ${Math.round(p.progress ?? 0)}%`);
+          },
+        });
+        embedQuery = async (q: string) => {
+          const out = await extract(q, { pooling: 'mean', normalize: true });
+          return out.data as Float32Array;
+        };
+
+        setStatus(null);
+        searchLoad.hidden = true;
+        if (searchLive) searchLive.hidden = false;
+        searchInput?.focus();
+      } catch (error) {
+        setStatus(`could not load (${(error as Error).message}) — press the button to retry`);
+        searchLoad.disabled = false;
+      }
+    }
+
+    async function runSearch(query: string) {
+      if (!embedQuery || !docVectors || !searchResults) return;
+      const q = query.trim();
+      if (q.length < 3) {
+        clearSearch();
+        return;
+      }
+      const seq = ++searchSeq;
+      const v = await embedQuery(q);
+      if (seq !== searchSeq) return; // a newer keystroke superseded this run
+
+      const scored = searchIds
+        .map((id, r) => {
+          let dot = 0;
+          for (let c = 0; c < dims; c++) dot += v[c] * docVectors![r * dims + c];
+          return { id, score: dot };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5)
+        .filter((s) => s.score > 0.18 && index.has(s.id));
+
+      searchResults.innerHTML = '';
+      searchSet = new Set(scored.map((s) => index.get(s.id)!));
+
+      if (!scored.length) {
+        const li = document.createElement('li');
+        li.className = 'r-none';
+        li.textContent = 'nothing close — try different words';
+        searchResults.append(li);
+        start();
+        return;
+      }
+
+      for (const s of scored) {
+        const i = index.get(s.id)!;
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        const title = document.createElement('span');
+        title.textContent = nodes[i].short;
+        const num = document.createElement('span');
+        num.className = 'r-num';
+        num.textContent = s.score.toFixed(2);
+        btn.append(title, num);
+        btn.addEventListener('click', () => openCard(i));
+        li.append(btn);
+        searchResults.append(li);
+      }
+      frameNodes([...searchSet]);
+      start();
+    }
+
+    searchLoad?.addEventListener('click', () => void loadSearch());
+    searchInput?.addEventListener('input', () => {
+      window.clearTimeout(searchTimer);
+      searchTimer = window.setTimeout(() => void runSearch(searchInput.value), 250);
+    });
 
     /* ---- keyboard users tab the list; focusing an entry lights its node ---- */
     list?.addEventListener('focusin', (event) => {

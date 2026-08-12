@@ -73,4 +73,18 @@ if (JSON.parse(readFileSync(VARIANTS, 'utf8')).sourceHash !== stored) {
   process.exit(1);
 }
 
-console.log(`✓ embedding map is current (${parts.length} source items, variants in sync)`);
+// Same rule for the search index: it must describe the same corpus as the map.
+const SEARCH = 'public/search-index.json';
+if (!existsSync(SEARCH)) {
+  console.error(`✗ ${SEARCH} is missing — run: .venv/bin/python scripts/build_search_index.py`);
+  process.exit(1);
+}
+if (JSON.parse(readFileSync(SEARCH, 'utf8')).sourceHash !== stored) {
+  console.error('\n✗ search-index.json was built against a different corpus than the map.');
+  console.error('  Regenerate it with:  .venv/bin/python scripts/build_search_index.py\n');
+  process.exit(1);
+}
+
+console.log(
+  `✓ embedding map is current (${parts.length} source items, variants and search index in sync)`,
+);
