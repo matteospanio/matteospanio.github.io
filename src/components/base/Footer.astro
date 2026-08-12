@@ -1,10 +1,48 @@
 ---
 import { site } from '@/config/site';
+import map from '@/data/viz/embedding-map.json';
+import variants from '@/data/viz/map-variants.json';
+import cloud from '@/data/viz/wordcloud.json';
+import citations from '@/data/citations.json';
+import searchIndex from '../../../public/search-index.json';
 
 const year = new Date().getFullYear();
+
+/**
+ * The site's data provenance, as one glanceable strip. Every number is read
+ * from the artefact it describes, so the strip cannot drift from what is
+ * actually deployed — if the map is rebuilt, the strip follows.
+ */
+const papers = map.nodes.filter((n) => n.kind === 'paper').length;
+const tracked = Object.keys(citations.papers).length;
+const chains = [
+  {
+    text: `papers.bib(${papers}) → e5-base → umap ×${variants.variants.length} → map(${map.sanity.n})`,
+    title:
+      `${map.sanity.chunks} text chunks embedded with ${map.model}, projected by UMAP under ` +
+      `${variants.variants.length} seed/neighbour settings · ${map.generatedAt}`,
+  },
+  {
+    text: `latex(${cloud.papers}) → tf·df → cloud(${cloud.terms})`,
+    title: `word cloud packed from the LaTeX sources of ${cloud.papers} published papers`,
+  },
+  {
+    text: `bib → minilm-int8 → search(${searchIndex.ids.length}×${searchIndex.dims})`,
+    title: 'int8 document vectors for the in-browser semantic search',
+  },
+  {
+    text: `openalex → citations(${tracked})`,
+    title: `citation counts for ${tracked} papers, refreshed ${citations.generatedAt}`,
+  },
+];
 ---
 
 <footer>
+  <div class="shell pipeline" aria-label="How this site's data is built">
+    <span class="lbl"><span class="prompt">$</span> pipeline</span>
+    {chains.map((c) => <span class="chain" title={c.title}>{c.text}</span>)}
+  </div>
+
   <div class="shell inner">
     <p class="who">
       <span class="prompt">$</span> {site.name} · {site.affiliation.parent}
@@ -27,6 +65,25 @@ const year = new Date().getFullYear();
     background: var(--bg-1);
     font-size: var(--step--1);
     color: var(--fg-dim);
+  }
+
+  .pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.6rem;
+    padding-block: 1rem 0;
+    font-size: 0.72rem;
+    color: var(--fg-faint);
+    letter-spacing: 0.02em;
+  }
+
+  .pipeline .lbl {
+    color: var(--fg-dim);
+  }
+
+  /* Hover for the long story; the strip itself stays one quiet line. */
+  .chain {
+    cursor: help;
   }
 
   .inner {
