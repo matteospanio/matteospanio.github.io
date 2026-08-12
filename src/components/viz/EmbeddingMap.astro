@@ -112,8 +112,9 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       <p class="app-title">## corpus explorer</p>
       <p>
         Everything I have written, placed by how similar the texts are. Click a node for its card,
-        trace paths between works, search the corpus in plain words, listen to it — and drag the
-        projection slider to see how much of this picture is real structure.
+        trace paths between works, search the corpus in plain words, turn on the sound to hear the
+        map from wherever the camera stands — and drag the projection slider to see how much of this
+        picture is real structure.
       </p>
     </div>
 
@@ -169,11 +170,6 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       <p class="search-status" id="emap-search-status" role="status" hidden></p>
     </div>
 
-    <button type="button" id="emap-listen" class="tool-btn" aria-pressed="false">
-      <span class="off">▶ listen to the map</span>
-      <span class="on">■ mute</span>
-    </button>
-
     {/*
       The caveat, made scrubbable: the same embedding refitted under other
       seeds and neighbourhood sizes. Watching the picture change while the
@@ -197,6 +193,23 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
   <div class="stage">
     {/* The frame's own chrome: expand to the full-screen app, or ask what it is. */}
     <div class="corner">
+      {/* Sound sits beside the frame controls, reachable without entering the
+          app, so starting and stopping it is always one click from the map. */}
+      <button
+        type="button"
+        id="emap-listen"
+        class="icon-btn"
+        aria-pressed="false"
+        aria-label="Listen to the map"
+      >
+        <svg class="snd-off" viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h2.5L9 3v10L5.5 10H3z"></path>
+        </svg>
+        <svg class="snd-on" viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h2.5L9 3v10L5.5 10H3z"></path>
+          <path d="M11.2 5.6a3.4 3.4 0 0 1 0 4.8M13.2 3.6a6.2 6.2 0 0 1 0 8.8" stroke-linecap="round"></path>
+        </svg>
+      </button>
       <button
         type="button"
         id="emap-full"
@@ -265,9 +278,17 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         card, trace the shortest chain of similarity links to any other work.
       </p>
       <p>
+        <strong>Sound</strong> (the speaker) plays the map rather than decorating it. The camera is
+        the listener: pan and zoom move you across and above the constellation, so what you are
+        looking at is what you hear nearby. A signal walks the similarity graph, one note a second,
+        and each research area has its own instrument — tape flutter for the heritage work, a
+        plucked string for the Baroque scores, a reed for musicology. Opening a work sounds it with
+        its nearest neighbours; a traced path plays as a phrase.
+      </p>
+      <p>
         <strong>Full screen</strong> turns the map into a small app: semantic search that runs
-        entirely in your browser, an audio rendering of the constellation, and a slider across{' '}
-        {variants.length} alternative projections of the same embedding.
+        entirely in your browser, and a slider across {variants.length} alternative projections of
+        the same embedding.
       </p>
       <p>
         <strong>Read the geometry loosely.</strong> The areas{' '}
@@ -840,7 +861,23 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     display: block;
   }
 
-  /* Expand ↔ close, one button, state-driven like the listen toggle. */
+  /* Sound on shows the waves and the accent; off is a bare speaker. */
+  #emap-listen .snd-on,
+  #emap-listen[aria-pressed='true'] .snd-off {
+    display: none;
+  }
+
+  #emap-listen[aria-pressed='true'] .snd-on {
+    display: block;
+  }
+
+  #emap-listen[aria-pressed='true'] {
+    color: var(--accent);
+    border-color: currentColor;
+    background: var(--accent-wash);
+  }
+
+  /* Expand ↔ close, one button, state-driven the same way. */
   #emap-full .cls {
     display: none;
   }
@@ -1415,85 +1452,434 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     const pulses: { edge: number; p: number; speed: number; rev?: boolean }[] = [];
     let nextPulse = 900;
 
-    /* ---- sound ----------------------------------------------------------
-     * Opt-in sonification, Web Audio only, no assets. The mapping mirrors the
-     * picture: theme → timbre, vertical position → pitch on a minor pentatonic
-     * (top is high), horizontal position → stereo pan. The context is created
-     * inside the button's click, which is what autoplay policy requires.
+    /**
+     * The walker: where the ambient signal currently sits, and its next hop.
+     *
+     * Hops follow edges, so successive notes are works the embedding says are
+     * neighbours. Preferring the least-recently-visited neighbour makes the
+     * walk cover the graph instead of oscillating between two nodes, and keeps
+     * it deterministic — the map sounds the same on every load.
      */
-    const listenBtn = document.getElementById('emap-listen');
-    let actx: AudioContext | null = null;
-    let master: GainNode | null = null;
-    let listening = false;
-    let voices = 0;
-    let stillTone = 0;
+    let walker = -1;
+    const visited = new Int32Array(nodes.length);
+    let visitClock = 0;
 
-    const SCALE = [0, 3, 5, 7, 10];
-    const TIMBRE: Record<string, [OscillatorType, number, number]> = {
-      'cultural-heritage': ['sine', 2600, 1],
-      multimodal: ['triangle', 3000, 1],
-      'symbolic-music': ['square', 1300, 0.5],
-      'dsp-tooling': ['sawtooth', 1700, 0.55],
-      musicology: ['sine', 3400, 1],
-      engineering: ['triangle', 2100, 0.85],
-    };
+    function nextHop(): { edge: number; to: number; rev: boolean } | null {
+      if (walker < 0 || !(neighbours.get(nodes[walker].id)?.size)) {
+        // Start, or a dead end: jump to the least-visited node that has edges.
+        let best = -1;
+        for (let i = 0; i < nodes.length; i++) {
+          if (!neighbours.get(nodes[i].id)?.size) continue;
+          if (filter !== 'all' && nodes[i].theme !== filter) continue;
+          if (best < 0 || visited[i] < visited[best]) best = i;
+        }
+        if (best < 0) return null;
+        walker = best;
+      }
 
-    function freqFor(i: number) {
-      const up = 1 - (nodes[i].y - minY) / spanY;
-      const step = Math.round(up * 14);
-      const degree = SCALE[step % 5] + 12 * Math.floor(step / 5);
-      return 110 * 2 ** (degree / 12);
+      const options = [...(neighbours.get(nodes[walker].id) ?? [])]
+        .map((id) => index.get(id)!)
+        .filter((j) => j !== undefined && (filter === 'all' || nodes[j].theme === filter));
+      if (!options.length) {
+        walker = -1;
+        return null;
+      }
+      const to = options.reduce((a, b) => (visited[b] < visited[a] ? b : a));
+      const edge = edgeAt.get(`${nodes[walker].id}|${nodes[to].id}`);
+      if (edge === undefined) return null;
+      const rev = edges[edge].s !== nodes[walker].id;
+      visited[to] = ++visitClock;
+      walker = to;
+      return { edge, to, rev };
     }
 
-    function pluck(i: number, gain = 0.1, dur = 1.1) {
-      if (!actx || !master || actx.state !== 'running' || voices >= 8) return;
+    /* ---- sound ------------------------------------------------------------
+     * An audio rendering of exactly the data the canvas draws — bare Web Audio,
+     * no samples, no library. Four decisions carry it:
+     *
+     * 1. The listener is the camera. Nodes are points on a plane in 3-D heard
+     *    through HRTF, and panning or zooming moves you across and above that
+     *    plane: what you are looking at is what you hear nearby, zooming in
+     *    descends among the works (close, dry), zooming out rises away from
+     *    them (distant, reverberant). Stereo pan alone is a picture of a map;
+     *    a listener in a room is a place.
+     *
+     * 2. The ambient layer is a walk, not a shuffle. The travelling pulses hop
+     *    along the kNN graph — each departs from where the last one landed —
+     *    and every arrival sounds its node on a slow beat. Consecutive notes
+     *    are therefore textually neighbouring works: the music is a tour of the
+     *    structure rather than a random sprinkle.
+     *
+     * 3. Timbre means something. Tape flutter for the cultural-heritage work,
+     *    a plucked string for the Baroque LilyPond scores, a reedy voice for
+     *    musicology, a resonant sweep for the DSP tooling, an FM bell for the
+     *    crossmodal work, a short click for engineering.
+     *
+     * 4. Filtering to one area re-tunes the map to that area's root, so the
+     *    legend is also a modal shift.
+     *
+     * All of it sits low: a drone at the edge of audibility, roughly one note a
+     * second, and a master gain well under speech.
+     */
+    let actx: AudioContext | null = null;
+    let master: GainNode | null = null;
+    let dryBus: GainNode | null = null;
+    let wetBus: GainNode | null = null;
+    let droneOscs: OscillatorNode[] = [];
+    let droneFilter: BiquadFilterNode | null = null;
+    let noiseBuffer: AudioBuffer | null = null;
+    let listening = false;
+    let voices = 0;
+
+    const BEAT = 1120; // ms — one ambient note per beat, ~54 bpm
+    const SCALE = [0, 3, 5, 7, 10]; // minor pentatonic: nothing can clash
+    const BASE = 110; // A2
+
+    /** Each research area gets its own tonal centre, in semitones from A. */
+    const ROOT: Record<string, number> = {
+      'cultural-heritage': 0,
+      multimodal: 3,
+      'symbolic-music': 5,
+      'dsp-tooling': 7,
+      musicology: -4,
+      engineering: 10,
+    };
+    let root = 0;
+
+    interface Voice {
+      wave: OscillatorType;
+      attack: number;
+      dur: number;
+      cutoff: number;
+      q: number;
+      gain: number;
+      /** carrier-relative FM ratio and depth in Hz */
+      fm?: [number, number];
+      /** flutter/vibrato rate in Hz and depth in cents */
+      wobble?: [number, number];
+      /** filter sweeps to this multiple of `cutoff` over the note */
+      sweep?: number;
+      /** breath noise mixed under the tone */
+      breath?: number;
+    }
+
+    const VOICES: Record<string, Voice> = {
+      // Wow and flutter: the sound of the medium this work rescues.
+      'cultural-heritage': {
+        wave: 'sine', attack: 0.05, dur: 2.6, cutoff: 1900, q: 0.7, gain: 1,
+        wobble: [4.6, 14],
+      },
+      // Two-operator bell — one modality ringing through another.
+      multimodal: {
+        wave: 'sine', attack: 0.006, dur: 2.2, cutoff: 3400, q: 0.8, gain: 0.85,
+        fm: [3.5, 190],
+      },
+      // Plucked string for the Baroque scores.
+      'symbolic-music': {
+        wave: 'triangle', attack: 0.003, dur: 1.1, cutoff: 2800, q: 3, gain: 0.9,
+        sweep: 0.28,
+      },
+      // A resonant filter sweep: the library's own subject matter.
+      'dsp-tooling': {
+        wave: 'sawtooth', attack: 0.01, dur: 1.6, cutoff: 420, q: 7, gain: 0.42,
+        sweep: 5.5,
+      },
+      // Reedy and breathy — the clarinet in the room.
+      musicology: {
+        wave: 'triangle', attack: 0.09, dur: 2.8, cutoff: 1500, q: 1.4, gain: 0.8,
+        wobble: [5.4, 8], breath: 0.05,
+      },
+      engineering: {
+        wave: 'square', attack: 0.002, dur: 0.55, cutoff: 1700, q: 2, gain: 0.4,
+        sweep: 0.4,
+      },
+    };
+
+    /** Deterministic noise, so the room sounds identical on every load. */
+    function makeNoise(seed: number, len: number, fn: (t: number, n: number) => number) {
+      let s = seed;
+      const next = () => ((s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x3fffffff - 1);
+      const out = new Float32Array(len);
+      for (let i = 0; i < len; i++) out[i] = fn(i / len, next());
+      return out;
+    }
+
+    function buildAudio() {
+      const ctx = new AudioContext();
+      actx = ctx;
+
+      const limiter = ctx.createDynamicsCompressor();
+      limiter.threshold.value = -20;
+      limiter.ratio.value = 10;
+      limiter.attack.value = 0.004;
+      master = ctx.createGain();
+      master.gain.value = 0;
+      master.connect(limiter);
+      limiter.connect(ctx.destination);
+
+      // A short, dark room. Bright reverb on a quiet page sounds like a fault.
+      const seconds = 2.6;
+      const len = Math.floor(ctx.sampleRate * seconds);
+      const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (let ch = 0; ch < 2; ch++) {
+        let lp = 0;
+        ir.getChannelData(ch).set(
+          makeNoise(ch === 0 ? 8191 : 65537, len, (t, n) => {
+            lp += (n - lp) * 0.22; // one-pole: a room, not a spring
+            return lp * (1 - t) ** 2.8;
+          }),
+        );
+      }
+      const convolver = ctx.createConvolver();
+      convolver.buffer = ir;
+
+      dryBus = ctx.createGain();
+      wetBus = ctx.createGain();
+      dryBus.gain.value = 1;
+      wetBus.gain.value = 0.32;
+      dryBus.connect(master);
+      wetBus.connect(convolver);
+      convolver.connect(master);
+
+      // Two seconds of pink-ish noise, reused by every breathy note.
+      const nlen = ctx.sampleRate * 2;
+      noiseBuffer = ctx.createBuffer(1, nlen, ctx.sampleRate);
+      let lp = 0;
+      noiseBuffer.getChannelData(0).set(
+        makeNoise(4243, nlen, (_t, n) => {
+          lp += (n - lp) * 0.06;
+          return lp * 3.2;
+        }),
+      );
+
+      // The drone: root and fifth, barely there, holding the tonality together.
+      droneFilter = ctx.createBiquadFilter();
+      droneFilter.type = 'lowpass';
+      droneFilter.frequency.value = 300;
+      droneFilter.Q.value = 0.8;
+      const droneGain = ctx.createGain();
+      droneGain.gain.value = 0.05;
+      droneFilter.connect(droneGain);
+      droneGain.connect(dryBus);
+      droneGain.connect(wetBus);
+
+      droneOscs = [-6, 6, 1200 - 4].map((detune, n) => {
+        const osc = ctx.createOscillator();
+        osc.type = n === 2 ? 'sine' : 'triangle';
+        osc.frequency.value = BASE / 2;
+        osc.detune.value = n === 2 ? 700 : detune; // the third is a fifth up
+        const g = ctx.createGain();
+        g.gain.value = n === 2 ? 0.35 : 1;
+        osc.connect(g);
+        g.connect(droneFilter!);
+        osc.start();
+        return osc;
+      });
+
+      // A slow swell on the drone's filter, so the floor is never quite static.
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.045;
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 90;
+      lfo.connect(lfoGain);
+      lfoGain.connect(droneFilter.frequency);
+      lfo.start();
+
+      if (ctx.listener.forwardZ) {
+        ctx.listener.forwardZ.value = -1;
+        ctx.listener.upY.value = 1;
+      }
+      moveListener();
+    }
+
+    /** Semitone → Hz in the current key. */
+    function freqFor(i: number) {
+      const up = 1 - (nodes[i].y - minY) / spanY; // top of the map is high
+      const step = Math.round(up * 14);
+      const degree = SCALE[step % 5] + 12 * Math.floor(step / 5);
+      return BASE * 2 ** ((degree + root) / 12);
+    }
+
+    /** Node position in the listener's world: the map, laid flat, 14 units wide. */
+    const SPREAD = 7;
+    const worldOf = (i: number) => ({
+      x: (((nodes[i].x - minX) / spanX) * 2 - 1) * SPREAD,
+      z: (((nodes[i].y - minY) / spanY) * 2 - 1) * SPREAD,
+    });
+
+    /**
+     * The camera becomes the listener: centre of the stage in data space, at a
+     * height set by the zoom. Zooming in walks you down into the constellation.
+     */
+    function moveListener() {
+      if (!actx || !fit) return;
+      const dx = ((w / 2 - tx) / k - offX) / fit + minX;
+      const dy = ((h / 2 - ty) / k - offY) / fit + minY;
+      const lx = (((dx - minX) / spanX) * 2 - 1) * SPREAD;
+      const lz = (((dy - minY) / spanY) * 2 - 1) * SPREAD;
+      const ly = Math.max(1.1, Math.min(13, 6 / k));
+      const t = actx.currentTime;
+      const L = actx.listener;
+      if (L.positionX) {
+        L.positionX.linearRampToValueAtTime(lx, t + 0.08);
+        L.positionY.linearRampToValueAtTime(ly, t + 0.08);
+        L.positionZ.linearRampToValueAtTime(lz, t + 0.08);
+      } else {
+        // Safari still ships only the deprecated setter.
+        (L as unknown as { setPosition(x: number, y: number, z: number): void }).setPosition(lx, ly, lz);
+      }
+      // High above the plane the room takes over; down among the nodes it dries out.
+      if (wetBus) wetBus.gain.setTargetAtTime(0.12 + (ly / 13) * 0.42, t, 0.25);
+    }
+
+    /**
+     * One note. `bright` (0..1) opens the filter — traced paths use it to make a
+     * strong similarity link audibly brighter than a weak one.
+     */
+    function pluck(i: number, gain = 0.09, bright = 0.5, when = 0) {
+      if (!actx || !dryBus || actx.state !== 'running' || voices >= 12) return;
+      const ctx = actx;
+      const v = VOICES[nodes[i].theme] ?? VOICES.multimodal;
+      const t0 = ctx.currentTime + when;
+      // News items are announcements, not works: shorter and further back.
+      const kindTrim = nodes[i].kind === 'news' ? 0.6 : nodes[i].kind === 'post' ? 0.85 : 1;
+      const peak = gain * v.gain * kindTrim;
+      const dur = v.dur * (nodes[i].kind === 'news' ? 0.6 : 1);
       voices++;
-      const [wave, cutoff, trim] = TIMBRE[nodes[i].theme] ?? ['sine', 2400, 1];
-      const t0 = actx.currentTime;
-      const osc = actx.createOscillator();
-      osc.type = wave;
+
+      const osc = ctx.createOscillator();
+      osc.type = v.wave;
       osc.frequency.value = freqFor(i);
-      const filter = actx.createBiquadFilter();
+
+      const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = cutoff;
-      const env = actx.createGain();
-      env.gain.setValueAtTime(0, t0);
-      env.gain.linearRampToValueAtTime(gain * trim, t0 + 0.012);
-      env.gain.exponentialRampToValueAtTime(0.0005, t0 + dur);
-      const pan = actx.createStereoPanner();
-      pan.pan.value = Math.max(-0.8, Math.min(0.8, ((nodes[i].x - minX) / spanX) * 1.6 - 0.8));
+      filter.Q.value = v.q;
+      const open = v.cutoff * (0.7 + bright * 0.9);
+      filter.frequency.setValueAtTime(open, t0);
+      if (v.sweep) filter.frequency.exponentialRampToValueAtTime(open * v.sweep, t0 + dur * 0.8);
+
+      const env = ctx.createGain();
+      env.gain.setValueAtTime(0.0001, t0);
+      env.gain.exponentialRampToValueAtTime(peak, t0 + v.attack);
+      env.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+
+      const panner = ctx.createPanner();
+      panner.panningModel = 'HRTF';
+      panner.distanceModel = 'inverse';
+      panner.refDistance = 2.2;
+      panner.maxDistance = 60;
+      panner.rolloffFactor = 1.15;
+      const p = worldOf(i);
+      if (panner.positionX) {
+        panner.positionX.value = p.x;
+        panner.positionY.value = 0;
+        panner.positionZ.value = p.z;
+      } else {
+        (panner as unknown as { setPosition(x: number, y: number, z: number): void }).setPosition(p.x, 0, p.z);
+      }
+
       osc.connect(filter);
       filter.connect(env);
-      env.connect(pan);
-      pan.connect(master);
+      env.connect(panner);
+      panner.connect(dryBus);
+      panner.connect(wetBus!);
       osc.start(t0);
-      osc.stop(t0 + dur + 0.05);
+      osc.stop(t0 + dur + 0.06);
+
+      const extras: AudioScheduledSourceNode[] = [];
+      if (v.fm) {
+        const mod = ctx.createOscillator();
+        mod.frequency.value = osc.frequency.value * v.fm[0];
+        const depth = ctx.createGain();
+        depth.gain.setValueAtTime(v.fm[1], t0);
+        depth.gain.exponentialRampToValueAtTime(1, t0 + dur * 0.6);
+        mod.connect(depth);
+        depth.connect(osc.frequency);
+        mod.start(t0);
+        mod.stop(t0 + dur + 0.06);
+        extras.push(mod);
+      }
+      if (v.wobble) {
+        const lfo = ctx.createOscillator();
+        lfo.frequency.value = v.wobble[0];
+        const depth = ctx.createGain();
+        depth.gain.value = v.wobble[1];
+        lfo.connect(depth);
+        depth.connect(osc.detune);
+        lfo.start(t0);
+        lfo.stop(t0 + dur + 0.06);
+        extras.push(lfo);
+      }
+      if (v.breath && noiseBuffer) {
+        const src = ctx.createBufferSource();
+        src.buffer = noiseBuffer;
+        src.loop = true;
+        const bp = ctx.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.value = osc.frequency.value * 2;
+        bp.Q.value = 1.2;
+        const bg = ctx.createGain();
+        bg.gain.setValueAtTime(0.0001, t0);
+        bg.gain.exponentialRampToValueAtTime(peak * v.breath, t0 + v.attack * 1.6);
+        bg.gain.exponentialRampToValueAtTime(0.0001, t0 + dur * 0.7);
+        src.connect(bp);
+        bp.connect(bg);
+        bg.connect(panner);
+        src.start(t0);
+        src.stop(t0 + dur + 0.06);
+        extras.push(src);
+      }
+
       osc.onended = () => {
         voices--;
+        panner.disconnect();
+        extras.forEach((e) => e.disconnect());
       };
     }
 
-    function playPath(path: number[]) {
-      path.forEach((i, k) => setTimeout(() => pluck(i, 0.12, 1.3), k * 240));
+    /** A node and its nearest neighbours, struck together: the graph as a chord. */
+    function chordFor(i: number) {
+      pluck(i, 0.1, 0.75);
+      [...(neighbours.get(nodes[i].id) ?? [])].slice(0, 3).forEach((id, n) => {
+        const j = index.get(id);
+        if (j !== undefined) pluck(j, 0.045, 0.4, 0.055 * (n + 1));
+      });
     }
 
-    listenBtn?.addEventListener('click', () => {
-      if (!actx) {
-        actx = new AudioContext();
-        // A gentle limiter so a hover flurry cannot clip.
-        const limiter = actx.createDynamicsCompressor();
-        limiter.threshold.value = -22;
-        limiter.ratio.value = 8;
-        master = actx.createGain();
-        master.gain.value = 0.5;
-        master.connect(limiter);
-        limiter.connect(actx.destination);
+    /** Retune everything to an area's root; glide, never jump. */
+    function setRoot(theme: string | null) {
+      root = theme ? (ROOT[theme] ?? 0) : 0;
+      if (!actx) return;
+      const t = actx.currentTime;
+      droneOscs.forEach((osc) => {
+        osc.frequency.setTargetAtTime((BASE / 2) * 2 ** (root / 12), t, 0.6);
+      });
+    }
+
+    function setListening(on: boolean) {
+      if (on && !actx) buildAudio();
+      if (!actx || !master) return;
+      listening = on;
+      listenBtn?.setAttribute('aria-pressed', String(on));
+      listenBtn?.setAttribute('aria-label', on ? 'Mute the map' : 'Listen to the map');
+      if (on) {
+        void actx.resume();
+        master.gain.cancelScheduledValues(actx.currentTime);
+        master.gain.setTargetAtTime(0.34, actx.currentTime, 0.4);
+        moveListener();
+        start();
+      } else {
+        // Fade before suspending, or the drone stops with a click.
+        master.gain.setTargetAtTime(0, actx.currentTime, 0.15);
+        const ctx = actx;
+        window.setTimeout(() => {
+          if (!listening) void ctx.suspend();
+        }, 600);
       }
-      listening = !listening;
-      listenBtn.setAttribute('aria-pressed', String(listening));
-      if (listening) void actx.resume();
-      else void actx.suspend();
-    });
+    }
+
+    const listenBtn = document.getElementById('emap-listen');
+    listenBtn?.addEventListener('click', () => setListening(!listening));
 
     /* ---- the frame ------------------------------------------------------ */
     let raf = 0;
@@ -1537,6 +1923,11 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
           project();
           morphing = false;
         }
+      }
+
+      // The camera is the listener; follow it while it is actually moving.
+      if (listening && (Math.abs(kT - k) > 0.001 || Math.abs(txT - tx) > 0.5 || dragging)) {
+        moveListener();
       }
 
       ctx.clearRect(0, 0, w, h);
@@ -1642,30 +2033,28 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         ctx.stroke();
       }
 
-      // --- pulses
-      if (!still) {
-        nextPulse -= dt;
-        // Listening raises the tempo a little: the pulses are the notes.
-        if (nextPulse <= 0 && pulses.length < (listening ? 7 : 5) && edges.length) {
-          // Deterministic-ish rotation through the edge list: no Math.random,
-          // so nothing flickers differently on a reload.
-          const edge = Math.floor(clock / 137) % edges.length;
-          pulses.push({
-            edge,
-            p: 0,
-            speed: 0.00042 + (pulses.length % 3) * 0.00008,
-          });
-          pluck(index.get(edges[edge].s)!, 0.05, 0.8);
-          nextPulse = listening ? 400 : 620;
+      // --- pulses: a signal walking the graph, one hop per beat
+      nextPulse -= dt;
+      if (nextPulse <= 0 && edges.length) {
+        const hop = nextHop();
+        if (hop !== null) {
+          // One beat per hop, so arrivals land on the grid and the ambient
+          // layer is a rhythm rather than a sprinkle.
+          if (!still) pulses.push({ edge: hop.edge, p: 0, speed: 1 / BEAT, rev: hop.rev });
+          else if (listening) pluck(hop.to, 0.055, 0.55); // no pulses to ride
         }
+        nextPulse = BEAT;
+      }
 
+      if (!still) {
         for (let i = pulses.length - 1; i >= 0; i--) {
           const pulse = pulses[i];
           pulse.p += pulse.speed * dt;
           if (pulse.p >= 1) {
-            // The pulse lands: voice its destination.
+            // The pulse lands: its destination is the note.
             const done = edges[pulse.edge];
-            pluck(index.get(pulse.rev ? done.s : done.t)!, 0.045, 0.7);
+            const to = index.get(pulse.rev ? done.s : done.t)!;
+            pluck(to, pathEdgeSet.has(pulse.edge) ? 0.1 : 0.055, 0.3 + done.w * 0.7);
             pulses.splice(i, 1);
             continue;
           }
@@ -1685,19 +2074,6 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
           ctx.beginPath();
           ctx.arc(px, py, onPath ? 2.3 : 1.9, 0, Math.PI * 2);
           ctx.fill();
-        }
-      }
-
-      // With motion reduced there are no pulses to voice; keep an opted-in
-      // audio layer alive on a slow deterministic walk instead.
-      if (still && listening) {
-        stillTone += dt;
-        if (stillTone >= 700 && edges.length) {
-          stillTone = 0;
-          const e = edges[Math.floor(clock / 700) % edges.length];
-          pluck(index.get(e.s)!, 0.05, 0.9);
-          const target = index.get(e.t)!;
-          setTimeout(() => pluck(target, 0.045, 0.9), 220);
         }
       }
 
@@ -1846,7 +2222,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       const link = card!.querySelector<HTMLAnchorElement>('.card-link')!;
       link.href = n.url.startsWith('/news/#') ? n.url.toLowerCase() : n.url;
       card!.hidden = false;
-      pluck(i, 0.14, 1.2);
+      chordFor(i);
 
       // Ease the camera so the chosen node is centred and a little closer in.
       kT = Math.max(k, 1.55);
@@ -1913,7 +2289,12 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       card!.hidden = false;
 
       frameNodes(path);
-      playPath(path);
+      // The route as a phrase, a note every half beat. Each note's brightness
+      // is its link's similarity, so a tight chain sounds clearer than a stretch.
+      path.forEach((n, step) => {
+        const w2 = step === 0 ? 0.9 : edges[edgeAt.get(`${nodes[path[step - 1]].id}|${nodes[n].id}`)!].w;
+        pluck(n, 0.11, 0.25 + w2 * 0.75, (step * BEAT) / 2000);
+      });
     }
 
     /* ---- pointer --------------------------------------------------------- */
@@ -2081,6 +2462,10 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         closeCard();
         clearSearch();
         hint?.setAttribute('data-gone', '');
+        // Choosing an area is also a modal shift: the map retunes to its root
+        // and the walker restarts inside it.
+        setRoot(filter === 'all' ? null : filter);
+        walker = -1;
 
         // Choosing an area flies the camera to it. Leaving the view wherever it
         // happened to be would often frame nothing at all.
@@ -2106,6 +2491,11 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         posT[n * 2 + 1] = v.xy[n][1];
       }
       morphing = true;
+      // The floor lifts while the projection is unsettled, then settles with it.
+      if (actx && droneFilter && listening) {
+        droneFilter.frequency.setTargetAtTime(620, actx.currentTime, 0.15);
+        droneFilter.frequency.setTargetAtTime(300, actx.currentTime + 1.2, 0.8);
+      }
       if (variantOut) variantOut.textContent = describeVariant(v);
       variantInput?.setAttribute('aria-valuetext', describeVariant(v));
       start();
@@ -2321,6 +2711,11 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         else if (raf) {
           cancelAnimationFrame(raf);
           raf = 0;
+        }
+        // Scrolled away, the drone would otherwise hum on under the CV page.
+        if (actx && listening) {
+          if (visible) void actx.resume();
+          else void actx.suspend();
         }
       },
       { threshold: 0.01 },
