@@ -115,6 +115,14 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     }
   </div>
 
+  {/* JS-only controls; everything here is an enhancement over the canvas. */}
+  <div class="tools">
+    <button type="button" id="emap-listen" class="tool-btn" aria-pressed="false">
+      <span class="off">▶ listen to the map</span>
+      <span class="on">■ mute</span>
+    </button>
+  </div>
+
   <div class="stage">
     <canvas id="emap" aria-hidden="true"></canvas>
 
@@ -127,6 +135,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       <h3 class="card-title"></h3>
       <p class="card-meta"></p>
       <a class="card-link" href="/">open</a>
+      <button type="button" class="card-walk">⌁ trace a path from here</button>
       <button type="button" class="card-close" aria-label="Close">×</button>
     </aside>
 
@@ -153,6 +162,10 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     embedding is only {num(sanity.silhouetteVsThemesEmbedding)}. The lines are computed in that
     embedding rather than in the picture, so who sits next to whom means more than how far apart
     things look.
+    <br />
+    <em>Trace a path</em>, on any node's card, walks those lines between two works.{' '}
+    <em>Listen</em> plays the map: each research area has a timbre, height is pitch, and horizontal
+    position is where a note sits in the stereo field.
   </VizNote>
 
   {/*
@@ -333,6 +346,64 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     font-variant-numeric: tabular-nums;
   }
 
+  /* --- tools ----------------------------------------------------------- */
+  /* Meaningless without the canvas, so they never render for no-JS visitors. */
+  .tools {
+    display: none;
+  }
+
+  :global(html.js) .tools {
+    display: grid;
+    justify-items: start;
+    gap: 0.6rem;
+    margin-block-end: 0.8rem;
+  }
+
+  .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 0.25em 0.7em;
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .tool-btn:hover {
+    color: var(--fg);
+    border-color: var(--rule-strong);
+  }
+
+  .tool-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .tool-btn[aria-pressed='true'] {
+    color: var(--accent);
+    border-color: currentColor;
+    background: var(--accent-wash);
+  }
+
+  /* One label at a time, driven by state rather than by script-managed text. */
+  .tool-btn .on {
+    display: none;
+  }
+
+  .tool-btn[aria-pressed='true'] .on {
+    display: inline;
+  }
+
+  .tool-btn[aria-pressed='true'] .off {
+    display: none;
+  }
+
   /* --- stage ----------------------------------------------------------- */
   .stage {
     position: relative;
@@ -491,6 +562,27 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
 
   .card-link:hover {
     text-decoration: underline;
+  }
+
+  .card-walk {
+    display: block;
+    margin-block-start: 0.35rem;
+    background: none;
+    border: 0;
+    padding: 0.2rem 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    cursor: pointer;
+  }
+
+  .card-walk:hover {
+    color: var(--card-accent, var(--accent));
+  }
+
+  /* `display: block` above outranks the UA's [hidden] rule; restore it. */
+  .card-walk[hidden] {
+    display: none;
   }
 
   .card-close {
@@ -790,12 +882,153 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       neighbours.get(e.t)!.add(e.s);
     }
 
+    /* ---- latent walk ----------------------------------------------------
+     * The edges are a kNN graph over the embedding, which turns "how do I get
+     * from this work to that one" into a shortest-path question. Costs favour
+     * strong similarities, with a small per-hop tax so the walk prefers a few
+     * defensible links over many weak ones.
+     */
+    const adjacency = new Map<string, { to: string; w: number }[]>();
+    const edgeAt = new Map<string, number>();
+    edges.forEach((e, i) => {
+      if (!adjacency.has(e.s)) adjacency.set(e.s, []);
+      if (!adjacency.has(e.t)) adjacency.set(e.t, []);
+      adjacency.get(e.s)!.push({ to: e.t, w: e.w });
+      adjacency.get(e.t)!.push({ to: e.s, w: e.w });
+      edgeAt.set(`${e.s}|${e.t}`, i);
+      edgeAt.set(`${e.t}|${e.s}`, i);
+    });
+
+    let walkArmed = false;
+    let pathActive = false;
+    const pathNodeSet = new Set<number>();
+    const pathEdgeSet = new Set<number>();
+
+    function shortestPath(fromId: string, toId: string): number[] | null {
+      const dist = new Map<string, number>([[fromId, 0]]);
+      const prev = new Map<string, string>();
+      const settled = new Set<string>();
+      // Dijkstra with a linear scan: at 42 nodes a heap is pure ceremony.
+      for (;;) {
+        let u: string | null = null;
+        let best = Infinity;
+        for (const [id, d] of dist) {
+          if (!settled.has(id) && d < best) {
+            u = id;
+            best = d;
+          }
+        }
+        if (u === null) return null;
+        if (u === toId) break;
+        settled.add(u);
+        for (const { to, w } of adjacency.get(u) ?? []) {
+          const d = best + (1 - w) + 0.02;
+          if (d < (dist.get(to) ?? Infinity)) {
+            dist.set(to, d);
+            prev.set(to, u);
+          }
+        }
+      }
+      const ids = [toId];
+      while (ids[0] !== fromId) ids.unshift(prev.get(ids[0])!);
+      return ids.map((id) => index.get(id)!);
+    }
+
+    function clearPath() {
+      walkArmed = false;
+      pathActive = false;
+      pathNodeSet.clear();
+      pathEdgeSet.clear();
+    }
+
     /* ---- travelling pulses ----------------------------------------------
      * A slow signal running along an edge every so often. It is the whole
-     * reason the map reads as alive rather than as a screenshot.
+     * reason the map reads as alive rather than as a screenshot. `rev` runs a
+     * pulse against the edge's stored direction (paths need both); a negative
+     * `p` is a start delay, which is how a traced path becomes a cascade.
      */
-    const pulses: { edge: number; p: number; speed: number }[] = [];
+    const pulses: { edge: number; p: number; speed: number; rev?: boolean }[] = [];
     let nextPulse = 900;
+
+    /* ---- sound ----------------------------------------------------------
+     * Opt-in sonification, Web Audio only, no assets. The mapping mirrors the
+     * picture: theme → timbre, vertical position → pitch on a minor pentatonic
+     * (top is high), horizontal position → stereo pan. The context is created
+     * inside the button's click, which is what autoplay policy requires.
+     */
+    const listenBtn = document.getElementById('emap-listen');
+    let actx: AudioContext | null = null;
+    let master: GainNode | null = null;
+    let listening = false;
+    let voices = 0;
+    let stillTone = 0;
+
+    const SCALE = [0, 3, 5, 7, 10];
+    const TIMBRE: Record<string, [OscillatorType, number, number]> = {
+      'cultural-heritage': ['sine', 2600, 1],
+      multimodal: ['triangle', 3000, 1],
+      'symbolic-music': ['square', 1300, 0.5],
+      'dsp-tooling': ['sawtooth', 1700, 0.55],
+      musicology: ['sine', 3400, 1],
+      engineering: ['triangle', 2100, 0.85],
+    };
+
+    function freqFor(i: number) {
+      const up = 1 - (nodes[i].y - minY) / spanY;
+      const step = Math.round(up * 14);
+      const degree = SCALE[step % 5] + 12 * Math.floor(step / 5);
+      return 110 * 2 ** (degree / 12);
+    }
+
+    function pluck(i: number, gain = 0.1, dur = 1.1) {
+      if (!actx || !master || actx.state !== 'running' || voices >= 8) return;
+      voices++;
+      const [wave, cutoff, trim] = TIMBRE[nodes[i].theme] ?? ['sine', 2400, 1];
+      const t0 = actx.currentTime;
+      const osc = actx.createOscillator();
+      osc.type = wave;
+      osc.frequency.value = freqFor(i);
+      const filter = actx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = cutoff;
+      const env = actx.createGain();
+      env.gain.setValueAtTime(0, t0);
+      env.gain.linearRampToValueAtTime(gain * trim, t0 + 0.012);
+      env.gain.exponentialRampToValueAtTime(0.0005, t0 + dur);
+      const pan = actx.createStereoPanner();
+      pan.pan.value = Math.max(-0.8, Math.min(0.8, ((nodes[i].x - minX) / spanX) * 1.6 - 0.8));
+      osc.connect(filter);
+      filter.connect(env);
+      env.connect(pan);
+      pan.connect(master);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.05);
+      osc.onended = () => {
+        voices--;
+      };
+    }
+
+    function playPath(path: number[]) {
+      path.forEach((i, k) => setTimeout(() => pluck(i, 0.12, 1.3), k * 240));
+    }
+
+    listenBtn?.addEventListener('click', () => {
+      if (!actx) {
+        actx = new AudioContext();
+        // A gentle limiter so a hover flurry cannot clip.
+        const limiter = actx.createDynamicsCompressor();
+        limiter.threshold.value = -22;
+        limiter.ratio.value = 8;
+        master = actx.createGain();
+        master.gain.value = 0.5;
+        master.connect(limiter);
+        limiter.connect(actx.destination);
+      }
+      listening = !listening;
+      listenBtn.setAttribute('aria-pressed', String(listening));
+      if (listening) void actx.resume();
+      else void actx.suspend();
+    });
 
     /* ---- the frame ------------------------------------------------------ */
     let raf = 0;
@@ -882,19 +1115,22 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         // Interaction weights, eased rather than switched.
         const isHot = i === hover || i === picked;
         const isNear = near?.has(nodes[i].id) ?? false;
+        const onPath = pathActive && pathNodeSet.has(i);
         s.glow += ((isHot ? 1 : 0) - s.glow) * 0.2;
-        s.lit += ((isHot || isNear ? 1 : 0) - s.lit) * 0.2;
+        s.lit += ((isHot || isNear || onPath ? 1 : 0) - s.lit) * 0.2;
       }
 
       // --- edges
       for (let i = 0; i < edges.length; i++) {
         const e = edges[i];
-        const a = state[index.get(e.s)!];
-        const b = state[index.get(e.t)!];
+        const ia = index.get(e.s)!;
+        const ib = index.get(e.t)!;
+        const a = state[ia];
+        const b = state[ib];
         if (!a || !b) continue;
 
-        const na = nodes[index.get(e.s)!];
-        const nb = nodes[index.get(e.t)!];
+        const na = nodes[ia];
+        const nb = nodes[ib];
         const show = Math.min(a.appear, b.appear);
         if (show < 0.02) continue;
 
@@ -902,7 +1138,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
           hoveredId === e.s || hoveredId === e.t ? 1 : 0,
           Math.max(a.glow, b.glow),
         );
-        const dim = dimFor(na) * dimFor(nb);
+        const dim = dimFor(na, ia) * dimFor(nb, ib);
 
         // While a highlight eases out, hover/picked may already be gone; fall
         // back to the edge's own colour rather than indexing nodes[-1].
@@ -914,9 +1150,12 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         // into the background, which is what a dark-on-dark grey line does.
         const base = colours.get(na.theme) ?? ink.rule;
 
-        ctx.globalAlpha = show * dim * (0.2 + lit * 0.62);
-        ctx.strokeStyle = lit > 0.05 ? litColour : base;
-        ctx.lineWidth = 1 + lit * 0.8;
+        // A traced path is the one moment the map argues a single line of
+        // thought; everything else steps far back.
+        const onPath = pathEdgeSet.has(i);
+        ctx.globalAlpha = onPath ? show * 0.9 : show * dim * (0.2 + lit * 0.62);
+        ctx.strokeStyle = onPath ? ink.accent : lit > 0.05 ? litColour : base;
+        ctx.lineWidth = onPath ? 1.8 : 1 + lit * 0.8;
         curve(a.sx, a.sy, b.sx, b.sy, i);
         ctx.stroke();
       }
@@ -924,36 +1163,59 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       // --- pulses
       if (!still) {
         nextPulse -= dt;
-        if (nextPulse <= 0 && pulses.length < 5 && edges.length) {
+        // Listening raises the tempo a little: the pulses are the notes.
+        if (nextPulse <= 0 && pulses.length < (listening ? 7 : 5) && edges.length) {
           // Deterministic-ish rotation through the edge list: no Math.random,
           // so nothing flickers differently on a reload.
+          const edge = Math.floor(clock / 137) % edges.length;
           pulses.push({
-            edge: Math.floor(clock / 137) % edges.length,
+            edge,
             p: 0,
             speed: 0.00042 + (pulses.length % 3) * 0.00008,
           });
-          nextPulse = 620;
+          pluck(index.get(edges[edge].s)!, 0.05, 0.8);
+          nextPulse = listening ? 400 : 620;
         }
 
         for (let i = pulses.length - 1; i >= 0; i--) {
           const pulse = pulses[i];
           pulse.p += pulse.speed * dt;
           if (pulse.p >= 1) {
+            // The pulse lands: voice its destination.
+            const done = edges[pulse.edge];
+            pluck(index.get(pulse.rev ? done.s : done.t)!, 0.045, 0.7);
             pulses.splice(i, 1);
             continue;
           }
+          if (pulse.p < 0) continue;
           const e = edges[pulse.edge];
-          const a = state[index.get(e.s)!];
+          const ia = index.get(e.s)!;
+          const a = state[ia];
           const b = state[index.get(e.t)!];
           if (!a || !b) continue;
-          const na = nodes[index.get(e.s)!];
-          const [px, py] = along(a.sx, a.sy, b.sx, b.sy, pulse.edge, pulse.p);
+          const na = nodes[ia];
+          const t = pulse.rev ? 1 - pulse.p : pulse.p;
+          const [px, py] = along(a.sx, a.sy, b.sx, b.sy, pulse.edge, t);
           const fade = Math.sin(pulse.p * Math.PI);
-          ctx.globalAlpha = fade * 0.75 * dimFor(na);
-          ctx.fillStyle = colours.get(na.theme) ?? ink.accent;
+          const onPath = pathEdgeSet.has(pulse.edge);
+          ctx.globalAlpha = fade * 0.75 * (onPath ? 1 : dimFor(na, ia));
+          ctx.fillStyle = onPath ? ink.accent : (colours.get(na.theme) ?? ink.accent);
           ctx.beginPath();
-          ctx.arc(px, py, 1.9, 0, Math.PI * 2);
+          ctx.arc(px, py, onPath ? 2.3 : 1.9, 0, Math.PI * 2);
           ctx.fill();
+        }
+      }
+
+      // With motion reduced there are no pulses to voice; keep an opted-in
+      // audio layer alive on a slow deterministic walk instead.
+      if (still && listening) {
+        stillTone += dt;
+        if (stillTone >= 700 && edges.length) {
+          stillTone = 0;
+          const e = edges[Math.floor(clock / 700) % edges.length];
+          pluck(index.get(e.s)!, 0.05, 0.9);
+          const target = index.get(e.t)!;
+          setTimeout(() => pluck(target, 0.045, 0.9), 220);
         }
       }
 
@@ -964,7 +1226,8 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         if (s.appear < 0.02) continue;
 
         const colour = colours.get(n.theme) ?? ink.accent;
-        const alpha = s.appear * dimFor(n) * (hoveredId ? 0.42 + s.lit * 0.58 : 1);
+        const alpha =
+          s.appear * dimFor(n, i) * (hoveredId && !pathActive ? 0.42 + s.lit * 0.58 : 1);
         const r = (s.r + s.glow * 2.6) * Math.min(k, 1.6);
 
         // halo
@@ -984,8 +1247,12 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         ctx.strokeStyle = colour;
         ctx.stroke();
 
-        // label: on demand, or everywhere once zoomed in
-        const wantLabel = Math.max(s.glow, k > 1.7 ? Math.min(1, (k - 1.7) * 1.6) : 0);
+        // label: on demand, along a traced path, or everywhere once zoomed in
+        const wantLabel = Math.max(
+          s.glow,
+          pathActive && pathNodeSet.has(i) ? 0.85 : 0,
+          k > 1.7 ? Math.min(1, (k - 1.7) * 1.6) : 0,
+        );
         if (wantLabel > 0.03) {
           ctx.globalAlpha = alpha * wantLabel;
           ctx.fillStyle = s.glow > 0.4 ? ink.fg : ink.dim;
@@ -1001,8 +1268,9 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       if (visible) raf = requestAnimationFrame(frame);
     }
 
-    /** Dim anything outside the active filter, without hiding it. */
-    function dimFor(n: Node) {
+    /** Dim anything outside the active filter or the traced path, without hiding it. */
+    function dimFor(n: Node, i: number) {
+      if (pathActive) return pathNodeSet.has(i) ? 1 : 0.1;
       return filter === 'all' || n.theme === filter ? 1 : 0.12;
     }
 
@@ -1080,7 +1348,11 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       tip!.style.top = `${Math.max(4, Math.min(my + 16, h - box.height - 8))}px`;
     }
 
+    const walkBtn = card.querySelector<HTMLButtonElement>('.card-walk')!;
+
     function openCard(i: number) {
+      clearPath();
+      walkBtn.hidden = false;
       const n = nodes[i];
       picked = i;
       const colour = colours.get(n.theme) ?? ink.accent;
@@ -1091,6 +1363,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       const link = card!.querySelector<HTMLAnchorElement>('.card-link')!;
       link.href = n.url.startsWith('/news/#') ? n.url.toLowerCase() : n.url;
       card!.hidden = false;
+      pluck(i, 0.14, 1.2);
 
       // Ease the camera so the chosen node is centred and a little closer in.
       kT = Math.max(k, 1.55);
@@ -1100,8 +1373,64 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     }
 
     function closeCard() {
+      clearPath();
+      walkBtn.hidden = false;
       picked = -1;
       card!.hidden = true;
+    }
+
+    /* ---- tracing a walk -------------------------------------------------- */
+    walkBtn.addEventListener('click', () => {
+      if (picked < 0) return;
+      walkArmed = true;
+      walkBtn.hidden = true;
+      card!.querySelector('.card-kind')!.textContent = 'latent walk';
+      card!.querySelector('.card-meta')!.textContent =
+        'now click any other node to trace the closest chain of works';
+    });
+
+    function buildPath(from: number, to: number) {
+      walkArmed = false;
+      const path = shortestPath(nodes[from].id, nodes[to].id);
+      const kindEl = card!.querySelector('.card-kind')!;
+      const titleEl = card!.querySelector('.card-title')!;
+      const metaEl = card!.querySelector('.card-meta')!;
+      kindEl.textContent = 'latent walk';
+      titleEl.textContent = `${nodes[from].short} → ${nodes[to].short}`;
+
+      if (!path) {
+        // The kNN graph is not guaranteed connected; say so instead of nothing.
+        metaEl.textContent = 'no chain of similarity links joins these two';
+        walkBtn.hidden = false;
+        return;
+      }
+
+      pathActive = true;
+      pathNodeSet.clear();
+      path.forEach((i) => pathNodeSet.add(i));
+      pathEdgeSet.clear();
+      for (let k2 = 0; k2 < path.length - 1; k2++) {
+        const idx = edgeAt.get(`${nodes[path[k2]].id}|${nodes[path[k2 + 1]].id}`)!;
+        pathEdgeSet.add(idx);
+        // A staggered cascade of pulses runs the route, so direction is legible.
+        pulses.push({
+          edge: idx,
+          p: -k2 * 0.5,
+          speed: 0.0009,
+          rev: edges[idx].s !== nodes[path[k2]].id,
+        });
+      }
+
+      const hops = path.length - 1;
+      metaEl.textContent = `${hops} ${hops === 1 ? 'hop' : 'hops'} · ${path.map((i) => nodes[i].short).join(' → ')}`;
+      const link = card!.querySelector<HTMLAnchorElement>('.card-link')!;
+      const url = nodes[to].url;
+      link.href = url.startsWith('/news/#') ? url.toLowerCase() : url;
+      walkBtn.hidden = true;
+      card!.hidden = false;
+
+      frameNodes(path);
+      playPath(path);
     }
 
     /* ---- pointer --------------------------------------------------------- */
@@ -1147,6 +1476,8 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         hover = hit;
         canvas!.classList.toggle('over', hit >= 0);
         if (hit < 0) tip!.hidden = true;
+        // Brushing across the constellation plays it like an instrument.
+        if (hit >= 0) pluck(hit, 0.07, 0.55);
       }
       if (hit >= 0) showTip(hit, pointerX, pointerY);
     });
@@ -1162,8 +1493,16 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       if (moved < 6) {
         const rect = canvas!.getBoundingClientRect();
         const hit = pick(event.clientX - rect.left, event.clientY - rect.top);
-        if (hit >= 0) openCard(hit);
-        else closeCard();
+        if (walkArmed && picked >= 0 && hit >= 0 && hit !== picked) {
+          buildPath(picked, hit);
+        } else if (walkArmed && picked >= 0) {
+          // Clicked away while picking a destination: restore the plain card.
+          openCard(picked);
+        } else if (hit >= 0) {
+          openCard(hit);
+        } else {
+          closeCard();
+        }
       }
     });
 
@@ -1300,6 +1639,11 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       else if (raf) {
         cancelAnimationFrame(raf);
         raf = 0;
+      }
+      // A backgrounded tab must fall silent, and come back only if it was on.
+      if (actx) {
+        if (document.hidden) void actx.suspend();
+        else if (listening) void actx.resume();
       }
     });
 
