@@ -212,6 +212,18 @@ const bibId = `bib-${pub.id.replace(/[^a-zA-Z0-9]/g, '-')}`;
     width: fit-content;
   }
 
+  /* inline-flex above suppresses the native marker, so supply one: without it
+     these read as two grey words rather than as toggles. */
+  .disclosure summary::before {
+    content: '+';
+    color: var(--accent);
+    margin-inline-end: 0.5ch;
+  }
+
+  .disclosure[open] > summary::before {
+    content: '−';
+  }
+
   .disclosure summary:hover {
     color: var(--accent);
   }

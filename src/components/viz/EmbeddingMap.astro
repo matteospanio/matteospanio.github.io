@@ -1,5 +1,6 @@
 ---
 import map from '@/data/viz/embedding-map.json';
+import VizNote from './VizNote.astro';
 
 /**
  * The research corpus as a living constellation.
@@ -17,6 +18,21 @@ import map from '@/data/viz/embedding-map.json';
 const { nodes, edges, themes, sanity } = map;
 
 const num = (v: unknown, digits = 2) => (typeof v === 'number' ? v.toFixed(digits) : 'n/a');
+
+/**
+ * How well the declared areas hold up, in words, derived rather than asserted.
+ *
+ * This number moves every time the embedding is rebuilt — it has already gone
+ * from slightly negative to +0.30 as papers were added — so a hand-written
+ * reading of it silently becomes a lie. Say what the current value means.
+ */
+function separation(s: unknown) {
+  if (typeof s !== 'number') return 'are hard to score';
+  if (s < 0.05) return 'do not separate at all';
+  if (s < 0.25) return 'barely separate';
+  if (s < 0.5) return 'separate only weakly';
+  return 'separate cleanly';
+}
 
 /** Theme colours resolve through the palette so they follow the light/dark switch. */
 const TOKEN: Record<string, string> = {
@@ -54,9 +70,27 @@ const KIND_LABEL: Record<string, string> = {
 };
 
 const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
+
+/**
+ * The stage takes the projection's own proportions.
+ *
+ * The layout scales uniformly — it has to, or the distances stop meaning
+ * anything — so a frame whose shape disagrees with the data's is padding.
+ * A hardcoded 16/9 against this constellation left over half the box empty,
+ * and re-running the embedding changes the extent, so it is measured here
+ * rather than guessed. Clamped in case a future run comes out extreme.
+ */
+const xs = nodes.map((n) => n.x);
+const ys = nodes.map((n) => n.y);
+const spanX = Math.max(...xs) - Math.min(...xs) || 1;
+const spanY = Math.max(...ys) - Math.min(...ys) || 1;
+const aspect = Math.min(2.4, Math.max(0.8, spanX / spanY));
+
+/** Height first: the figure is then only as wide as that shape needs. */
+const shape = `--aspect: ${aspect.toFixed(3)}`;
 ---
 
-<figure class="map" data-emap style={palette}>
+<figure class="map" data-emap style={`${palette};${shape}`}>
   <div class="legend" role="group" aria-label="Highlight one research area">
     <button type="button" class="key key--all" data-filter="all" aria-pressed="true">
       all {nodes.length}
@@ -103,17 +137,23 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
   </div>
 
   <figcaption>
-    {nodes.length} items{' '}— {count('paper')} papers, {count('project')} projects,{' '}
-    {count('post')} posts, {count('news')} news{' '}— embedded with {map.model} over{' '}
-    {sanity.chunks} text chunks and projected with UMAP; lines join the closest pairs.
-    <br />
-    <strong>Read the geometry loosely.</strong> Scored against my declared research areas, the
-    projection's silhouette is {num(sanity.silhouetteVsThemes)} — the areas do not separate at all,
-    because nearly everything here is audio, music and machine learning (within-area similarity{' '}
-    {num(sanity.meanIntraTheme)}, between-area {num(sanity.meanInterTheme)}). The lines are computed
-    in the embedding rather than in this picture, so who sits next to whom still means something
-    even where the distances do not.
+    {count('paper')} papers, {count('project')} projects, {count('post')} posts and{' '}
+    {count('news')} news, placed by how similar their text is.
   </figcaption>
+
+  <VizNote>
+    Titles and abstracts are embedded with {map.model} over {sanity.chunks} text chunks and projected
+    with UMAP; the lines join the closest pairs. Colour comes from my declared research areas, not
+    from clustering the embedding.
+    <br />
+    <strong>Read the geometry loosely.</strong> The areas {separation(sanity.silhouetteVsThemes)} here
+    — silhouette {num(sanity.silhouetteVsThemes)} — because nearly everything is audio, music and
+    machine learning: within-area similarity {num(sanity.meanIntraTheme)}, between-area{' '}
+    {num(sanity.meanInterTheme)}. And the picture flatters them, since the same score in the full
+    embedding is only {num(sanity.silhouetteVsThemesEmbedding)}. The lines are computed in that
+    embedding rather than in the picture, so who sits next to whom means more than how far apart
+    things look.
+  </VizNote>
 
   {/*
     Always server-rendered. Visually hidden once the canvas is live, but it stays
@@ -158,6 +198,10 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
 <style>
   .map {
     margin: 0;
+    /* Legend, stage and caption share the stage's width, so the figure reads as
+       one block instead of a wide legend stranded above a narrow map. */
+    --stage-height: 38rem;
+    max-width: min(100%, calc(var(--stage-height) * var(--aspect)));
   }
 
   /* --- legend ---------------------------------------------------------- */
@@ -231,8 +275,7 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
     /* width first: aspect-ratio combined with a min-height would let the box
        compute a width wider than the viewport and scroll the whole page. */
     width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 34rem;
+    aspect-ratio: var(--aspect);
     overflow: hidden;
     /* Only meaningful with JS; the script reveals it. */
     display: none;
@@ -247,12 +290,6 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
   }
 
   @media (max-width: 700px) {
-    /* The projection is about 2.3:1, so a taller box only adds empty margin.
-       Stay close to the data's own shape and let panning do the rest. */
-    .stage {
-      aspect-ratio: 3 / 2;
-    }
-
     .full {
       display: none;
     }
@@ -409,6 +446,10 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
     color: var(--fg-faint);
     pointer-events: none;
     transition: opacity var(--dur) var(--ease-out);
+    /* On a phone the stage is short enough that the hint lands on top of the
+       lower nodes; a wash keeps both readable until the first touch clears it. */
+    background: color-mix(in oklab, var(--bg-1) 80%, transparent);
+    padding: 0.1rem 0.45rem;
   }
 
   .hint[data-gone] {
@@ -424,8 +465,11 @@ const count = (kind: string) => nodes.filter((n) => n.kind === kind).length;
     line-height: 1.55;
   }
 
-  figcaption strong {
+  /* The caveat lives in the slotted note now, which carries this component's
+     scope rather than the note's own. */
+  .map strong {
     color: var(--fg-dim);
+    font-weight: 500;
   }
 
   .fallback {

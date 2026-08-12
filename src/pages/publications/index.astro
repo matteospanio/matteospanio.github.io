@@ -49,7 +49,10 @@ const schema = [
     }
   </p>
 
-  <WordCloud />
+  <section class="terms">
+    <h2 class="label">what the papers talk about</h2>
+    <WordCloud />
+  </section>
 
   {
     byYear.map(([year, list]) => (
@@ -71,11 +74,24 @@ const schema = [
   .summary {
     font-size: var(--step--1);
     color: var(--fg-faint);
-    margin-block-end: 2.5rem;
+    margin-block-end: 2rem;
   }
 
   section {
     margin-block-start: 2.5rem;
+  }
+
+  /* A rule below separates the figure from the first year heading, which would
+     otherwise read as a caption to it. */
+  .terms {
+    margin-block: 0 3rem;
+    padding-block-end: 3rem;
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .terms .label {
+    display: block;
+    margin-block-end: 1rem;
   }
 
   .year {

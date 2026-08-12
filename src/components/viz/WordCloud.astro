@@ -1,5 +1,6 @@
 ---
 import cloud from '@/data/viz/wordcloud.json';
+import VizNote from './VizNote.astro';
 
 /**
  * Static SVG. The packing is solved in scripts/build_wordcloud.py, which can do
@@ -28,47 +29,73 @@ const packs = [
 ---
 
 <figure class="cloud">
-  {
-    packs.map((pack) => (
-      <svg
-        class={pack.key}
-        viewBox={pack.viewBox.join(' ')}
-        role="img"
-        aria-label={label}
-        preserveAspectRatio="xMidYMid meet"
-      >
-        {pack.words.map((w) => (
-          <text
-            x={w.x}
-            y={w.y}
-            font-size={w.size}
-            textLength={w.w}
-            lengthAdjust="spacingAndGlyphs"
-            text-anchor="middle"
-            dominant-baseline="central"
-            data-tier={w.tier}
-          >
-            {w.text}
-            <title>
-              {w.text} — {w.tf} occurrences across {w.df} of {papers} papers
-            </title>
-          </text>
-        ))}
-      </svg>
-    ))
-  }
+  <div class="stage">
+    {
+      packs.map((pack) => (
+        <svg
+          class={pack.key}
+          viewBox={pack.viewBox.join(' ')}
+          role="img"
+          aria-label={label}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {pack.words.map((w) => (
+            <text
+              x={w.x}
+              y={w.y}
+              font-size={w.size}
+              textLength={w.w}
+              lengthAdjust="spacingAndGlyphs"
+              text-anchor="middle"
+              dominant-baseline="central"
+              data-tier={w.tier}
+            >
+              {w.text}
+              <title>
+                {w.text} — {w.tf} occurrences across {w.df} of {papers} papers
+              </title>
+            </text>
+          ))}
+        </svg>
+      ))
+    }
+  </div>
 
   <figcaption>
     The <span class="wide-n">{terms}</span><span class="narrow-n">{narrow.words.length}</span> terms
-    most characteristic of the LaTeX sources of {papers} published papers. Size follows
-    how heavily a term is used by the papers that use it, damped by how many of them do — which ranks
-    subject matter above the vocabulary every paper shares.
+    most characteristic of {papers} published papers.
   </figcaption>
+
+  <VizNote>
+    Terms are counted in the LaTeX sources, after stripping markup, maths and citations. Size follows
+    how heavily a term is used by the papers that use it, damped by how many of them do — which ranks
+    subject matter above the vocabulary every paper shares. Hover a term for its counts.
+  </VizNote>
 </figure>
 
 <style>
   .cloud {
-    margin: 0 0 3rem;
+    margin: 0;
+  }
+
+  /* The same frame the research map uses, so both figures read as one kind of
+     object rather than as loose artwork dropped between paragraphs. */
+  .stage {
+    border: 1px solid var(--rule);
+    background:
+      radial-gradient(
+        120% 90% at 50% 45%,
+        color-mix(in oklab, var(--accent) 5%, transparent),
+        transparent 70%
+      ),
+      var(--bg-1);
+    /* The packer allows words to reach the viewBox edge, and `overflow: visible`
+       lets their glyphs spill a little past it; this keeps the spill off the rule. */
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    /* Chosen so that at the widest the frame is filled by the pack's own 2.12:1
+       shape. Left free, the shell is wider than that, and `preserveAspectRatio`
+       would letterbox ~70px of dead frame down either side. */
+    max-width: 64rem;
   }
 
   svg {
@@ -147,7 +174,7 @@ const packs = [
     font-size: var(--step--1);
     color: var(--fg-faint);
     max-width: var(--measure);
-    margin-block-start: 1rem;
+    margin-block-start: 0.8rem;
     line-height: 1.55;
   }
 </style>

@@ -1,0 +1,57 @@
+---
+/**
+ * The caveats a figure genuinely needs, folded away.
+ *
+ * Both visualisations make claims that deserve qualifying, but five lines of
+ * methodology under a picture get read by nobody and bury the picture. The
+ * one-line caption stays visible; everything else is one click away and still
+ * fully present for crawlers and screen readers, since <details> renders its
+ * contents either way.
+ */
+---
+
+<details class="note">
+  <summary>how this is made</summary>
+  <div class="body"><slot /></div>
+</details>
+
+<style>
+  .note {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    max-width: var(--measure);
+    margin-block-start: 0.35rem;
+  }
+
+  summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    width: fit-content;
+    cursor: pointer;
+    color: var(--fg-faint);
+  }
+
+  /* `display: inline-flex` (needed for the tap target) suppresses the native
+     marker, and a bare grey line does not read as something to click. */
+  summary::before {
+    content: '+';
+    color: var(--accent);
+    margin-inline-end: 0.5ch;
+  }
+
+  [open] > summary::before {
+    content: '−';
+  }
+
+  summary:hover {
+    color: var(--accent);
+  }
+
+  .body {
+    line-height: 1.55;
+    padding-inline-start: 0.9rem;
+    border-inline-start: 1px solid var(--rule);
+    margin-block-end: 0.4rem;
+  }
+</style>

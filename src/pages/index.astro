@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import { site } from '@/config/site';
+import portrait from '@/assets/portrait.jpg';
 import type { Publication } from '@/lib/bib';
 import { sortPublications } from '@/lib/bib';
 import '@/styles/prose.css';
@@ -28,18 +30,29 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
 
 <Base>
   <section class="hero">
-    <p class="prompt">&gt; whoami</p>
-    <h1>{site.name}</h1>
-    <p class="role">{site.jobTitle} · {site.affiliation.parent}</p>
+    <div class="id">
+      <p class="prompt">&gt; whoami</p>
+      <h1>{site.name}</h1>
+      <p class="role">{site.jobTitle} · {site.affiliation.parent}</p>
+    </div>
+
+    <Image
+      class="portrait"
+      src={portrait}
+      alt={site.name}
+      widths={[176, 352, 528]}
+      sizes="(min-width: 760px) 13rem, 5.5rem"
+      loading="eager"
+    />
+
+    <div class="bio prose">
+      <About />
+    </div>
   </section>
 
   <section class="research">
     <h2 class="label">research map</h2>
     <EmbeddingMap />
-  </section>
-
-  <section class="about prose">
-    <About />
   </section>
 
   <div class="columns">
@@ -116,20 +129,71 @@ const day = (d: Date) => d.toISOString().slice(0, 10);
     color: var(--fg-dim);
   }
 
+  /*
+   * Phone first: a small portrait sits beside the name, and the bio runs full
+   * width underneath. Above 760px the portrait moves to its own column and
+   * spans both rows, so it stands beside the name *and* the bio — the layout
+   * the old site used, and the one that keeps the intro to a readable measure.
+   */
+  .hero {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'photo id'
+      'bio bio';
+    align-items: center;
+    column-gap: 1.1rem;
+    row-gap: 1.75rem;
+  }
+
+  .id {
+    grid-area: id;
+  }
+
+  .bio {
+    grid-area: bio;
+  }
+
+  .portrait {
+    grid-area: photo;
+    width: 5.5rem;
+    height: auto;
+    border: 1px solid var(--rule-strong);
+    align-self: center;
+  }
+
+  @media (min-width: 760px) {
+    .hero {
+      /* `auto`, not `1fr`: a fractional column would stretch to the full shell
+         and strand the portrait against the right edge, a screen away from the
+         prose it belongs to. `auto` sizes to the text's own measure instead. */
+      grid-template-columns: auto auto;
+      grid-template-areas:
+        'id photo'
+        'bio photo';
+      align-items: start;
+      justify-content: start;
+      column-gap: 3rem;
+      row-gap: 1.5rem;
+    }
+
+    .portrait {
+      width: 13rem;
+      /* Top of the photo lines up with the prompt, not the middle of the block. */
+      align-self: start;
+    }
+  }
+
   .research {
-    margin-block-start: 2.5rem;
+    margin-block-start: 4rem;
   }
 
   .research .label {
     margin-block-end: 1rem;
   }
 
-  .about {
-    margin-block-start: 3.5rem;
-  }
-
   /* The about copy sets its own h2s; keep them from shouting over the section labels. */
-  .about :global(h2) {
+  .bio :global(h2) {
     font-size: var(--step-1);
   }
 

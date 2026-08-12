@@ -7,9 +7,9 @@
     "url": "https://ieeeaccess.ieee.org/"
   },
   "AES": {
-    "label": "JAES",
-    "full": "Journal of the Audio Engineering Society",
-    "kind": "journal",
+    "label": "AES",
+    "full": "Audio Engineering Society",
+    "kind": "conference",
     "color": "#5eead4",
     "url": "https://aes2.org/publications/journal/"
   },
@@ -93,5 +93,26 @@
     "full": "Published musical score",
     "kind": "other",
     "color": "#f87171"
+  },
+  "IS2": {
+    "label": "IS2",
+    "full": "Internation Symposium of the Internet of Sounds",
+    "kind": "conference",
+    "color": "#4ade80",
+    "url": "https://internetofsounds2026.ieee-internetofsounds.org/"
+  },
+  "ISMIR": {
+    "label": "ISMIR",
+    "full": "International Society for Music Information Retrieval Conference",
+    "kind": "conference",
+    "color": "#4ade80",
+    "url": "https://ismir.net/"
+  },
+  "CBMI": {
+    "label": "CBMI",
+    "full": "International Conference on Content-Based Multimedia Indexing",
+    "kind": "conference",
+    "color": "#4ade80",
+    "url": "https://cbmi2026.univ-lr.fr/"
   }
 }
