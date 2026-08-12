@@ -210,7 +210,9 @@ const schema = [
     gap: 1.6rem;
   }
 
-  ol li {
+  /* Direct children only: this also matched the nested .highlights list,
+     whose em-dash marker then sat alone in an 11rem date column. */
+  ol > li {
     display: grid;
     grid-template-columns: 11rem 1fr;
     gap: 1rem;
@@ -284,12 +286,9 @@ const schema = [
   }
 
   @media (max-width: 640px) {
-    ol li,
+    ol > li,
     .skills {
       grid-template-columns: 1fr;
-      gap: 0.3rem;
-    }
-    ol li {
       gap: 0.3rem;
     }
   }

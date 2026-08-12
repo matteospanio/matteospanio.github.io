@@ -202,6 +202,75 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
        one block instead of a wide legend stranded above a narrow map. */
     --stage-height: 38rem;
     max-width: min(100%, calc(var(--stage-height) * var(--aspect)));
+    /* The halo sprites are additive light: right on a dark ground, a grey
+       smudge on a light one. The script reads this before drawing. */
+    --halo-alpha: 0.55;
+  }
+
+  :global([data-theme='light']) .map {
+    --halo-alpha: 0.14;
+  }
+
+  /*
+   * Desktop composition: the legend, caption and note move into a rail beside
+   * the stage instead of stacking above and below it. Two problems solved at
+   * once — the right half of the page is no longer empty, and the stage starts
+   * ~120px higher, which is what puts it above a 768px fold. JS-gated because
+   * without the canvas the stacked flow (chips, list) is the better reading.
+   */
+  @media (min-width: 1100px) {
+    :global(html.js) .map {
+      display: grid;
+      grid-template-columns: minmax(0, calc(var(--stage-height) * var(--aspect))) minmax(
+          15rem,
+          19rem
+        );
+      grid-template-rows: repeat(3, auto) 1fr;
+      column-gap: 2.5rem;
+      align-items: start;
+      max-width: none;
+    }
+
+    :global(html.js) .map > .stage {
+      grid-column: 1;
+      grid-row: 1 / 5;
+    }
+
+    :global(html.js) .map > .legend {
+      grid-column: 2;
+      grid-row: 1;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.35rem;
+      margin-block-end: 1rem;
+    }
+
+    /* In a column, counts read best as a right-aligned figure per row. */
+    :global(html.js) .map > .legend .n {
+      margin-inline-start: auto;
+    }
+
+    :global(html.js) .map > .tools {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    :global(html.js) .map > figcaption {
+      grid-column: 2;
+      grid-row: 3;
+      margin-block-start: 1rem;
+    }
+
+    :global(html.js) .map > :global(.note) {
+      grid-column: 2;
+      grid-row: 4;
+    }
+
+    /* Normally clipped to a 1px box; when focus brings it back, span the figure. */
+    :global(html.js) .map > .fallback:focus-within {
+      grid-column: 1 / -1;
+      grid-row: 5;
+    }
   }
 
   /* --- legend ---------------------------------------------------------- */
@@ -215,6 +284,9 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
   .key {
     display: inline-flex;
     align-items: center;
+    /* Buttons centre their text by UA default; a wrapped label in the rail
+       would come out ragged-centred. */
+    text-align: start;
     gap: 0.45rem;
     font-family: var(--font-mono);
     font-size: var(--step--1);
@@ -582,10 +654,14 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     let colours = new Map<string, string>();
     let ink = { fg: '#d7dee5', dim: '#8b98a5', rule: '#2a353f', accent: '#4ade80' };
     let fontFamily = 'ui-monospace, monospace';
+    // Additive glow only exists on a dark ground; on light the same sprite is a
+    // grey smudge. The per-theme value lives in CSS next to the palette.
+    let haloAlpha = 0.55;
 
     function readPalette() {
       const style = getComputedStyle(figure!);
       fontFamily = style.fontFamily || fontFamily;
+      haloAlpha = parseFloat(style.getPropertyValue('--halo-alpha')) || 0.55;
       colours = new Map(
         nodes.map((n) => [n.theme, style.getPropertyValue(`--c-${n.theme}`).trim() || '#4ade80']),
       );
@@ -619,7 +695,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       g.addColorStop(0.18, colour);
       g.addColorStop(1, 'transparent');
       c.fillStyle = g;
-      c.globalAlpha = 0.55;
+      c.globalAlpha = haloAlpha;
       c.beginPath();
       c.arc(HALO / 2, HALO / 2, HALO / 2, 0, Math.PI * 2);
       c.fill();
