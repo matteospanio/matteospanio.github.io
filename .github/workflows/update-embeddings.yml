@@ -34,11 +34,15 @@ jobs:
 
       - run: python scripts/build_embedding_map.py
 
+      # The projection scrubber's variants share the map's sourceHash; CI fails
+      # if one is rebuilt without the other.
+      - run: python scripts/build_map_variants.py
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/viz/embedding-map.json
+          git add src/data/viz/embedding-map.json src/data/viz/map-variants.json
           if git diff --staged --quiet; then
             echo "embedding map unchanged" >> "$GITHUB_STEP_SUMMARY"
           else

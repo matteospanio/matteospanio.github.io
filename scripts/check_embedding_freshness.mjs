@@ -60,4 +60,17 @@ if (stored !== hash) {
   process.exit(1);
 }
 
-console.log(`✓ embedding map is current (${parts.length} source items)`);
+// The projection scrubber ships alongside the map and shares its hash; a map
+// rebuilt without its variants would tween 42 nodes onto stale coordinates.
+const VARIANTS = 'src/data/viz/map-variants.json';
+if (!existsSync(VARIANTS)) {
+  console.error(`✗ ${VARIANTS} is missing — run: .venv/bin/python scripts/build_map_variants.py`);
+  process.exit(1);
+}
+if (JSON.parse(readFileSync(VARIANTS, 'utf8')).sourceHash !== stored) {
+  console.error('\n✗ map-variants.json was built against a different corpus than the map.');
+  console.error('  Regenerate it with:  .venv/bin/python scripts/build_map_variants.py\n');
+  process.exit(1);
+}
+
+console.log(`✓ embedding map is current (${parts.length} source items, variants in sync)`);

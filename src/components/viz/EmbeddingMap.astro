@@ -1,5 +1,6 @@
 ---
 import map from '@/data/viz/embedding-map.json';
+import variantData from '@/data/viz/map-variants.json';
 import VizNote from './VizNote.astro';
 
 /**
@@ -16,6 +17,21 @@ import VizNote from './VizNote.astro';
  * sanity numbers say is not there.
  */
 const { nodes, edges, themes, sanity } = map;
+
+/**
+ * The scrubber tweens node positions by array index, so a variants file built
+ * against a different corpus would silently shuffle 42 works around the map.
+ * The CI guard compares source hashes; this catches the same drift at build.
+ */
+if (
+  variantData.ids.length !== nodes.length ||
+  variantData.ids.some((id, i) => id !== nodes[i].id)
+) {
+  throw new Error(
+    'map-variants.json disagrees with embedding-map.json — run scripts/build_map_variants.py',
+  );
+}
+const variants = variantData.variants;
 
 const num = (v: unknown, digits = 2) => (typeof v === 'number' ? v.toFixed(digits) : 'n/a');
 
@@ -121,6 +137,24 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       <span class="off">▶ listen to the map</span>
       <span class="on">■ mute</span>
     </button>
+
+    {/*
+      The caveat, made scrubbable: the same embedding refitted under other
+      seeds and neighbourhood sizes. Watching the picture change while the
+      neighbourhoods hold is the argument for reading the geometry loosely.
+    */}
+    <div class="variant">
+      <label for="emap-variant">same data, other projections</label>
+      <input
+        type="range"
+        id="emap-variant"
+        min="0"
+        max={variants.length - 1}
+        value="0"
+        step="1"
+      />
+      <output id="emap-variant-out" for="emap-variant"></output>
+    </div>
   </div>
 
   <div class="stage">
@@ -165,7 +199,10 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     <br />
     <em>Trace a path</em>, on any node's card, walks those lines between two works.{' '}
     <em>Listen</em> plays the map: each research area has a timbre, height is pitch, and horizontal
-    position is where a note sits in the stereo field.
+    position is where a note sits in the stereo field. <em>Same data, other projections</em> refits
+    UMAP under {variants.length - 1} other seed and neighbourhood settings, aligned to this layout —
+    the picture moves, the neighbourhoods mostly hold, and that gap is exactly how loosely the
+    geometry deserves to be read.
   </VizNote>
 
   {/*
@@ -204,7 +241,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     type="application/json"
     id="emap-data"
     is:inline
-    set:html={JSON.stringify({ nodes, edges, themes })}
+    set:html={JSON.stringify({ nodes, edges, themes, variants })}
   />
 </figure>
 
@@ -402,6 +439,38 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
 
   .tool-btn[aria-pressed='true'] .off {
     display: none;
+  }
+
+  /* --- projection scrubber --------------------------------------------- */
+  .variant {
+    display: grid;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    width: 100%;
+    max-width: 22rem;
+  }
+
+  .variant label {
+    color: var(--fg-dim);
+  }
+
+  .variant input {
+    width: 100%;
+    accent-color: var(--accent);
+    /* The native track is a hair over 24px; give thumbs an honest target. */
+    min-height: 1.7rem;
+    cursor: ew-resize;
+  }
+
+  .variant input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .variant output {
+    color: var(--fg-faint);
+    font-variant-numeric: tabular-nums;
   }
 
   /* --- stage ----------------------------------------------------------- */
@@ -723,6 +792,14 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     w: number;
   }
 
+  interface Variant {
+    seed: number;
+    k: number;
+    canonical: boolean;
+    silhouette: number | null;
+    xy: [number, number][];
+  }
+
   // Addressed by data attribute, not by class: the theme colours are read off
   // this element, and a page that happens to wrap it in its own .map section
   // would otherwise resolve every colour to the fallback.
@@ -737,7 +814,11 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
   if (figure && dataEl && canvas && tip && card) {
     document.documentElement.classList.add('js');
 
-    const { nodes, edges } = JSON.parse(dataEl.textContent!) as { nodes: Node[]; edges: Edge[] };
+    const { nodes, edges, variants } = JSON.parse(dataEl.textContent!) as {
+      nodes: Node[];
+      edges: Edge[];
+      variants: Variant[];
+    };
     const ctx = canvas.getContext('2d')!;
     const index = new Map(nodes.map((n, i) => [n.id, i]));
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -839,6 +920,27 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       r: 5 * (KIND_SCALE[n.kind] ?? 0.85),
     }));
 
+    /* ---- morphable data coordinates -------------------------------------
+     * The scrubber retargets these; layout() projects whatever is current, so
+     * swapping projections is nothing but easing 84 numbers. The frame (fit,
+     * offsets) stays pinned to the canonical extent, so the stage does not
+     * breathe while variants come and go.
+     */
+    const pos = new Float64Array(nodes.length * 2);
+    const posT = new Float64Array(nodes.length * 2);
+    nodes.forEach((n, i) => {
+      pos[i * 2] = posT[i * 2] = n.x;
+      pos[i * 2 + 1] = posT[i * 2 + 1] = n.y;
+    });
+    let morphing = false;
+
+    function project() {
+      for (let i = 0; i < nodes.length; i++) {
+        state[i].bx = offX + (pos[i * 2] - minX) * fit;
+        state[i].by = offY + (pos[i * 2 + 1] - minY) * fit;
+      }
+    }
+
     function layout() {
       // Proportional, so a phone-sized canvas does not spend a third of itself
       // on margin.
@@ -846,10 +948,7 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       fit = Math.min((w - pad * 2) / spanX, (h - pad * 2) / spanY);
       offX = (w - spanX * fit) / 2;
       offY = (h - spanY * fit) / 2;
-      for (let i = 0; i < nodes.length; i++) {
-        state[i].bx = offX + (nodes[i].x - minX) * fit;
-        state[i].by = offY + (nodes[i].y - minY) * fit;
-      }
+      project();
     }
 
     /* ---- camera --------------------------------------------------------- */
@@ -1056,6 +1155,22 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         vy *= 0.9;
         if (Math.abs(vx) < 0.01) vx = 0;
         if (Math.abs(vy) < 0.01) vy = 0;
+      }
+
+      // Scrubbing eases the data coordinates themselves; reduced motion snaps.
+      if (morphing) {
+        let worst = 0;
+        for (let i = 0; i < pos.length; i++) {
+          const d = posT[i] - pos[i];
+          worst = Math.max(worst, Math.abs(d));
+          pos[i] += still ? d : d * 0.11;
+        }
+        project();
+        if (worst < 0.001) {
+          pos.set(posT);
+          project();
+          morphing = false;
+        }
       }
 
       ctx.clearRect(0, 0, w, h);
@@ -1604,6 +1719,32 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
         else frameNodes(nodes.map((n, i) => (n.theme === filter ? i : -1)).filter((i) => i >= 0));
       });
     });
+
+    /* ---- projection scrubber --------------------------------------------- */
+    const variantInput = document.getElementById('emap-variant') as HTMLInputElement | null;
+    const variantOut = document.getElementById('emap-variant-out');
+
+    function describeVariant(v: Variant) {
+      const s = typeof v.silhouette === 'number' ? v.silhouette.toFixed(2) : 'n/a';
+      return `seed ${v.seed} · k ${v.k} · silhouette ${s}${v.canonical ? ' · shipped' : ''}`;
+    }
+
+    function applyVariant(i: number) {
+      const v = variants?.[i];
+      if (!v || v.xy.length !== nodes.length) return;
+      for (let n = 0; n < nodes.length; n++) {
+        posT[n * 2] = v.xy[n][0];
+        posT[n * 2 + 1] = v.xy[n][1];
+      }
+      morphing = true;
+      if (variantOut) variantOut.textContent = describeVariant(v);
+      variantInput?.setAttribute('aria-valuetext', describeVariant(v));
+      start();
+    }
+
+    variantInput?.addEventListener('input', () => applyVariant(Number(variantInput.value)));
+    // Seed the readout; the targets equal the current positions, so nothing moves.
+    if (variantInput) applyVariant(0);
 
     /* ---- keyboard users tab the list; focusing an entry lights its node ---- */
     list?.addEventListener('focusin', (event) => {
