@@ -11,31 +11,31 @@
     "note": "UMAP is fitted on chunk documents, chunk coordinates are averaged into one node per source item, then rotated onto principal axes and scaled uniformly (aspect preserved) into [-1, 1].",
     "extent": {
       "x": [
-        -0.8145,
+        -0.6042,
         1.0
       ],
       "y": [
-        -0.765,
-        0.7983
+        -0.2942,
+        0.317
       ]
     }
   },
-  "sourceHash": "6b5cdf4639284cab3dd24dfad5873bf7b385ad95b6520a8c125ba5213272f055",
+  "sourceHash": "30a04a3e20436af3b0302819b0ef01ef445b1efd8bed8828f64f9aae7a6153d1",
   "sanity": {
-    "n": 42,
-    "chunks": 108,
-    "silhouetteVsThemes": 0.3047,
-    "silhouetteVsThemesEmbedding": 0.1467,
-    "meanIntraTheme": 0.859,
-    "meanInterTheme": 0.8175,
-    "seedStability": 0.8474,
+    "n": 43,
+    "chunks": 109,
+    "silhouetteVsThemes": 0.2414,
+    "silhouetteVsThemesEmbedding": 0.1387,
+    "meanIntraTheme": 0.8554,
+    "meanInterTheme": 0.8167,
+    "seedStability": 0.9068,
     "edgeFloor": 0.72,
     "edgeFloorRejected": 0,
     "edgeWeightRange": [
       0.8053,
       0.9541
     ],
-    "crossThemeEdges": 28
+    "crossThemeEdges": 31
   },
   "sources": {
     "bib": {
@@ -53,7 +53,7 @@
     },
     "news": {
       "ok": true,
-      "used": 8
+      "used": 9
     },
     "model": {
       "ok": true,
@@ -71,7 +71,7 @@
       "id": "multimodal",
       "label": "Multimodal and crossmodal AI",
       "color": "#c084fc",
-      "n": 9
+      "n": 10
     },
     {
       "id": "symbolic-music",
@@ -109,8 +109,8 @@
       "venue": "ICIAP",
       "url": "/publications/#10.1007/978-3-031-51026-7_26",
       "chunks": 3,
-      "x": -0.7619,
-      "y": -0.1814
+      "x": -0.569,
+      "y": -0.1115
     },
     {
       "id": "https://doi.org/10.13140/rg.2.2.36838.50247",
@@ -122,8 +122,8 @@
       "venue": "Unpublished",
       "url": "/publications/#https://doi.org/10.13140/rg.2.2.36838.50247",
       "chunks": 2,
-      "x": -0.8145,
-      "y": -0.1144
+      "x": -0.6042,
+      "y": -0.1188
     },
     {
       "id": "https://doi.org/10.13140/rg.2.2.17327.82088",
@@ -135,8 +135,8 @@
       "venue": "Master's Thesis",
       "url": "/publications/#https://doi.org/10.13140/rg.2.2.17327.82088",
       "chunks": 2,
-      "x": -0.0249,
-      "y": 0.7784
+      "x": -0.3724,
+      "y": 0.317
     },
     {
       "id": "sphor:woo15",
@@ -148,8 +148,8 @@
       "venue": "Edizioni Eufonia",
       "url": "/publications/#sphor:woo15",
       "chunks": 1,
-      "x": 0.0086,
-      "y": 0.6639
+      "x": -0.3074,
+      "y": 0.2611
     },
     {
       "id": "https://doi.org/10.13140/rg.2.2.24143.56489",
@@ -161,8 +161,8 @@
       "venue": "Bachelor's Thesis",
       "url": "/publications/#https://doi.org/10.13140/rg.2.2.24143.56489",
       "chunks": 4,
-      "x": 0.0394,
-      "y": 0.7983
+      "x": -0.3997,
+      "y": 0.3094
     },
     {
       "id": "bosi2024a",
@@ -174,8 +174,8 @@
       "venue": "AES",
       "url": "/publications/#bosi2024a",
       "chunks": 2,
-      "x": -0.7123,
-      "y": -0.0963
+      "x": -0.5258,
+      "y": -0.0962
     },
     {
       "id": "ieeeaccess2024",
@@ -187,8 +187,8 @@
       "venue": "IEEEAccess",
       "url": "/publications/#ieeeaccess2024",
       "chunks": 2,
-      "x": -0.7058,
-      "y": -0.0902
+      "x": -0.4933,
+      "y": -0.0817
     },
     {
       "id": "Cinar2024",
@@ -200,8 +200,8 @@
       "venue": "IAI4CH",
       "url": "/publications/#Cinar2024",
       "chunks": 1,
-      "x": -0.6485,
-      "y": -0.2071
+      "x": -0.513,
+      "y": -0.0104
     },
     {
       "id": "Spanio2024",
@@ -213,8 +213,8 @@
       "venue": "AIxIADC",
       "url": "/publications/#Spanio2024",
       "chunks": 2,
-      "x": -0.2125,
-      "y": 0.0343
+      "x": -0.0965,
+      "y": -0.1061
     },
     {
       "id": "spanio_frontiers_2025",
@@ -226,8 +226,8 @@
       "venue": "Frontiers in CS",
       "url": "/publications/#spanio_frontiers_2025",
       "chunks": 1,
-      "x": -0.0662,
-      "y": 0.1021
+      "x": 0.0374,
+      "y": -0.1207
     },
     {
       "id": "fiordelmondo_nime_2025",
@@ -239,8 +239,8 @@
       "venue": "NIME",
       "url": "/publications/#fiordelmondo_nime_2025",
       "chunks": 4,
-      "x": -0.5008,
-      "y": 0.1348
+      "x": -0.3273,
+      "y": -0.1895
     },
     {
       "id": "spanio2025torchfx",
@@ -252,8 +252,8 @@
       "venue": "DAFX",
       "url": "/publications/#spanio2025torchfx",
       "chunks": 2,
-      "x": 0.6867,
-      "y": 0.1704
+      "x": 0.5952,
+      "y": -0.1898
     },
     {
       "id": "spanio2026bmdataset",
@@ -265,8 +265,8 @@
       "venue": "SMC",
       "url": "/publications/#spanio2026bmdataset",
       "chunks": 2,
-      "x": 0.0787,
-      "y": -0.2879
+      "x": 0.106,
+      "y": 0.1088
     },
     {
       "id": "spanio2026multimodal",
@@ -278,8 +278,8 @@
       "venue": "arXiv preprint arXiv:2604.10632",
       "url": "/publications/#spanio2026multimodal",
       "chunks": 3,
-      "x": 0.0388,
-      "y": 0.3405
+      "x": 0.0989,
+      "y": -0.2942
     },
     {
       "id": "canazza2026preserving",
@@ -291,8 +291,8 @@
       "venue": "Ital-IA",
       "url": "/publications/#canazza2026preserving",
       "chunks": 1,
-      "x": -0.4163,
-      "y": -0.0349
+      "x": -0.2733,
+      "y": -0.074
     },
     {
       "id": "spanio2026lilypond",
@@ -304,8 +304,8 @@
       "venue": "Ital-IA",
       "url": "/publications/#spanio2026lilypond",
       "chunks": 2,
-      "x": -0.043,
-      "y": -0.2558
+      "x": 0.0873,
+      "y": 0.2087
     },
     {
       "id": "pretto2026advanced",
@@ -317,8 +317,8 @@
       "venue": "AVI-CH",
       "url": "/publications/#pretto2026advanced",
       "chunks": 2,
-      "x": -0.6706,
-      "y": -0.0875
+      "x": -0.5499,
+      "y": -0.032
     },
     {
       "id": "spanio2026cbmi",
@@ -330,8 +330,8 @@
       "venue": "CBMI",
       "url": "/publications/#spanio2026cbmi",
       "chunks": 3,
-      "x": 0.0809,
-      "y": 0.2502
+      "x": 0.1357,
+      "y": -0.2236
     },
     {
       "id": "poltronieri2026notation",
@@ -343,8 +343,8 @@
       "venue": "ISMIR",
       "url": "/publications/#poltronieri2026notation",
       "chunks": 2,
-      "x": -0.118,
-      "y": -0.1415
+      "x": 0.0238,
+      "y": 0.0601
     },
     {
       "id": "spanio2026quantizednativeruntimeondevice",
@@ -356,8 +356,8 @@
       "venue": "IS2",
       "url": "/publications/#spanio2026quantizednativeruntimeondevice",
       "chunks": 3,
-      "x": 0.3495,
-      "y": 0.2709
+      "x": 0.3159,
+      "y": -0.2349
     },
     {
       "id": "spanio2026fluxion",
@@ -369,8 +369,8 @@
       "venue": "IS2",
       "url": "/publications/#spanio2026fluxion",
       "chunks": 3,
-      "x": 0.5285,
-      "y": 0.2477
+      "x": 0.4293,
+      "y": -0.2174
     },
     {
       "id": "spanio2026review",
@@ -382,8 +382,8 @@
       "venue": "AIR",
       "url": "/publications/#spanio2026review",
       "chunks": 2,
-      "x": -0.0249,
-      "y": 0.2213
+      "x": 0.088,
+      "y": -0.2942
     },
     {
       "id": "spanio2026",
@@ -395,8 +395,8 @@
       "venue": "PLOS ONE",
       "url": "/publications/#spanio2026",
       "chunks": 4,
-      "x": -0.0923,
-      "y": 0.3363
+      "x": 0.0071,
+      "y": -0.2704
     },
     {
       "id": "post:DSP-il-suono-in-digitale",
@@ -408,8 +408,8 @@
       "venue": null,
       "url": "/blog/2021/DSP-il-suono-in-digitale/",
       "chunks": 4,
-      "x": 0.2203,
-      "y": 0.7065
+      "x": -0.4993,
+      "y": 0.2333
     },
     {
       "id": "post:Principles-of-statistic",
@@ -421,8 +421,8 @@
       "venue": null,
       "url": "/blog/2022/Principles-of-statistic/",
       "chunks": 5,
-      "x": 0.6268,
-      "y": -0.765
+      "x": 1.0,
+      "y": 0.1622
     },
     {
       "id": "post:python-environments",
@@ -434,8 +434,8 @@
       "venue": null,
       "url": "/blog/2024/python-environments/",
       "chunks": 7,
-      "x": 0.769,
-      "y": -0.3645
+      "x": 0.6344,
+      "y": 0.311
     },
     {
       "id": "post:python-static-typing",
@@ -447,8 +447,8 @@
       "venue": null,
       "url": "/blog/2023/python-static-typing/",
       "chunks": 6,
-      "x": 1.0,
-      "y": -0.3612
+      "x": 0.7655,
+      "y": 0.1512
     },
     {
       "id": "post:slow-python",
@@ -460,8 +460,8 @@
       "venue": null,
       "url": "/blog/2025/slow-python/",
       "chunks": 4,
-      "x": 0.7883,
-      "y": 0.0063
+      "x": 0.6525,
+      "y": -0.0385
     },
     {
       "id": "project:lilybench",
@@ -473,8 +473,8 @@
       "venue": null,
       "url": "/projects/lilybench/",
       "chunks": 4,
-      "x": 0.0984,
-      "y": -0.3343
+      "x": 0.1561,
+      "y": 0.2027
     },
     {
       "id": "project:lilybert",
@@ -486,8 +486,8 @@
       "venue": null,
       "url": "/projects/lilybert/",
       "chunks": 3,
-      "x": 0.1746,
-      "y": -0.2815
+      "x": 0.1752,
+      "y": 0.141
     },
     {
       "id": "project:ml-project-template",
@@ -499,8 +499,8 @@
       "venue": null,
       "url": "/projects/ml-project-template/",
       "chunks": 4,
-      "x": 0.4625,
-      "y": -0.209
+      "x": 0.4071,
+      "y": 0.079
     },
     {
       "id": "project:spam-analyzer",
@@ -512,8 +512,8 @@
       "venue": null,
       "url": "/projects/spam-analyzer/",
       "chunks": 3,
-      "x": 0.4738,
-      "y": -0.4178
+      "x": 0.4364,
+      "y": 0.1956
     },
     {
       "id": "project:tasty-musicgen",
@@ -525,8 +525,8 @@
       "venue": null,
       "url": "/projects/tasty-musicgen/",
       "chunks": 3,
-      "x": 0.1004,
-      "y": 0.1115
+      "x": 0.1346,
+      "y": -0.1467
     },
     {
       "id": "project:torchfx",
@@ -538,8 +538,8 @@
       "venue": null,
       "url": "/projects/torchfx/",
       "chunks": 4,
-      "x": 0.6722,
-      "y": 0.1434
+      "x": 0.5572,
+      "y": -0.1398
     },
     {
       "id": "news:2026-ItalIA",
@@ -551,8 +551,21 @@
       "venue": null,
       "url": "/news/#2026-ItalIA",
       "chunks": 1,
-      "x": -0.3721,
-      "y": -0.1593
+      "x": -0.2798,
+      "y": 0.0125
+    },
+    {
+      "id": "news:2026-Trec",
+      "kind": "news",
+      "theme": "multimodal",
+      "title": "TRAIL Research Camp",
+      "short": "TRAIL Research Camp",
+      "year": 2026,
+      "venue": null,
+      "url": "/news/#2026-Trec",
+      "chunks": 1,
+      "x": -0.2575,
+      "y": 0.0557
     },
     {
       "id": "news:aes2024NY",
@@ -564,8 +577,8 @@
       "venue": null,
       "url": "/news/#aes2024NY",
       "chunks": 1,
-      "x": -0.5077,
-      "y": -0.1705
+      "x": -0.377,
+      "y": -0.0247
     },
     {
       "id": "news:aixia2024",
@@ -577,8 +590,8 @@
       "venue": null,
       "url": "/news/#aixia2024",
       "chunks": 1,
-      "x": -0.4412,
-      "y": -0.1437
+      "x": -0.3288,
+      "y": -0.0126
     },
     {
       "id": "news:ann_4",
@@ -590,8 +603,8 @@
       "venue": null,
       "url": "/news/#ann_4",
       "chunks": 1,
-      "x": -0.2872,
-      "y": -0.1802
+      "x": -0.2262,
+      "y": 0.0385
     },
     {
       "id": "news:announcement_2",
@@ -603,8 +616,8 @@
       "venue": null,
       "url": "/news/#announcement_2",
       "chunks": 1,
-      "x": -0.5624,
-      "y": -0.1671
+      "x": -0.4126,
+      "y": -0.0031
     },
     {
       "id": "news:dafx2025",
@@ -616,8 +629,8 @@
       "venue": null,
       "url": "/news/#dafx2025",
       "chunks": 1,
-      "x": 0.742,
-      "y": 0.0423
+      "x": 0.5903,
+      "y": -0.1252
     },
     {
       "id": "news:hf2025",
@@ -629,8 +642,8 @@
       "venue": null,
       "url": "/news/#hf2025",
       "chunks": 1,
-      "x": 0.0037,
-      "y": -0.0985
+      "x": -0.0281,
+      "y": 0.1371
     },
     {
       "id": "news:hf2026-lilybert",
@@ -642,8 +655,8 @@
       "venue": null,
       "url": "/news/#hf2026-lilybert",
       "chunks": 1,
-      "x": 0.04,
-      "y": -0.2094
+      "x": 0.0073,
+      "y": 0.1707
     }
   ],
   "edges": [
@@ -1048,6 +1061,11 @@
       "w": 0.8488
     },
     {
+      "s": "news:2026-Trec",
+      "t": "project:ml-project-template",
+      "w": 0.8469
+    },
+    {
       "s": "post:DSP-il-suono-in-digitale",
       "t": "project:torchfx",
       "w": 0.8461
@@ -1068,9 +1086,19 @@
       "w": 0.8397
     },
     {
+      "s": "news:2026-Trec",
+      "t": "project:lilybench",
+      "w": 0.8382
+    },
+    {
       "s": "news:2026-ItalIA",
       "t": "news:ann_4",
       "w": 0.8287
+    },
+    {
+      "s": "news:2026-ItalIA",
+      "t": "news:2026-Trec",
+      "w": 0.8281
     },
     {
       "s": "news:ann_4",

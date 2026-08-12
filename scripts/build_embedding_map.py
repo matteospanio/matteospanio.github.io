@@ -116,6 +116,10 @@ PAPER_THEMES: dict[str, str] = {
 # two are the labels most likely to cost silhouette rather than earn it.
 NEWS_THEMES: dict[str, str] = {
     "2026-ItalIA": "cultural-heritage",
+    # TREC 2026: uncertainty-aware ASR/NLP for language-disorder screening —
+    # speech into language, so multimodal is the closest declared area, though
+    # it is the first item here that is clinical rather than musical.
+    "2026-Trec": "multimodal",
     "aes2024NY": "cultural-heritage",
     "aixia2024": "multimodal",
     "ann_4": "engineering",
