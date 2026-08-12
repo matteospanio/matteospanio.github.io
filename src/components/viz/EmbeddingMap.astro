@@ -1,7 +1,6 @@
 ---
 import map from '@/data/viz/embedding-map.json';
 import variantData from '@/data/viz/map-variants.json';
-import VizNote from './VizNote.astro';
 
 /**
  * The research corpus as a living constellation.
@@ -107,7 +106,18 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
 ---
 
 <figure class="map" data-emap style={`${palette};${shape}`}>
-  <div class="legend" role="group" aria-label="Highlight one research area">
+  <div class="rail">
+    {/* Only rendered useful in the full-screen app; the landing stays quiet. */}
+    <div class="app-intro">
+      <p class="app-title">## corpus explorer</p>
+      <p>
+        Everything I have written, placed by how similar the texts are. Click a node for its card,
+        trace paths between works, search the corpus in plain words, listen to it — and drag the
+        projection slider to see how much of this picture is real structure.
+      </p>
+    </div>
+
+    <div class="legend" role="group" aria-label="Highlight one research area">
     <button type="button" class="key key--all" data-filter="all" aria-pressed="true">
       all {nodes.length}
     </button>
@@ -182,8 +192,30 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
       <output id="emap-variant-out" for="emap-variant"></output>
     </div>
   </div>
+  </div>
 
   <div class="stage">
+    {/* The frame's own chrome: expand to the full-screen app, or ask what it is. */}
+    <div class="corner">
+      <button
+        type="button"
+        id="emap-full"
+        class="icon-btn"
+        aria-pressed="false"
+        aria-label="Open the map full screen"
+      >
+        <span class="exp" aria-hidden="true">
+          <svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 1H1v4M9 1h4v4M5 13H1V9M9 13h4V9"></path>
+          </svg>
+        </span>
+        <span class="cls" aria-hidden="true">×</span>
+      </button>
+      <button type="button" id="emap-help" class="icon-btn" aria-label="What is this map?">
+        ?
+      </button>
+    </div>
+
     <canvas id="emap" aria-hidden="true"></canvas>
 
     <div id="emap-tip" class="tip" aria-hidden="true" hidden>
@@ -210,26 +242,45 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     {count('news')} news, placed by how similar their text is.
   </figcaption>
 
-  <VizNote>
-    Titles and abstracts are embedded with {map.model} over {sanity.chunks} text chunks and projected
-    with UMAP; the lines join the closest pairs. Colour comes from my declared research areas, not
-    from clustering the embedding.
-    <br />
-    <strong>Read the geometry loosely.</strong> The areas {separation(sanity.silhouetteVsThemes)} here
-    — silhouette {num(sanity.silhouetteVsThemes)} — because nearly everything is audio, music and
-    machine learning: within-area similarity {num(sanity.meanIntraTheme)}, between-area{' '}
-    {num(sanity.meanInterTheme)}. And the picture flatters them, since the same score in the full
-    embedding is only {num(sanity.silhouetteVsThemesEmbedding)}. The lines are computed in that
-    embedding rather than in the picture, so who sits next to whom means more than how far apart
-    things look.
-    <br />
-    <em>Trace a path</em>, on any node's card, walks those lines between two works.{' '}
-    <em>Listen</em> plays the map: each research area has a timbre, height is pitch, and horizontal
-    position is where a note sits in the stereo field. <em>Same data, other projections</em> refits
-    UMAP under {variants.length - 1} other seed and neighbourhood settings, aligned to this layout —
-    the picture moves, the neighbourhoods mostly hold, and that gap is exactly how loosely the
-    geometry deserves to be read.
-  </VizNote>
+  {/*
+    Everything the inline note used to say, one click away instead of always on
+    screen. A native dialog: focus trap, Escape and the top layer come free,
+    and the text still ships in every page's HTML for whoever reads source.
+  */}
+  <dialog id="emap-dialog" class="help" aria-labelledby="emap-help-title">
+    <div class="help-head">
+      <p class="help-title" id="emap-help-title">## the research map</p>
+      <button type="button" class="help-close" aria-label="Close">×</button>
+    </div>
+    <div class="help-body">
+      <p>
+        Everything I have written — {count('paper')} papers, {count('project')} projects,{' '}
+        {count('post')} posts, {count('news')} news — embedded with {map.model} over{' '}
+        {sanity.chunks} text chunks and projected to two dimensions with UMAP. Distance is textual
+        similarity; the lines join each work's closest neighbours; colour is my declared research
+        area, never a clustering of the embedding.
+      </p>
+      <p>
+        <strong>Here:</strong> drag to pan, scroll to zoom, click a node for its card — and from a
+        card, trace the shortest chain of similarity links to any other work.
+      </p>
+      <p>
+        <strong>Full screen</strong> turns the map into a small app: semantic search that runs
+        entirely in your browser, an audio rendering of the constellation, and a slider across{' '}
+        {variants.length} alternative projections of the same embedding.
+      </p>
+      <p>
+        <strong>Read the geometry loosely.</strong> The areas{' '}
+        {separation(sanity.silhouetteVsThemes)} here — silhouette{' '}
+        {num(sanity.silhouetteVsThemes)} in this picture, {num(sanity.silhouetteVsThemesEmbedding)}{' '}
+        in the full embedding — because nearly everything is audio, music and machine learning
+        (within-area similarity {num(sanity.meanIntraTheme)}, between-area{' '}
+        {num(sanity.meanInterTheme)}). The lines are computed in the embedding rather than in the
+        picture, so who connects to whom means more than how far apart things sit.
+      </p>
+      <button type="button" id="emap-open-full" class="tool-btn">⤢ open the full app</button>
+    </div>
+  </dialog>
 
   {/*
     Always server-rendered. Visually hidden once the canvas is live, but it stays
@@ -288,65 +339,165 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
   }
 
   /*
-   * Desktop composition: the legend, caption and note move into a rail beside
-   * the stage instead of stacking above and below it. Two problems solved at
-   * once — the right half of the page is no longer empty, and the stage starts
-   * ~120px higher, which is what puts it above a 768px fold. JS-gated because
-   * without the canvas the stacked flow (chips, list) is the better reading.
+   * Desktop composition: the rail (legend, and in the app the tools) stands
+   * beside the stage instead of stacking above and below it — the right half
+   * of the page is not empty, and the stage's top edge clears a 768px fold.
+   * JS-gated because without the canvas the stacked flow reads better.
    */
   @media (min-width: 1100px) {
-    :global(html.js) .map {
+    :global(html.js) .map:not(.is-full) {
       display: grid;
       grid-template-columns: minmax(0, calc(var(--stage-height) * var(--aspect))) minmax(
           15rem,
           19rem
         );
-      grid-template-rows: repeat(3, auto) 1fr;
+      grid-template-rows: auto auto 1fr;
       column-gap: 2.5rem;
       align-items: start;
       max-width: none;
     }
 
-    :global(html.js) .map > .stage {
+    :global(html.js) .map:not(.is-full) > .stage {
       grid-column: 1;
-      grid-row: 1 / 5;
+      grid-row: 1 / 4;
     }
 
-    :global(html.js) .map > .legend {
+    :global(html.js) .map:not(.is-full) > .rail {
       grid-column: 2;
       grid-row: 1;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.35rem;
-      margin-block-end: 1rem;
     }
 
-    /* In a column, counts read best as a right-aligned figure per row. */
-    :global(html.js) .map > .legend .n {
-      margin-inline-start: auto;
-    }
-
-    :global(html.js) .map > .tools {
+    :global(html.js) .map:not(.is-full) > figcaption {
       grid-column: 2;
       grid-row: 2;
-    }
-
-    :global(html.js) .map > figcaption {
-      grid-column: 2;
-      grid-row: 3;
       margin-block-start: 1rem;
     }
 
-    :global(html.js) .map > :global(.note) {
-      grid-column: 2;
+    /* Normally clipped to a 1px box; when focus brings it back, span the figure. */
+    :global(html.js) .map:not(.is-full) > .fallback:focus-within {
+      grid-column: 1 / -1;
       grid-row: 4;
     }
 
-    /* Normally clipped to a 1px box; when focus brings it back, span the figure. */
-    :global(html.js) .map > .fallback:focus-within {
-      grid-column: 1 / -1;
-      grid-row: 5;
+    :global(html.js) .map:not(.is-full) .legend {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.35rem;
     }
+
+    /* In a column, counts read best as a right-aligned figure per row. */
+    :global(html.js) .map:not(.is-full) .legend .n {
+      margin-inline-start: auto;
+    }
+  }
+
+  /* --- the full-screen app ----------------------------------------------
+   * Not the Fullscreen API: iOS Safari refuses it for anything but video,
+   * while a fixed overlay behaves identically everywhere. The figure itself
+   * becomes the overlay — no DOM moves, so the canvas just observes a resize.
+   */
+  :global(html.emap-lock) {
+    overflow: hidden;
+  }
+
+  :global(html.js) .map.is-full {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    margin: 0;
+    max-width: none;
+    background: var(--bg);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 24rem);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 1rem 1.5rem;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    overflow: hidden;
+  }
+
+  .map.is-full > .stage {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    /* The app fills whatever screen it gets; the projection letterboxes
+       inside and pan/zoom does the rest. */
+    aspect-ratio: auto;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .map.is-full > .rail {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: grid;
+    gap: 1.4rem;
+    align-content: start;
+    padding-inline-end: 0.25rem;
+  }
+
+  .map.is-full > figcaption {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0;
+  }
+
+  .map.is-full .legend {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+  }
+
+  .map.is-full .legend .n {
+    margin-inline-start: auto;
+  }
+
+  .map.is-full .app-intro {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .map.is-full .tools {
+    display: grid;
+    justify-items: start;
+    gap: 1.1rem;
+  }
+
+  /* A phone's full screen stacks: stage on top, instruments scroll below. */
+  @media (max-width: 1099px) {
+    :global(html.js) .map.is-full {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 55%) minmax(0, 1fr);
+    }
+
+    .map.is-full > .stage {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .map.is-full > .rail {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .map.is-full > figcaption {
+      display: none;
+    }
+  }
+
+  .app-intro {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    line-height: 1.55;
+    max-width: 30rem;
+  }
+
+  .app-title {
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
   }
 
   /* --- legend ---------------------------------------------------------- */
@@ -410,16 +561,10 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
   }
 
   /* --- tools ----------------------------------------------------------- */
-  /* Meaningless without the canvas, so they never render for no-JS visitors. */
+  /* The instruments live in the full-screen app only; on the landing the map
+     is an artefact, not a cockpit. (Also hides them for no-JS visitors.) */
   .tools {
     display: none;
-  }
-
-  :global(html.js) .tools {
-    display: grid;
-    justify-items: start;
-    gap: 0.6rem;
-    margin-block-end: 0.8rem;
   }
 
   .tool-btn {
@@ -657,6 +802,116 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     cursor: pointer;
   }
 
+  /* --- corner chrome ----------------------------------------------------- */
+  .corner {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.4rem;
+    z-index: 4;
+  }
+
+  .icon-btn {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--fg-dim);
+    /* A wash, so the button stays legible when a node drifts underneath. */
+    background: color-mix(in oklab, var(--bg-1) 78%, transparent);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+  }
+
+  .icon-btn:hover {
+    color: var(--accent);
+    border-color: var(--rule-strong);
+  }
+
+  .icon-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .icon-btn svg {
+    display: block;
+  }
+
+  /* Expand ↔ close, one button, state-driven like the listen toggle. */
+  #emap-full .cls {
+    display: none;
+  }
+
+  .map.is-full #emap-full .cls {
+    display: block;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .map.is-full #emap-full .exp {
+    display: none;
+  }
+
+  /* --- help dialog ------------------------------------------------------- */
+  .help {
+    /* The global reset zeroes every margin, killing the UA's dialog
+       centring; restore it. */
+    margin: auto;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg-1);
+    color: var(--fg);
+    padding: 0;
+    width: min(34rem, calc(100vw - 2rem));
+  }
+
+  .help::backdrop {
+    background: color-mix(in oklab, var(--bg) 65%, transparent);
+    backdrop-filter: blur(3px);
+  }
+
+  .help-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 1rem;
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .help-title {
+    font-size: var(--step--1);
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .help-close {
+    background: none;
+    border: 0;
+    color: var(--fg-faint);
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+  }
+
+  .help-close:hover {
+    color: var(--fg);
+  }
+
+  .help-body {
+    display: grid;
+    gap: 0.8rem;
+    justify-items: start;
+    padding: 1rem;
+    font-size: var(--step--1);
+    color: var(--fg-dim);
+    line-height: 1.6;
+    max-height: 70dvh;
+    overflow-y: auto;
+  }
+
   /* --- hover tooltip --------------------------------------------------- */
   .tip {
     position: absolute;
@@ -811,10 +1066,8 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     line-height: 1.55;
   }
 
-  /* The caveat lives in the slotted note now, which carries this component's
-     scope rather than the note's own. */
-  .map strong {
-    color: var(--fg-dim);
+  .help-body strong {
+    color: var(--fg);
     font-weight: 500;
   }
 
@@ -1997,6 +2250,52 @@ const shape = `--aspect: ${aspect.toFixed(3)}`;
     searchInput?.addEventListener('input', () => {
       window.clearTimeout(searchTimer);
       searchTimer = window.setTimeout(() => void runSearch(searchInput.value), 250);
+    });
+
+    /* ---- full-screen app and help ------------------------------------------ */
+    const fullBtn = document.getElementById('emap-full');
+    const helpBtn = document.getElementById('emap-help');
+    const helpDialog = document.getElementById('emap-dialog') as HTMLDialogElement | null;
+    const helpFull = document.getElementById('emap-open-full');
+
+    function setFull(on: boolean) {
+      figure!.classList.toggle('is-full', on);
+      // The page behind the overlay must not scroll out from under it.
+      document.documentElement.classList.toggle('emap-lock', on);
+      fullBtn?.setAttribute('aria-pressed', String(on));
+      fullBtn?.setAttribute(
+        'aria-label',
+        on ? 'Exit the full-screen map' : 'Open the map full screen',
+      );
+      // The ResizeObserver refits the canvas; just make sure the loop is awake.
+      start();
+    }
+
+    fullBtn?.addEventListener('click', () => setFull(!figure!.classList.contains('is-full')));
+
+    document.addEventListener('keydown', (event) => {
+      // The dialog handles its own Escape (and swallows focus while open):
+      // only a bare Escape in app mode should exit it.
+      if (
+        event.key === 'Escape' &&
+        figure!.classList.contains('is-full') &&
+        !helpDialog?.open &&
+        // (`Element`, not `Node`: this file's map-node interface shadows DOM Node.)
+        !(helpDialog && helpDialog.contains(event.target as Element))
+      ) {
+        setFull(false);
+      }
+    });
+
+    helpBtn?.addEventListener('click', () => helpDialog?.showModal());
+    helpDialog?.querySelector('.help-close')?.addEventListener('click', () => helpDialog.close());
+    // A click on the backdrop lands on the dialog element itself.
+    helpDialog?.addEventListener('click', (event) => {
+      if (event.target === helpDialog) helpDialog.close();
+    });
+    helpFull?.addEventListener('click', () => {
+      helpDialog?.close();
+      setFull(true);
     });
 
     /* ---- keyboard users tab the list; focusing an entry lights its node ---- */
