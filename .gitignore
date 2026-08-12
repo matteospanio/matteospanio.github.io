@@ -28,3 +28,7 @@ public/assets/pdf/posts/
 # repository variable for CI, so nothing here ever needs to be committed.
 .env
 .env.*
+
+# Python bytecode: regenerated whenever a build script imports another
+__pycache__/
+*.pyc
