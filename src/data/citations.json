@@ -1,16 +1,16 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-12",
+  "generatedAt": "2026-08-26",
   "sources": {
     "scholar": {
-      "fetchedAt": "2026-08-12",
+      "fetchedAt": "2026-08-26",
       "ok": true,
       "matched": 33
     },
     "openalex": {
-      "fetchedAt": "2026-08-12",
+      "fetchedAt": "2026-08-26",
       "ok": true,
-      "matched": 4
+      "matched": 5
     }
   },
   "summary": {
@@ -49,7 +49,7 @@
     "fiordelmondo_nime_2025": {
       "title": "Towards a Repository Template for Music Technology Research",
       "year": "2025",
-      "citations": 2,
+      "citations": 3,
       "source": "scholar"
     },
     "https://doi.org/10.13140/rg.2.2.17327.82088": {
@@ -74,7 +74,12 @@
       "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
       "year": "2024",
       "citations": 11,
-      "source": "scholar"
+      "source": "scholar",
+      "doi": "10.1109/access.2024.3474529",
+      "countsByYear": {
+        "2026": 2,
+        "2025": 1
+      }
     },
     "spanio2025torchfx": {
       "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
