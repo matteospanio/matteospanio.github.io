@@ -1,14 +1,14 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-26",
+  "generatedAt": "2026-09-09",
   "sources": {
     "scholar": {
-      "fetchedAt": "2026-08-26",
-      "ok": true,
-      "matched": 33
+      "fetchedAt": null,
+      "ok": false,
+      "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-08-26",
+      "fetchedAt": "2026-09-09",
       "ok": true,
       "matched": 5
     }
@@ -77,7 +77,7 @@
       "source": "scholar",
       "doi": "10.1109/access.2024.3474529",
       "countsByYear": {
-        "2026": 2,
+        "2026": 3,
         "2025": 1
       }
     },
