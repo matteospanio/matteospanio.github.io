@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-09",
+  "generatedAt": "2026-09-11",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,7 +8,7 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-09-09",
+      "fetchedAt": "2026-09-11",
       "ok": true,
       "matched": 5
     }
