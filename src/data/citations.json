@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-23",
+  "generatedAt": "2026-09-25",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,9 +8,9 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-09-23",
+      "fetchedAt": "2026-09-25",
       "ok": true,
-      "matched": 5
+      "matched": 11
     }
   },
   "summary": {
@@ -81,6 +81,12 @@
         "2025": 1
       }
     },
+    "pretto2026advanced": {
+      "title": "Toward an Advanced Web Interface for Analyzing and Annotating Digitized Audio Tape Recordings",
+      "year": "2026",
+      "citations": 0,
+      "source": "openalex"
+    },
     "spanio2025torchfx": {
       "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
       "year": "2025",
@@ -124,13 +130,18 @@
       "title": "A Quantized Native Runtime for On-Device Semantic Audio Generation",
       "year": "2026",
       "citations": 0,
-      "source": "scholar"
+      "source": "openalex"
     },
     "spanio_frontiers_2025": {
       "title": "A multimodal symphony: integrating taste and sound through generative AI",
       "year": "2025",
       "citations": 7,
-      "source": "scholar"
+      "source": "scholar",
+      "doi": "10.3389/fcomp.2025.1575741",
+      "countsByYear": {
+        "2026": 1,
+        "2025": 1
+      }
     }
   }
 }
