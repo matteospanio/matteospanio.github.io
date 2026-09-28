@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-25",
+  "generatedAt": "2026-09-28",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,13 +8,13 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-09-25",
+      "fetchedAt": "2026-09-28",
       "ok": true,
       "matched": 11
     }
   },
   "summary": {
-    "hIndex": 0,
+    "hIndex": 2,
     "i10Index": 0
   },
   "papers": {
@@ -111,7 +111,8 @@
       "title": "Taste-aware music retrieval from audio embeddings",
       "year": "2026",
       "citations": 1,
-      "source": "scholar"
+      "source": "scholar",
+      "doi": "10.48550/arxiv.2607.03296"
     },
     "spanio2026lilypond": {
       "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
@@ -124,13 +125,15 @@
       "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
       "year": "2026",
       "citations": 1,
-      "source": "scholar"
+      "source": "scholar",
+      "doi": "10.48550/arxiv.2604.10632"
     },
     "spanio2026quantizednativeruntimeondevice": {
       "title": "A Quantized Native Runtime for On-Device Semantic Audio Generation",
       "year": "2026",
       "citations": 0,
-      "source": "openalex"
+      "source": "openalex",
+      "doi": "10.48550/arxiv.2607.08526"
     },
     "spanio_frontiers_2025": {
       "title": "A multimodal symphony: integrating taste and sound through generative AI",
