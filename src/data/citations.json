@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-21",
+  "generatedAt": "2026-10-23",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,9 +8,9 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-10-21",
+      "fetchedAt": "2026-10-23",
       "ok": true,
-      "matched": 11
+      "matched": 12
     }
   },
   "summary": {
@@ -113,6 +113,13 @@
       "citations": 1,
       "source": "scholar",
       "doi": "10.48550/arxiv.2607.03296"
+    },
+    "spanio2026fluxion": {
+      "title": "Fluxion: A Differentiable DSP Runtime from Training GPU to Real-Time Edge",
+      "year": "2026",
+      "citations": 0,
+      "source": "openalex",
+      "doi": "10.48550/arxiv.2610.24622"
     },
     "spanio2026lilypond": {
       "title": "Can LLMs understand LilyPond? A benchmark for symbolic music generation and understanding",
