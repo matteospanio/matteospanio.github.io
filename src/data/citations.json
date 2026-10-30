@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-28",
+  "generatedAt": "2026-10-30",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,9 +8,9 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-10-28",
+      "fetchedAt": "2026-10-30",
       "ok": true,
-      "matched": 12
+      "matched": 13
     }
   },
   "summary": {
@@ -80,6 +80,13 @@
         "2026": 3,
         "2025": 1
       }
+    },
+    "poltronieri2026notation": {
+      "title": "Does Notation Matter? MusicXML Tokenisation for Symbolic Music Generation and Understanding",
+      "year": "2026",
+      "citations": 0,
+      "source": "openalex",
+      "doi": "10.48550/arxiv.2610.34247"
     },
     "pretto2026advanced": {
       "title": "Toward an Advanced Web Interface for Analyzing and Annotating Digitized Audio Tape Recordings",
