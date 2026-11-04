@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-02",
+  "generatedAt": "2026-11-04",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,7 +8,7 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-11-02",
+      "fetchedAt": "2026-11-04",
       "ok": true,
       "matched": 13
     }
@@ -157,7 +157,7 @@
       "source": "scholar",
       "doi": "10.3389/fcomp.2025.1575741",
       "countsByYear": {
-        "2026": 1,
+        "2026": 2,
         "2025": 1
       }
     }
