@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-04",
+  "generatedAt": "2026-11-06",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,7 +8,7 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-11-04",
+      "fetchedAt": "2026-11-06",
       "ok": true,
       "matched": 13
     }
@@ -78,7 +78,7 @@
       "doi": "10.1109/access.2024.3474529",
       "countsByYear": {
         "2026": 3,
-        "2025": 1
+        "2025": 2
       }
     },
     "poltronieri2026notation": {
