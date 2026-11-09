@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-06",
+  "generatedAt": "2026-11-09",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,7 +8,7 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-11-06",
+      "fetchedAt": "2026-11-09",
       "ok": true,
       "matched": 13
     }
@@ -25,7 +25,7 @@
       "source": "scholar",
       "doi": "10.1007/978-3-031-51026-7_26",
       "countsByYear": {
-        "2024": 1
+        "2024": 2
       }
     },
     "Cinar2024": {
@@ -97,9 +97,12 @@
     "spanio2025torchfx": {
       "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
       "year": "2025",
-      "citations": 0,
+      "citations": 1,
       "source": "openalex",
-      "doi": "10.48550/arxiv.2504.08624"
+      "doi": "10.48550/arxiv.2504.08624",
+      "countsByYear": {
+        "2025": 1
+      }
     },
     "spanio2026": {
       "title": "Cross-cultural evaluation of taste–sound correspondences in AI-generated music",
@@ -113,7 +116,7 @@
       "year": "2026",
       "citations": 1,
       "source": "scholar",
-      "doi": "10.48550/arxiv.2604.10628"
+      "doi": "10.5281/zenodo.24025568"
     },
     "spanio2026cbmi": {
       "title": "Taste-aware music retrieval from audio embeddings",
@@ -134,21 +137,27 @@
       "year": "2026",
       "citations": 0,
       "source": "openalex",
-      "doi": "10.48550/arxiv.2606.08722"
+      "doi": "10.5281/zenodo.20267078"
     },
     "spanio2026multimodal": {
       "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
       "year": "2026",
       "citations": 1,
-      "source": "scholar",
-      "doi": "10.48550/arxiv.2604.10632"
+      "source": "openalex",
+      "doi": "10.48550/arxiv.2604.10632",
+      "countsByYear": {
+        "2026": 1
+      }
     },
     "spanio2026quantizednativeruntimeondevice": {
       "title": "A Quantized Native Runtime for On-Device Semantic Audio Generation",
       "year": "2026",
-      "citations": 0,
+      "citations": 1,
       "source": "openalex",
-      "doi": "10.48550/arxiv.2607.08526"
+      "doi": "10.48550/arxiv.2607.08526",
+      "countsByYear": {
+        "2026": 1
+      }
     },
     "spanio_frontiers_2025": {
       "title": "A multimodal symphony: integrating taste and sound through generative AI",
@@ -157,7 +166,7 @@
       "source": "scholar",
       "doi": "10.3389/fcomp.2025.1575741",
       "countsByYear": {
-        "2026": 2,
+        "2026": 3,
         "2025": 1
       }
     }
