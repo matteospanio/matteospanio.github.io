@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-16",
+  "generatedAt": "2026-11-18",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,14 +8,14 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-11-16",
+      "fetchedAt": "2026-11-18",
       "ok": true,
       "matched": 13
     }
   },
   "summary": {
-    "hIndex": 2,
-    "i10Index": 0
+    "hIndex": 3,
+    "i10Index": 1
   },
   "papers": {
     "10.1007/978-3-031-51026-7_26": {
@@ -77,16 +77,19 @@
       "source": "scholar",
       "doi": "10.1109/access.2024.3474529",
       "countsByYear": {
-        "2026": 3,
-        "2025": 2
+        "2026": 4,
+        "2025": 6
       }
     },
     "poltronieri2026notation": {
       "title": "Does Notation Matter? MusicXML Tokenisation for Symbolic Music Generation and Understanding",
       "year": "2026",
-      "citations": 0,
+      "citations": 1,
       "source": "openalex",
-      "doi": "10.48550/arxiv.2610.34247"
+      "doi": "10.48550/arxiv.2610.34247",
+      "countsByYear": {
+        "2026": 1
+      }
     },
     "pretto2026advanced": {
       "title": "Toward an Advanced Web Interface for Analyzing and Annotating Digitized Audio Tape Recordings",
@@ -162,11 +165,11 @@
     "spanio_frontiers_2025": {
       "title": "A multimodal symphony: integrating taste and sound through generative AI",
       "year": "2025",
-      "citations": 7,
-      "source": "scholar",
+      "citations": 9,
+      "source": "openalex",
       "doi": "10.3389/fcomp.2025.1575741",
       "countsByYear": {
-        "2026": 3,
+        "2026": 8,
         "2025": 1
       }
     }
