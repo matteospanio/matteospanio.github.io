@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-23",
+  "generatedAt": "2026-11-25",
   "sources": {
     "scholar": {
       "fetchedAt": null,
@@ -8,7 +8,7 @@
       "matched": 0
     },
     "openalex": {
-      "fetchedAt": "2026-11-23",
+      "fetchedAt": "2026-11-25",
       "ok": true,
       "matched": 13
     }
@@ -74,11 +74,11 @@
       "title": "From Tape to Code: An International AI-Based Standard for Audio Cultural Heritage Preservation - Don’t Play That Song for me (If it’s Not Preserved With ARP!)",
       "year": "2024",
       "citations": 11,
-      "source": "scholar",
+      "source": "openalex",
       "doi": "10.1109/access.2024.3474529",
       "countsByYear": {
         "2026": 4,
-        "2025": 6
+        "2025": 7
       }
     },
     "poltronieri2026notation": {
@@ -100,10 +100,11 @@
     "spanio2025torchfx": {
       "title": "TorchFX: A modern approach to Audio DSP with PyTorch and GPU acceleration",
       "year": "2025",
-      "citations": 1,
+      "citations": 2,
       "source": "openalex",
       "doi": "10.48550/arxiv.2504.08624",
       "countsByYear": {
+        "2026": 1,
         "2025": 1
       }
     },
@@ -125,8 +126,11 @@
       "title": "Taste-aware music retrieval from audio embeddings",
       "year": "2026",
       "citations": 1,
-      "source": "scholar",
-      "doi": "10.48550/arxiv.2607.03296"
+      "source": "openalex",
+      "doi": "10.48550/arxiv.2607.03296",
+      "countsByYear": {
+        "2026": 1
+      }
     },
     "spanio2026fluxion": {
       "title": "Fluxion: A Differentiable DSP Runtime from Training GPU to Real-Time Edge",
@@ -145,11 +149,11 @@
     "spanio2026multimodal": {
       "title": "Multimodal Dataset Normalization and Perceptual Validation for Music-Taste Correspondences",
       "year": "2026",
-      "citations": 1,
+      "citations": 2,
       "source": "openalex",
       "doi": "10.48550/arxiv.2604.10632",
       "countsByYear": {
-        "2026": 1
+        "2026": 2
       }
     },
     "spanio2026quantizednativeruntimeondevice": {
